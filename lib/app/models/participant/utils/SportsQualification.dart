@@ -1,7 +1,8 @@
 // перечисление квалификации (звание или разряд)
 enum SportsQualification {
   title,
-  category
+  category,
+  undefined,
 }
 
 // расширение для получения строкового описания значения SportsQualification
@@ -12,6 +13,8 @@ extension SportsQualificationStringifier on SportsQualification {
         return "звание";
       case "category":
         return "разряд";
+      case "undefined":
+        return "не указано";
       default:
         return "";
     }
