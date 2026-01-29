@@ -1,7 +1,8 @@
 // перечисление видов поясов
 enum Belt {
   ku,
-  dan
+  dan,
+  undefined
 }
 
 // расширение для получения строкового описания значения Belt
@@ -12,6 +13,8 @@ extension BeltStringifier on Belt {
         return "кю";
       case "dan":
         return "дан";
+      case "undefined":
+        return "не указано";
       default:
         return "";
     }
