@@ -36,7 +36,7 @@ void main() {
     test(
       "should throw FormatException when create trainer when count of dots not equals 2",
         () {
-          final inputs = ["Мисяченко ЯА", "Мисяченко ЯА.", "Мисяченко Я."];
+          final inputs = ["Мисяченко ЯА", "Мисяченко ЯА.", "Мисяченко Я.", "Мисяченко Я.А.Ф"];
 
           for (String input in inputs) {
             expect(
