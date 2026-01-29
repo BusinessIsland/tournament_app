@@ -28,6 +28,6 @@ class Trainer {
     final firstname = initials[0];
     final middlename = initials[1];
 
-    return Trainer(lastname, firstname, middlename);
+    return Trainer(firstname, lastname, middlename);
   }
 }
