@@ -1,4 +1,3 @@
-
 // Перечисление спортивных разрядов
 enum SportsCategory {
   candidateForMasterOfSports,
@@ -7,7 +6,7 @@ enum SportsCategory {
   thirdSportsCategory,
   firstYouthSportsCategory,
   secondYouthSportsCategory,
-  thirdYouthSportsCategory
+  thirdYouthSportsCategory,
 }
 
 // расширение для получения строкового описания значения SportsCategory

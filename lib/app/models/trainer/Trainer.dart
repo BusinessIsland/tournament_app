@@ -1,11 +1,11 @@
 
 // сущность тренера
 class Trainer {
-  String firstname;
+  String firstnameInitial;
   String lastname;
-  String middlename;
+  String middlenameInitial;
 
-  Trainer(this.firstname, this.lastname, this.middlename);
+  Trainer(this.firstnameInitial, this.lastname, this.middlenameInitial);
 
   // фабричный конструктор для создания тренера из таблицы (Excel-файла)
   // пример ФИО тренера: Пупкин В.А.
@@ -21,13 +21,18 @@ class Trainer {
     final initials = initialsPart.split(".").where((s) => s.isNotEmpty).toList();
 
     if (initials.length != 2) {
-      throw FormatException("Не удалось разобрать инициалы в: '$initialsPart'. Ожидается формат 'И.О.'");
+      throw FormatException("Не удалось разобрать инициалы в: '$rawFullname'. Ожидается формат 'И.О.'");
     }
 
     final lastname = parts[0];
-    final firstname = initials[0];
-    final middlename = initials[1];
+    final firstnameInitial = initials[0];
+    final middlenameInitial = initials[1];
 
-    return Trainer(firstname, lastname, middlename);
+    return Trainer(firstnameInitial, lastname, middlenameInitial);
+  }
+
+  @override
+  String toString() {
+    return "$lastname $firstnameInitial.$middlenameInitial.";
   }
 }
