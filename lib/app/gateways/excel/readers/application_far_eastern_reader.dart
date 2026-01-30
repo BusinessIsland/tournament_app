@@ -21,56 +21,72 @@ class ApplicationFarEasternReader extends ExcelDataReader<ParticipantInputDto> {
     var sheet = excel[sheetName];
 
     for (int i = 2; i <= sheet.rows.length; i++) {
-      final rawGenderCell =
-          sheet.cell(CellIndex.indexByString("B$i")).value as TextCellValue;
+      final rawId = sheet.cell(CellIndex.indexByString("A$i")).value;
+      if (rawId == null) {
+        return dtos;
+      }
 
-      final rawFullnameCell =
-          sheet.cell(CellIndex.indexByString("C$i")).value as TextCellValue;
+      final rawGender =
+          sheet.cell(CellIndex.indexByString("B$i")).value;
 
-      final rawDateOfBirthCell =
-          sheet.cell(CellIndex.indexByString("D$i")).value as DateCellValue;
+      final rawFullname =
+          sheet.cell(CellIndex.indexByString("C$i")).value;
 
-      final rawBeltCell =
-          sheet.cell(CellIndex.indexByString("E$i")).value.toString();
+      final rawDateOfBirth =
+          sheet.cell(CellIndex.indexByString("D$i")).value;
 
-      final rawSportsTitleCell =
-          sheet.cell(CellIndex.indexByString("F$i")).value as TextCellValue;
+      final rawBelt =
+          sheet.cell(CellIndex.indexByString("E$i")).value;
 
-      final rawWeightCell =
-          double.parse(sheet.cell(CellIndex.indexByString("G$i")).value.toString());
+      final rawSportsTitle =
+          sheet.cell(CellIndex.indexByString("F$i")).value;
 
-      final rawRegionCell =
-          sheet.cell(CellIndex.indexByString("H$i")).value as TextCellValue;
+      final rawWeight =
+          sheet.cell(CellIndex.indexByString("G$i")).value;
 
-      final rawTrainersCell =
-          sheet.cell(CellIndex.indexByString("I$i")).value as TextCellValue;
+      final rawRegion =
+          sheet.cell(CellIndex.indexByString("H$i")).value;
 
-      final rawBlockCell =
-          sheet.cell(CellIndex.indexByString("J$i")).value as TextCellValue;
+      final rawTrainers =
+          sheet.cell(CellIndex.indexByString("I$i")).value;
+
+      final rawBlock =
+          sheet.cell(CellIndex.indexByString("J$i")).value;
 
       dtos.add(
         ParticipantInputDto.fromSheet(
-          _ifEmptySetDefault(rawGenderCell.value.text, ""),
-          _ifEmptySetDefault(rawFullnameCell.value.text, ""),
-          rawDateOfBirthCell.asDateTimeUtc(),
-          _ifEmptySetDefault(rawBeltCell, ""),
-          _ifEmptySetDefault(rawSportsTitleCell.value.text, ""),
-          rawWeightCell,
-          _ifEmptySetDefault(rawRegionCell.value.text, ""),
-          _ifEmptySetDefault(rawTrainersCell.value.text, ""),
-          _ifEmptySetDefault(rawBlockCell.value.text, ""),
+          rawGender.toRawString(),
+          rawFullname.toRawString(),
+          rawDateOfBirth.toRawString(),
+          rawBelt.toRawString(),
+          rawSportsTitle.toRawString(),
+          rawWeight.toRawString(),
+          rawRegion.toRawString(),
+          rawTrainers.toRawString(),
+          rawBlock.toRawString(),
         ),
       );
     }
 
     return dtos;
   }
+}
 
-  String _ifEmptySetDefault(String? value, String defaultValue) {
-    if (value == null) {
-      return defaultValue;
+extension CellValueRetriever on CellValue? {
+  String toRawString() {
+    final value = this;
+
+    switch (value) {
+      case TextCellValue():
+      case IntCellValue():
+      case BoolCellValue():
+      case DoubleCellValue():
+        return value.toString();
+      case DateCellValue():
+        final date = value.toString();
+        return date.replaceAll(".", "-");
+      default:
+        return value.toString();
     }
-
-    return value;
   }
 }

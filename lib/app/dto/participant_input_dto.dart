@@ -27,17 +27,18 @@ class ParticipantInputDto {
   );
 
   factory ParticipantInputDto.fromSheet(
-    String gender,
-    String fullname,
-    DateTime dateOfBirth,
-    String belt,
-    String sportsTitle,
-    double weight,
-    String region,
-    String trainers,
-    String block,
+    String rawGender,
+    String rawFullname,
+    String rawDateOfBirth,
+    String rawBelt,
+    String rawSportsTitle,
+    String rawWeight,
+    String rawRegion,
+    String rawTrainers,
+    String rawBlock,
   ) {
-    print(dateOfBirth);
+    final formatter = DateFormat("yyyy-MM-dd");
+    final dateOfBirth = formatter.parse(rawDateOfBirth, true);
 
     final now = DateTime.now();
     int age = now.year - dateOfBirth.year;
@@ -46,22 +47,24 @@ class ParticipantInputDto {
       age--;
     }
 
-    final trainersList = trainers.trim().split(", ");
+    final weight = double.parse(rawWeight);
+
+    final trainersList = rawTrainers.trim().split(", ");
 
     for (var t in trainersList) {
       t = t.trim();
     }
 
     return ParticipantInputDto(
-      gender,
-      fullname,
+      rawGender,
+      rawFullname,
       dateOfBirth,
-      belt,
-      sportsTitle,
+      rawBelt,
+      rawSportsTitle,
       weight,
-      region,
+      rawRegion,
       trainersList,
-      block,
+      rawBlock,
       age,
     );
   }

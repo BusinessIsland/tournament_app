@@ -44,8 +44,7 @@ class Belt {
 
     return Belt(beltType, rank);
   }
-  
-  
+
   @override
   String toString() {
     final stringifiedBeltType = beltType.toString();
