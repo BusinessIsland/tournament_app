@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/trainer/Trainer.dart';
+import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 void main() {
   group("Trainer.fromSheet", () {

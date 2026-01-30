@@ -1,13 +1,11 @@
 // перечисление видов поясов
-enum Belt {
+enum BeltType {
   ku,
   dan,
-  undefined
-}
+  undefined;
 
-// расширение для получения строкового описания значения Belt
-extension BeltStringifier on Belt {
-  String toStringBelt() {
+  @override
+  String toString() {
     switch (name) {
       case "ku":
         return "кю";

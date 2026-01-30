@@ -18,11 +18,9 @@ enum Gender {
         );
     }
   }
-}
 
-// расширение для получения строкового описания значения Gender
-extension GenderStringifier on Gender {
-  String toStringGender() {
+  @override
+  String toString() {
     switch (name) {
       case "male":
         return "мужчина";

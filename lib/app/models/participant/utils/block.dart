@@ -1,9 +1,16 @@
 // перечисление блоков
-enum Block { a, b, c, d, e, f, g, h }
+enum Block {
+  a,
+  b,
+  c,
+  d,
+  e,
+  f,
+  g,
+  h;
 
-// расширение для получения строкового описания значения Block
-extension BlockStringifier on Block {
-  String toStringBlock() {
+  @override
+  String toString() {
     switch (name) {
       case "a":
         return "А";

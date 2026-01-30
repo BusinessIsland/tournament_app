@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/participant/utils/Gender.dart';
+import 'package:tournament_app/app/models/participant/utils/gender.dart';
 
 void main() {
   group("Gender.resolveGenderFromString", () {
