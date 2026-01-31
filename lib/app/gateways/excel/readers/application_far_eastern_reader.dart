@@ -88,7 +88,6 @@ class ApplicationFarEasternReader extends ExcelDataReader<ParticipantInputDto> {
       bold: true,
       fontSize: 20,
       fontColorHex: ExcelColor.green,
-      diagonalBorder: Border(borderStyle: BorderStyle.Thin, borderColorHex: ExcelColor.black),
       horizontalAlign: HorizontalAlign.Center,
       verticalAlign: VerticalAlign.Center,
     );
