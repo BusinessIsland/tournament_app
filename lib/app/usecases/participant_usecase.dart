@@ -1,3 +1,4 @@
+import 'package:tournament_app/app/dto/participant_input_dto.dart';
 import 'package:tournament_app/app/dto/participant_output_dto.dart';
 import 'package:tournament_app/app/gateways/repositories/participant/participant_repository.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
@@ -23,5 +24,11 @@ class ParticipantUsecase {
     }
 
     return response;
+  }
+
+  ParticipantOutputDto save(ParticipantInputDto dto) {
+    final data = repository.save(dto);
+    final saved = Participant.fromDto(data);
+    return ParticipantOutputDto.fromParticipantModel(saved);
   }
 }

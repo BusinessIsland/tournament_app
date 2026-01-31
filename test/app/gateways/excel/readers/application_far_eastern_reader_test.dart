@@ -4,6 +4,12 @@ import 'package:excel/excel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/dto/participant_input_dto.dart';
 import 'package:tournament_app/app/gateways/excel/readers/application_far_eastern_reader.dart';
+import 'package:tournament_app/app/models/participant/participant.dart';
+import 'package:tournament_app/app/models/participant/utils/belt.dart';
+import 'package:tournament_app/app/models/participant/utils/belt_type.dart';
+import 'package:tournament_app/app/models/participant/utils/gender.dart';
+import 'package:tournament_app/app/models/participant/utils/sports_title.dart';
+import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 void main() {
   late Excel excel;
@@ -136,10 +142,7 @@ void main() {
 
       final reader = ApplicationFarEasternReader();
 
-      final contents = excel.encode();
-      final bytes = Uint8List.fromList(contents!);
-
-      final dtos = reader.readAll(bytes);
+      final dtos = reader.readAll(excel);
 
       expect(dtos.length, 3);
 
