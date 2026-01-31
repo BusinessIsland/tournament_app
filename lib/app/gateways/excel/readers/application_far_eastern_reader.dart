@@ -66,33 +66,56 @@ class ApplicationFarEasternReader extends ExcelDataReader<ParticipantInputDto> {
 
     var sheet = excel[sheetName];
 
-    int id = 1;
+    int id = 2;
 
     for (int i = 2; i <= sheet.rows.length; i++) {
       final rawId = sheet.cell(CellIndex.indexByString("A$i")).value;
 
       if (rawId == null) {
+        id++;
         break;
       }
 
       id = int.parse(rawId.toString());
     }
 
-    id++;
+    CellStyle style = CellStyle(
+      leftBorder: Border(borderStyle: BorderStyle.Thin, borderColorHex: ExcelColor.black),
+      rightBorder: Border(borderStyle: BorderStyle.Thin, borderColorHex: ExcelColor.black),
+      bottomBorder: Border(borderStyle: BorderStyle.Thin, borderColorHex: ExcelColor.black),
+      topBorder: Border(borderStyle: BorderStyle.Thin, borderColorHex: ExcelColor.black),
+      fontFamily: getFontFamily(FontFamily.Angsana_New),
+      bold: true,
+      fontSize: 20,
+      fontColorHex: ExcelColor.green,
+      diagonalBorder: Border(borderStyle: BorderStyle.Thin, borderColorHex: ExcelColor.black),
+      horizontalAlign: HorizontalAlign.Center,
+      verticalAlign: VerticalAlign.Center,
+    );
 
-    sheet.insertRowIterables([
-      IntCellValue(id),
-      TextCellValue(dto.gender),
-      TextCellValue(dto.fullname),
-      DateCellValue(year: dto.dateOfBirth.year, month: dto.dateOfBirth.month, day: dto.dateOfBirth.day),
-      TextCellValue(dto.belt),
-      TextCellValue(dto.sportsTitle),
-      DoubleCellValue(dto.weight),
-      TextCellValue(dto.region),
-      TextCellValue(dto.trainers.join(", ")),
-      TextCellValue(dto.block),
-      IntCellValue(dto.age)
-    ], id);
+    final idCell = sheet.cell(CellIndex.indexByString("A$id"));
+    idCell.value = IntCellValue(id);
+    idCell.cellStyle = style;
+
+    // sheet.insertRowIterables([idCell.value], id);
+
+    // sheet.insertRowIterables([
+    //   IntCellValue(id),
+    //   TextCellValue(dto.gender),
+    //   TextCellValue(dto.fullname),
+    //   DateCellValue(year: dto.dateOfBirth.year, month: dto.dateOfBirth.month, day: dto.dateOfBirth.day),
+    //   TextCellValue(dto.belt),
+    //   TextCellValue(dto.sportsTitle),
+    //   DoubleCellValue(dto.weight),
+    //   TextCellValue(dto.region),
+    //   TextCellValue(dto.trainers.join(", ")),
+    //   TextCellValue(dto.block),
+    //   FormulaCellValue("=INT(YEARFRAC(D${id + 1},\$L\$1,1))")
+    // ], id);
+
+
+
+    // sheet.cell(CellIndex.indexByString("B$id")).cellStyle = style;
 
     return ParticipantInputDto.fromSheet(
       dto.gender,

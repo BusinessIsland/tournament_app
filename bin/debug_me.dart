@@ -13,7 +13,7 @@ import 'package:tournament_app/app/usecases/participant_usecase.dart';
 void main() {
   SheetDataReader<ParticipantInputDto> reader = ApplicationFarEasternReader();
   final repo = ParticipantSheetRepository(
-    "/Users/kenedy/Downloads/data-3.xlsx",
+    "/home/kenedy/Downloads/data_copy.xlsx",
     reader,
   );
   final uc = ParticipantUsecase(repo);
