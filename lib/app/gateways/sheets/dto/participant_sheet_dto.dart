@@ -1,3 +1,5 @@
+import 'package:tournament_app/app/dto/participant_create_dto.dart';
+import 'package:tournament_app/app/dto/participant_update_dto.dart';
 import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 import 'package:tournament_app/app/models/participant/utils/belt.dart';
@@ -106,5 +108,43 @@ class ParticipantSheetDto {
       participant.trainers,
       participant.block,
     );
+  }
+
+  factory ParticipantSheetDto.fromCreateDto(ParticipantCreateDto dto) {
+    final uuid = Uuid();
+    return ParticipantSheetDto(
+      uuid.v4(),
+      -1,
+      dto.gender,
+      dto.fullname,
+      dto.dateOfBirth,
+      dto.belt,
+      dto.sportsTitle,
+      dto.weight,
+      dto.region,
+      dto.trainers,
+      dto.block,
+    );
+  }
+
+  factory ParticipantSheetDto.fromUpdateDto(ParticipantUpdateDto dto) {
+    return ParticipantSheetDto(
+      dto.id,
+      -1,
+      dto.gender,
+      dto.fullname,
+      dto.dateOfBirth,
+      dto.belt,
+      dto.sportsTitle,
+      dto.weight,
+      dto.region,
+      dto.trainers,
+      dto.block,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ParticipantSheetDto{id: $id, rowId: $rowId, gender: $gender, fullname: $fullname, dateOfBirth: $dateOfBirth, belt: $belt, sportsTitle: $sportsTitle, weight: $weight, region: $region, trainers: $trainers, block: $block}';
   }
 }

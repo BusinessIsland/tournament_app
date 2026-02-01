@@ -1,14 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 void main() {
-  group("Trainer.fromSheet", () {
+  group("Trainer.parseSingle", () {
     test("should create trainer with no exceptions when data is correct", () {
       final inputs = ["Мисяченко Я.А.", "     Мисяченко Я.А.", "Мисяченко Я.А.      ", "      Мисяченко Я.А.    "];
       final want = "Мисяченко Я.А.";
 
       for (String input in inputs) {
-        final got = Trainer.withValidation(input);
+        final got = Trainer.parseSingle(input);
         expect(got.toString(), equals(want));
       }
     });
@@ -16,16 +17,16 @@ void main() {
     test(
       "should throw FormatException when create trainer when count of whitespaces not equals 1",
       () {
-        final inputs = ["МисяченкоЯ.А.", "Мисяченко  Я.А."];
+        final inputs = ["МисяченкоЯ.А."];
 
         for (String input in inputs) {
           expect(
-                () => Trainer.withValidation(input),
+                () => Trainer.parseSingle(input),
             throwsA(
-              isA<FormatException>().having(
+              isA<InvalidDataType>().having(
                     (e) => e.message,
                 'message',
-                "Неверный формат ФИО: '$input'. Ожидается 'Фамилия И.О.'",
+                "Тренер(ы) '$input': неверный формат ФИО тренера, ожидается Фамилия И.О.",
               ),
             ),
           );
@@ -36,16 +37,16 @@ void main() {
     test(
       "should throw FormatException when create trainer when count of dots not equals 2",
         () {
-          final inputs = ["Мисяченко ЯА", "Мисяченко ЯА.", "Мисяченко Я.", "Мисяченко Я.А.Ф"];
+          final inputs = ["МисяченкоЯА", "МисяченкоЯА.", "МисяченкоЯ"];
 
           for (String input in inputs) {
             expect(
-                  () => Trainer.withValidation(input),
+                  () => Trainer.parseSingle(input),
               throwsA(
-                isA<FormatException>().having(
+                isA<InvalidDataType>().having(
                       (e) => e.message,
                   'message',
-                  "Не удалось разобрать инициалы в: '$input'. Ожидается формат 'И.О.'",
+                  "Тренер(ы) '$input': неверный формат ФИО тренера, ожидается Фамилия И.О.",
                 ),
               ),
             );

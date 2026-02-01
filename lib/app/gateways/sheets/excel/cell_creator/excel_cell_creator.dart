@@ -22,6 +22,7 @@ class ExcelCellCreator {
     fontSize: 12,
     horizontalAlign: HorizontalAlign.Center,
     verticalAlign: VerticalAlign.Center,
+
   );
 
   final CellStyle rowDateCellStyle = CellStyle(
