@@ -8,7 +8,7 @@ void main() {
       final want = "Мисяченко Я.А.";
 
       for (String input in inputs) {
-        final got = Trainer.fromSheet(input);
+        final got = Trainer.withValidation(input);
         expect(got.toString(), equals(want));
       }
     });
@@ -20,7 +20,7 @@ void main() {
 
         for (String input in inputs) {
           expect(
-                () => Trainer.fromSheet(input),
+                () => Trainer.withValidation(input),
             throwsA(
               isA<FormatException>().having(
                     (e) => e.message,
@@ -40,7 +40,7 @@ void main() {
 
           for (String input in inputs) {
             expect(
-                  () => Trainer.fromSheet(input),
+                  () => Trainer.withValidation(input),
               throwsA(
                 isA<FormatException>().having(
                       (e) => e.message,

@@ -33,7 +33,7 @@ void main() {
       ];
 
       for (int i = 0; i < titles.length; i++) {
-        final got = SportsTitle.fromSheet(titles[i]);
+        final got = SportsTitle.withValidation(titles[i]);
         expect(got.toString(), want[i]);
       }
     });

@@ -14,7 +14,7 @@ void main() {
       final want = "6 кю";
 
       for (String input in inputs) {
-        final got = Belt.fromSheet(input);
+        final got = Belt.withValidation(input);
         expect(got.toString(), want);
       }
     });
@@ -30,7 +30,7 @@ void main() {
       final want = "10 дан";
 
       for (String input in inputs) {
-        final got = Belt.fromSheet(input);
+        final got = Belt.withValidation(input);
         expect(got.toString(), want);
       }
     });
@@ -40,7 +40,7 @@ void main() {
       final want = "не указано";
 
       for (String input in inputs) {
-        final got = Belt.fromSheet(input);
+        final got = Belt.withValidation(input);
         expect(got.toString(), want);
       }
     });
@@ -50,7 +50,7 @@ void main() {
 
       for (String input in inputs) {
         expect(
-          () => Belt.fromSheet(input),
+          () => Belt.withValidation(input),
           throwsA(
             isA<FormatException>().having(
               (e) => e.message,
@@ -66,7 +66,7 @@ void main() {
       final input = "5 пояс";
 
       expect(
-        () => Belt.fromSheet(input),
+        () => Belt.withValidation(input),
         throwsA(
           isA<FormatException>().having(
             (e) => e.message,
@@ -82,7 +82,7 @@ void main() {
 
       for (String input in inputs) {
         expect(
-              () => Belt.fromSheet(input),
+              () => Belt.withValidation(input),
           throwsA(
             isA<FormatException>().having(
                   (e) => e.message,

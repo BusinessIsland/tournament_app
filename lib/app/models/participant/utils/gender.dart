@@ -1,33 +1,28 @@
+import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
+
 // пол участника
 enum Gender {
-  male,
-  female;
+  male("мужчина", "м", ["м", "М", "муж"]),
+  female("женщина", "ж", ["ж", "Ж", "жен"]);
+
+  final String label;
+  final String shortLabel;
+  final List<String> aliases;
+
+  const Gender(this.label, this.shortLabel, this.aliases);
 
   // фабричный метод для конвертации строкового значения (из Excel) в перечисление
-  factory Gender.fromSheet(String rawGender) {
-    switch (rawGender) {
-      case "м":
-      case "М":
-        return Gender.male;
-      case "ж":
-      case "Ж":
-        return Gender.female;
-      default:
-        throw FormatException(
-          "неудалось получить пол участника в: '$rawGender'. возможные значения: 'м, М, ж, Ж'",
-        );
-    }
+  factory Gender.withValidation(String raw) {
+    final cleanRaw = raw.trim().toLowerCase();
+
+    return Gender.values.firstWhere(
+        (gender) => gender.aliases.contains(cleanRaw),
+        orElse: () => throw InvalidDataType("Пол '$raw': указанное значение не допустимо"),
+    );
   }
 
   @override
   String toString() {
-    switch (name) {
-      case "male":
-        return "мужчина";
-      case "female":
-        return "женщина";
-      default:
-        return "";
-    }
+    return label;
   }
 }

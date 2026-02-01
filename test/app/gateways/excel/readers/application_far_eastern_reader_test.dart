@@ -1,15 +1,7 @@
-import 'dart:typed_data';
-
 import 'package:excel/excel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/dto/participant_input_dto.dart';
-import 'package:tournament_app/app/gateways/excel/readers/application_far_eastern_reader.dart';
-import 'package:tournament_app/app/models/participant/participant.dart';
-import 'package:tournament_app/app/models/participant/utils/belt.dart';
-import 'package:tournament_app/app/models/participant/utils/belt_type.dart';
-import 'package:tournament_app/app/models/participant/utils/gender.dart';
-import 'package:tournament_app/app/models/participant/utils/sports_title.dart';
-import 'package:tournament_app/app/models/trainer/trainer.dart';
+import 'package:tournament_app/app/gateways/sheets/excel/readers/application_far_eastern_reader.dart';
 
 void main() {
   late Excel excel;

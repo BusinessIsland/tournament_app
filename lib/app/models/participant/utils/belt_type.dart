@@ -1,20 +1,12 @@
 // перечисление видов поясов
 enum BeltType {
-  ku,
-  dan,
-  undefined;
+  ku("кю"),
+  dan("дан"),
+  undefined("-");
+
+  final String label;
+  const BeltType(this.label);
 
   @override
-  String toString() {
-    switch (name) {
-      case "ku":
-        return "кю";
-      case "dan":
-        return "дан";
-      case "undefined":
-        return "не указано";
-      default:
-        return "";
-    }
-  }
+  String toString() => label;
 }

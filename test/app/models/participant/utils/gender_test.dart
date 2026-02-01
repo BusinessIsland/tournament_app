@@ -7,7 +7,7 @@ void main() {
       final inputs = ["ж", "Ж"];
 
       for (String input in inputs) {
-        final got = Gender.fromSheet(input);
+        final got = Gender.withValidation(input);
         expect(got, equals(Gender.female));
       }
     });
@@ -16,7 +16,7 @@ void main() {
       final inputs = ["м", "М"];
 
       for (String input in inputs) {
-        final got = Gender.fromSheet(input);
+        final got = Gender.withValidation(input);
         expect(got, equals(Gender.male));
       }
     });
@@ -25,7 +25,7 @@ void main() {
       final input = "Я";
 
       expect(
-        () => Gender.fromSheet(input),
+        () => Gender.withValidation(input),
         throwsA(
           isA<FormatException>().having(
             (e) => e.message,
