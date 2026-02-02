@@ -7,6 +7,6 @@ abstract class ParticipantRepository {
   List<Participant> getAll(ParticipantGetAllFilter filter);
   Participant getById(String id);
   Participant create(ParticipantCreateDto dto);
-  Participant update(String id, ParticipantUpdateDto dto);
+  Participant update(ParticipantUpdateDto dto);
   void delete(List<String> id);
 }

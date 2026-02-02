@@ -8,7 +8,7 @@ import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 class ParticipantCreateDto {
   Gender gender;
-  ParticipantName fullname;
+  ParticipantName name;
   DateOfBirth dateOfBirth;
   Belt belt;
   SportsTitle sportsTitle;
@@ -19,7 +19,7 @@ class ParticipantCreateDto {
 
   ParticipantCreateDto(
     this.gender,
-    this.fullname,
+    this.name,
     this.dateOfBirth,
     this.belt,
     this.sportsTitle,
@@ -31,7 +31,7 @@ class ParticipantCreateDto {
 
   factory ParticipantCreateDto.fromInput(
     String rawGender,
-    String rawFullname,
+    String rawName,
     String rawDateOfBirth,
     String rawBelt,
     String rawSportsTitle,
@@ -41,7 +41,7 @@ class ParticipantCreateDto {
     String rawBlock,
   ) {
     final gender = Gender.withValidation(rawGender);
-    final fullname = ParticipantName.withValidation(rawFullname);
+    final name = ParticipantName.withValidation(rawName);
     final dateOfBirth = DateOfBirth.withValidation(rawDateOfBirth);
     final belt = Belt.withValidation(rawBelt);
     final sportsTitle = SportsTitle.withValidation(rawSportsTitle);
@@ -57,7 +57,7 @@ class ParticipantCreateDto {
 
     return ParticipantCreateDto(
       gender,
-      fullname,
+      name,
       dateOfBirth,
       belt,
       sportsTitle,

@@ -14,7 +14,7 @@ class ParticipantSheetDto {
   String id;
   int rowId;
   Gender gender;
-  ParticipantName fullname;
+  ParticipantName name;
   DateOfBirth dateOfBirth;
   Belt belt;
   SportsTitle sportsTitle;
@@ -23,33 +23,29 @@ class ParticipantSheetDto {
   List<Trainer> trainers;
   String block;
 
-  ParticipantSheetDto(
-    this.id,
-    this.rowId,
-    this.gender,
-    this.fullname,
-    this.dateOfBirth,
-    this.belt,
-    this.sportsTitle,
-    this.weight,
-    this.region,
-    this.trainers,
-    this.block,
-  );
+  ParticipantSheetDto(this.id,
+      this.rowId,
+      this.gender,
+      this.name,
+      this.dateOfBirth,
+      this.belt,
+      this.sportsTitle,
+      this.weight,
+      this.region,
+      this.trainers,
+      this.block,);
 
-  factory ParticipantSheetDto.withValidation(
-    String rawId,
-    String rawRowId,
-    String rawGender,
-    String rawFullname,
-    String rawDateOfBirth,
-    String rawBelt,
-    String rawSportsTitle,
-    String rawWeight,
-    String rawRegion,
-    String rawTrainers,
-    String rawBlock,
-  ) {
+  factory ParticipantSheetDto.withValidation(String rawId,
+      String rawRowId,
+      String rawGender,
+      String rawFullname,
+      String rawDateOfBirth,
+      String rawBelt,
+      String rawSportsTitle,
+      String rawWeight,
+      String rawRegion,
+      String rawTrainers,
+      String rawBlock,) {
     late String id;
 
     if (rawId.isEmpty) {
@@ -94,36 +90,35 @@ class ParticipantSheetDto {
     );
   }
 
-  factory ParticipantSheetDto.fromModel(Participant participant) {
-    return ParticipantSheetDto(
-      participant.id,
-      participant.rowId,
-      participant.gender,
-      participant.name,
-      participant.dateOfBirth,
-      participant.belt,
-      participant.sportsTitle,
-      participant.weight,
-      participant.region,
-      participant.trainers,
-      participant.block,
-    );
-  }
+  ParticipantSheetDto.fromModel(Participant participant)
+      : id = participant.id,
+        rowId = participant.rowId,
+        gender = participant.gender,
+        name = participant.name,
+        dateOfBirth = participant.dateOfBirth,
+        belt = participant.belt,
+        sportsTitle = participant.sportsTitle,
+        weight = participant.weight,
+        region = participant.region,
+        trainers = participant.trainers,
+        block = participant.block;
 
   factory ParticipantSheetDto.fromCreateDto(ParticipantCreateDto dto) {
     final uuid = Uuid();
+    final id = uuid.v4();
+
     return ParticipantSheetDto(
-      uuid.v4(),
-      -1,
-      dto.gender,
-      dto.fullname,
-      dto.dateOfBirth,
-      dto.belt,
-      dto.sportsTitle,
-      dto.weight,
-      dto.region,
-      dto.trainers,
-      dto.block,
+        id,
+        -1,
+        dto.gender,
+        dto.name,
+        dto.dateOfBirth,
+        dto.belt,
+        dto.sportsTitle,
+        dto.weight,
+        dto.region,
+        dto.trainers,
+        dto.block,
     );
   }
 
@@ -145,6 +140,6 @@ class ParticipantSheetDto {
 
   @override
   String toString() {
-    return 'ParticipantSheetDto{id: $id, rowId: $rowId, gender: $gender, fullname: $fullname, dateOfBirth: $dateOfBirth, belt: $belt, sportsTitle: $sportsTitle, weight: $weight, region: $region, trainers: $trainers, block: $block}';
+    return 'ParticipantSheetDto{id: $id, rowId: $rowId, gender: $gender, fullname: $name, dateOfBirth: $dateOfBirth, belt: $belt, sportsTitle: $sportsTitle, weight: $weight, region: $region, trainers: $trainers, block: $block}';
   }
 }

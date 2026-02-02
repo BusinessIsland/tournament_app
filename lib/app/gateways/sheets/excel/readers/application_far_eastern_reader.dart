@@ -157,7 +157,7 @@ class ApplicationFarEasternReader extends ExcelDataReader {
     cellCreator.createTextCell(
       newMainSheet,
       "C$lastRowId",
-      dto.fullname.getFullName(),
+      dto.name.getFullName(),
       cellCreator.rowCellStyle,
     );
     cellCreator.createDateCell(
@@ -255,7 +255,7 @@ class ApplicationFarEasternReader extends ExcelDataReader {
     cellCreator.createTextCell(
       newMainSheet,
       "C$rowId",
-      dto.fullname.getFullName(),
+      dto.name.getFullName(),
       cellCreator.rowCellStyle,
     );
     cellCreator.createDateCell(
@@ -311,7 +311,7 @@ class ApplicationFarEasternReader extends ExcelDataReader {
       found.id,
       found.rowId,
       dto.gender,
-      dto.fullname,
+      dto.name,
       dto.dateOfBirth,
       dto.belt,
       dto.sportsTitle,
@@ -496,7 +496,7 @@ class ApplicationFarEasternReader extends ExcelDataReader {
       cellCreator.createTextCell(
         newMainSheet,
         "C$rowIndex",
-        row.fullname.getFullName(),
+        row.name.getFullName(),
         cellCreator.rowCellStyle,
       );
       cellCreator.createDateCell(

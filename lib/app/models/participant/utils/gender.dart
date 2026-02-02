@@ -21,6 +21,10 @@ enum Gender {
     );
   }
 
+  bool get isMale {
+    return shortLabel == "м";
+  }
+
   @override
   String toString() {
     return label;
