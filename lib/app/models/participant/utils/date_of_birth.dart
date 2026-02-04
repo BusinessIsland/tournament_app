@@ -1,16 +1,14 @@
 import 'package:intl/intl.dart';
-import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
+import 'package:tournament_app/app/exceptions/invalid_age.dart';
 
 class DateOfBirth {
-  final DateTime value;
+  final DateTime? value;
 
   DateOfBirth(this.value);
 
-  factory DateOfBirth.withValidation(String? raw) {
+  factory DateOfBirth.fromString(String? raw) {
     if (raw == null) {
-      throw InvalidDataType(
-        "Дата рождения участника '$raw': дата рождения обязательна для заполнения",
-      );
+      return DateOfBirth(null);
     }
 
     DateTime? parsedDate = DateTime.tryParse(raw);
@@ -31,32 +29,39 @@ class DateOfBirth {
     }
 
     if (parsedDate == null) {
-      throw InvalidDataType(
-        "Дата рождения '$raw' не является датой в формате ГГГГ-ММ-ДД или ДД.ММ.ГГГГ или ГГГГ/ММ/ДД",
-      );
+      return DateOfBirth(null);
     }
 
-    if (parsedDate.isAfter(DateTime.now().toUtc())) {
-      throw InvalidDataType("Дата рождения '$raw' не может быть в будущем");
+    if (parsedDate.isAfter(DateTime.now())) {
+      return DateOfBirth(null);
     }
 
     return DateOfBirth(parsedDate);
   }
 
   int get age {
+    if (value == null) {
+      throw InvalidAge(
+        "дата рождения указана неверно, поэтому получить возраст участника нельзя",
+      );
+    }
+
     final now = DateTime.now();
-    int age = now.year - value.year;
-    if (now.month < value.month ||
-        (now.month == value.month && now.day < value.day)) {
+    int age = now.year - value!.year;
+    if (now.month < value!.month ||
+        (now.month == value!.month && now.day < value!.day)) {
       age--;
     }
     return age;
   }
 
   @override
-  String toString() => DateFormat("dd.MM.yyyy").format(value);
-
-  String toIsoString() => DateFormat("yyyy-MM-dd").format(value);
+  String toString() {
+    if (value == null) {
+      return "не указано";
+    }
+    return DateFormat("dd.MM.yyyy").format(value!);
+  }
 
   @override
   bool operator ==(Object other) =>
