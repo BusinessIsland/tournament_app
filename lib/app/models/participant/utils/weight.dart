@@ -1,39 +1,40 @@
 import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
 
 class Weight {
+  static const String _onEmptyMessage = "не указано";
+  static const double _defaultValue = 0;
   final double value;
 
   Weight(this.value);
 
-  factory Weight.withValidation(String? raw) {
+  factory Weight.fromString(String? raw) {
     if (raw == null) {
-      throw InvalidDataType("Вес '$raw': вес участника обязателе для заполнения");
+      return Weight(_defaultValue);
     }
 
     final prepared = raw.trim().replaceAll(",", ".");
-    final weight = double.tryParse(prepared);
+    final parsed = double.tryParse(prepared);
 
-    if (weight == null) {
-      throw InvalidDataType("Вес '$raw': вес участника не является вещественным числом");
+    if (parsed == null) {
+      return Weight(_defaultValue);
     }
 
-    if (weight <= 0) {
-      throw InvalidDataType("Вес '$raw': вес участника должен быть положительным вещественным числом");
+    if (parsed <= 0) {
+      return Weight(_defaultValue);
     }
 
-    return Weight(weight);
+    return Weight(parsed);
   }
 
   @override
-  String toString() {
-    return 'Weight{value: $value}';
-  }
+  String toString() => value == _defaultValue ? _onEmptyMessage : value.toString();
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Weight && runtimeType == other.runtimeType &&
-              value == other.value;
+      other is Weight &&
+          runtimeType == other.runtimeType &&
+          value == other.value;
 
   @override
   int get hashCode => value.hashCode;
