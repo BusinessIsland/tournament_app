@@ -1,19 +1,18 @@
 class Block {
+  static const String _defaultValue = "не указано";
   final String value;
 
   Block(this.value);
 
-  factory Block.withValidation(String? raw) {
+  factory Block.fromString(String? raw) {
     if (raw == null) {
-      return Block("");
+      return Block(_defaultValue);
     }
     return Block(raw.trim());
   }
 
   @override
-  String toString() {
-    return 'Block{value: $value}';
-  }
+  String toString() => value;
 
   @override
   bool operator ==(Object other) =>
