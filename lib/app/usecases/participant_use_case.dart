@@ -17,8 +17,8 @@ class ParticipantUseCase {
     return repository.create(dto);
   }
 
-  Participant update(String id, ParticipantUpdateDto dto) {
-    return repository.update(id, dto);
+  Participant update(ParticipantUpdateDto dto) {
+    return repository.update(dto);
   }
 
   void delete(List<String> ids) {

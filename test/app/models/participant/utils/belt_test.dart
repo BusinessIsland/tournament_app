@@ -1,97 +1,89 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
 import 'package:tournament_app/app/models/participant/utils/belt.dart';
+import 'package:tournament_app/app/models/participant/utils/belt_type.dart';
 
 void main() {
-  group("Belt.fromSheet", () {
-    test("create ku belt from correct values throws no errors", () {
-      final inputs = [
-        "6 кю",
-        "6 кю",
-        "    6 кю",
-        "6 кю      ",
-        "    6 кю     ",
+  group('Belt.withValidation', () {
+    test('should return undefined when input is null, empty or dash', () {
+      final results = [
+        Belt.withValidation(null),
+        Belt.withValidation(""),
+        Belt.withValidation("-"),
+        Belt.withValidation("  "),
       ];
-      final want = "6 кю";
 
-      for (String input in inputs) {
-        final got = Belt.withValidation(input);
-        expect(got.toString(), want);
+      for (var belt in results) {
+        expect(belt.beltType, BeltType.undefined);
+        expect(belt.rank, 0);
       }
     });
 
-    test("create dan belt from correct values throws no errors", () {
-      final inputs = [
-        "10 дан",
-        "10 дан",
-        "    10 дан",
-        "10 дан      ",
-        "    10 дан     ",
-      ];
-      final want = "10 дан";
+    test('should parse valid "кю" values correctly', () {
+      final belt = Belt.withValidation("10 кю");
+      expect(belt.rank, 10);
+      expect(belt.beltType, BeltType.ku);
+    });
 
-      for (String input in inputs) {
-        final got = Belt.withValidation(input);
-        expect(got.toString(), want);
+    test('should parse valid "дан" values correctly with mixed case', () {
+      final belt = Belt.withValidation("2 ДАН");
+      expect(belt.rank, 2);
+      expect(belt.beltType, BeltType.dan);
+    });
+
+    test('should throw InvalidDataType for invalid format', () {
+      final invalidInputs = ["10кю", "кю 10", "10", "black belt"];
+      for (var input in invalidInputs) {
+        expect(() => Belt.withValidation(input), throwsA(isA<InvalidDataType>()));
       }
     });
 
-    test("create belt from empty value throws no errors", () {
-      final inputs = ["", "-", "               ", "    -     "];
-      final want = "не указано";
+    test('should throw InvalidDataType for out-of-range ranks', () {
+      expect(() => Belt.withValidation("0 кю"), throwsA(isA<InvalidDataType>()));
+      expect(() => Belt.withValidation("11 дан"), throwsA(isA<InvalidDataType>()));
+    });
+  });
 
-      for (String input in inputs) {
-        final got = Belt.withValidation(input);
-        expect(got.toString(), want);
-      }
+  group('Belt Equality', () {
+    test('two instances with same properties should be equal', () {
+      final belt1 = Belt(BeltType.ku, 5);
+      final belt2 = Belt(BeltType.ku, 5);
+
+      expect(belt1, equals(belt2));
+      expect(belt1 == belt2, isTrue);
     });
 
-    test("create belt with invalid rank throws FormatException", () {
-      final inputs = ["11 дан", "-1 кю"];
+    test('instances with different properties should not be equal', () {
+      final belt1 = Belt(BeltType.ku, 5);
+      final belt2 = Belt(BeltType.dan, 5);
+      final belt3 = Belt(BeltType.ku, 4);
 
-      for (String input in inputs) {
-        expect(
-          () => Belt.withValidation(input),
-          throwsA(
-            isA<FormatException>().having(
-              (e) => e.message,
-              'message',
-              "Неверный формат разряда кю, дан: '$input'. Разряд должен быть указан в пределах от 1 до 10",
-            ),
-          ),
-        );
-      }
+      expect(belt1 == belt2, isFalse);
+      expect(belt1 == belt3, isFalse);
     });
 
-    test("create belt with invalid beltType throws FormatException", () {
-      final input = "5 пояс";
+    test('hashCodes should be identical for equal instances', () {
+      final belt1 = Belt(BeltType.dan, 1);
+      final belt2 = Belt(BeltType.dan, 1);
 
-      expect(
-        () => Belt.withValidation(input),
-        throwsA(
-          isA<FormatException>().having(
-            (e) => e.message,
-            'message',
-            "Неверный формат ранга участника: '$input'. Примеры '10 кю' или '2 дан'",
-          ),
-        ),
-      );
+      expect(belt1.hashCode, equals(belt2.hashCode));
+    });
+  });
+
+  group('Belt Logic (powerLevel & stringified)', () {
+    test('powerLevel should calculate correctly for Ku and Dan', () {
+      // 10 Ku is weakest (-10), 1 Dan is stronger (1)
+      final ku10 = Belt(BeltType.ku, 10);
+      final dan1 = Belt(BeltType.dan, 1);
+
+      expect(ku10.powerLevel, -10);
+      expect(dan1.powerLevel, 1);
+      expect(dan1.powerLevel > ku10.powerLevel, isTrue);
     });
 
-    test("create belt with invalid sheet data throws FormatException", () {
-      final inputs = ["11", "кю", "11 кю дан"];
-
-      for (String input in inputs) {
-        expect(
-              () => Belt.withValidation(input),
-          throwsA(
-            isA<FormatException>().having(
-                  (e) => e.message,
-              'message',
-              "Неверный формат кю, дан: '$input'. Примеры '10 кю' или '2 дан'",
-            ),
-          ),
-        );
-      }
+    test('stringified should return correct human-readable format', () {
+      expect(Belt(BeltType.ku, 6).stringified, "6 кю");
+      expect(Belt(BeltType.undefined, 0).stringified, equals(BeltType.undefined.label));
     });
   });
 }

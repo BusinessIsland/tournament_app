@@ -12,7 +12,11 @@ enum Gender {
   const Gender(this.label, this.shortLabel, this.aliases);
 
   // фабричный метод для конвертации строкового значения (из Excel) в перечисление
-  factory Gender.withValidation(String raw) {
+  factory Gender.withValidation(String? raw) {
+    if (raw == null) {
+      throw InvalidDataType("Пол '$raw': пол участника обязателен для заполнения");
+    }
+
     final cleanRaw = raw.trim().toLowerCase();
 
     return Gender.values.firstWhere(
@@ -23,6 +27,10 @@ enum Gender {
 
   bool get isMale {
     return shortLabel == "м";
+  }
+
+  bool get isFemale {
+    return shortLabel == "ж";
   }
 
   @override

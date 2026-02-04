@@ -74,7 +74,11 @@ enum SportsTitle {
     required this.weight,
   });
 
-  factory SportsTitle.withValidation(String raw) {
+  factory SportsTitle.withValidation(String? raw) {
+    if (raw == null) {
+      return SportsTitle.undefined;
+    }
+
     final trimmed = raw.trim().toLowerCase();
 
     if (trimmed.isEmpty || trimmed == "-") return SportsTitle.undefined;

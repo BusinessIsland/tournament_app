@@ -11,9 +11,9 @@ import 'package:tournament_app/app/models/participant/participant.dart';
 
 class ParticipantSheetRepository extends ParticipantRepository {
   String pathToFile;
-  ParticipantSheetParser reader;
+  ParticipantSheetParser parser;
 
-  ParticipantSheetRepository(this.pathToFile, this.reader);
+  ParticipantSheetRepository(this.pathToFile, this.parser);
 
   Excel _getExcel() {
     final bytes = File(pathToFile).readAsBytesSync();
@@ -23,36 +23,42 @@ class ParticipantSheetRepository extends ParticipantRepository {
   @override
   List<Participant> getAll(ParticipantGetAllFilter filter) {
     final excel = _getExcel();
-    final rows = reader.readAll(excel);
+    final rows = parser.readAll(excel);
 
     final filteredRows = rows.where((row) {
-      final matchesRegion = filter.region == null || row.region == filter.region;
+      final matchesRegion =
+        filter.region == null || filter.region == row.region.value;
 
-      final matchesTrainer = filter.trainerName == null ||
+      final matchesTrainer =
+          filter.trainerName == null ||
           row.trainers.any((t) => t.toString() == filter.trainerName);
 
       return matchesRegion && matchesTrainer;
     });
 
-    return filteredRows.map((row) => Participant(
-      row.id,
-      row.rowId,
-      row.gender,
-      row.name,
-      row.dateOfBirth,
-      row.belt,
-      row.sportsTitle,
-      row.weight,
-      row.region,
-      row.trainers,
-      row.block,
-    )).toList();
+    return filteredRows
+        .map(
+          (row) => Participant(
+            row.id,
+            row.rowId,
+            row.gender,
+            row.name,
+            row.dateOfBirth,
+            row.belt,
+            row.sportsTitle,
+            row.weight,
+            row.region,
+            row.trainers,
+            row.block,
+          ),
+        )
+        .toList();
   }
 
   @override
   Participant getById(String id) {
     final oldExcel = _getExcel();
-    final row = reader.getById(oldExcel, id);
+    final row = parser.getById(oldExcel, id);
 
     return Participant(
       row.id,
@@ -75,7 +81,7 @@ class ParticipantSheetRepository extends ParticipantRepository {
     final newExcel = Excel.createExcel();
 
     final dto = ParticipantSheetDto.fromCreateDto(createDto);
-    final row = reader.create(oldExcel, newExcel, dto);
+    final row = parser.create(oldExcel, newExcel, dto);
 
     final fileBytes = newExcel.save();
     if (fileBytes != null) {
@@ -98,12 +104,12 @@ class ParticipantSheetRepository extends ParticipantRepository {
   }
 
   @override
-  Participant update(String id, ParticipantUpdateDto updateDto) {
+  Participant update(ParticipantUpdateDto updateDto) {
     final oldExcel = _getExcel();
     final newExcel = Excel.createExcel();
 
     final dto = ParticipantSheetDto.fromUpdateDto(updateDto);
-    final row = reader.update(oldExcel, newExcel, id, dto);
+    final row = parser.update(oldExcel, newExcel, dto.id.value, dto);
 
     final fileBytes = newExcel.save();
     if (fileBytes != null) {
@@ -130,7 +136,7 @@ class ParticipantSheetRepository extends ParticipantRepository {
     final oldExcel = _getExcel();
     final newExcel = Excel.createExcel();
 
-    reader.delete(oldExcel, newExcel, ids);
+    parser.delete(oldExcel, newExcel, ids);
 
     final fileBytes = newExcel.save();
     if (fileBytes != null) {

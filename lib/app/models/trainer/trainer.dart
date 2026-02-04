@@ -14,7 +14,13 @@ class Trainer {
 
   // фабричный конструктор для создания тренера из таблицы (Excel-файла)
   // пример ФИО тренера: Пупкин В.А.
-  factory Trainer.parseSingle(String raw) {
+  factory Trainer.parseSingle(String? raw) {
+    if (raw == null) {
+      throw InvalidDataType(
+        "Тренер(ы) '$raw': ФИО тренера обязательно для заполнения",
+      );
+    }
+
     final parts = raw
         .trim()
         .split(RegExp(r'\s+'))
@@ -50,8 +56,16 @@ class Trainer {
     );
   }
 
-  static List<Trainer> parseList(String raw) {
-    final rawNames = raw.split(RegExp(r'[;,/|\n]')).where((s) => s.trim().isNotEmpty);
+  static List<Trainer> parseList(String? raw) {
+    if (raw == null) {
+      throw InvalidDataType(
+        "Тренер(ы) '$raw': ФИО тренера обязательно для заполнения",
+      );
+    }
+
+    final rawNames = raw
+        .split(RegExp(r'[;,/|\n]'))
+        .where((s) => s.trim().isNotEmpty);
 
     if (rawNames.isEmpty) {
       throw InvalidDataType("Тренер(ы) '$raw': список тренеров пуст");
@@ -68,6 +82,19 @@ class Trainer {
     final m = middlenameInitial.isNotEmpty ? "$middlenameInitial." : "";
     return "$lastname $firstnameInitial.$m";
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Trainer &&
+          runtimeType == other.runtimeType &&
+          lastname == other.lastname &&
+          firstnameInitial == other.firstnameInitial &&
+          middlenameInitial == other.middlenameInitial;
+
+  @override
+  int get hashCode =>
+      Object.hash(lastname, firstnameInitial, middlenameInitial);
 }
 
 extension TrainersStringifier on List<Trainer> {

@@ -1,142 +1,107 @@
 import 'package:tournament_app/app/dto/participant_create_dto.dart';
 import 'package:tournament_app/app/dto/participant_update_dto.dart';
-import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
+import 'package:tournament_app/app/models/participant/utils/id.dart';
 import 'package:tournament_app/app/models/participant/utils/belt.dart';
+import 'package:tournament_app/app/models/participant/utils/block.dart';
 import 'package:tournament_app/app/models/participant/utils/date_of_birth.dart';
 import 'package:tournament_app/app/models/participant/utils/gender.dart';
 import 'package:tournament_app/app/models/participant/utils/participant_name.dart';
+import 'package:tournament_app/app/models/participant/utils/region.dart';
+import 'package:tournament_app/app/models/participant/utils/row_id.dart';
 import 'package:tournament_app/app/models/participant/utils/sports_title.dart';
+import 'package:tournament_app/app/models/participant/utils/weight.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
-import 'package:uuid/uuid.dart';
 
 class ParticipantSheetDto {
-  String id;
-  int rowId;
+  Id id;
+  RowId rowId;
   Gender gender;
   ParticipantName name;
   DateOfBirth dateOfBirth;
   Belt belt;
   SportsTitle sportsTitle;
-  double weight;
-  String region;
+  Weight weight;
+  Region region;
   List<Trainer> trainers;
-  String block;
+  Block block;
 
-  ParticipantSheetDto(this.id,
-      this.rowId,
-      this.gender,
-      this.name,
-      this.dateOfBirth,
-      this.belt,
-      this.sportsTitle,
-      this.weight,
-      this.region,
-      this.trainers,
-      this.block,);
+  ParticipantSheetDto({
+    required this.id,
+    required this.rowId,
+    required this.gender,
+    required this.name,
+    required this.dateOfBirth,
+    required this.belt,
+    required this.sportsTitle,
+    required this.weight,
+    required this.region,
+    required this.trainers,
+    required this.block,
+  });
 
-  factory ParticipantSheetDto.withValidation(String rawId,
-      String rawRowId,
-      String rawGender,
-      String rawFullname,
-      String rawDateOfBirth,
-      String rawBelt,
-      String rawSportsTitle,
-      String rawWeight,
-      String rawRegion,
-      String rawTrainers,
-      String rawBlock,) {
-    late String id;
-
-    if (rawId.isEmpty) {
-      final uuid = Uuid();
-      id = uuid.v4();
-    } else {
-      id = rawId;
-    }
-
-    final rowId = int.tryParse(rawRowId, radix: 10);
-    if (rowId == null) {
-      throw InvalidDataType("№ п/п '$rawRowId' не является числом");
-    }
-
-    final gender = Gender.withValidation(rawGender);
-    final fullname = ParticipantName.withValidation(rawFullname);
-    final dateOfBirth = DateOfBirth.withValidation(rawDateOfBirth);
-    final belt = Belt.withValidation(rawBelt);
-    final sportsTitle = SportsTitle.withValidation(rawSportsTitle);
-
-    final weight = double.tryParse(rawWeight);
-    if (weight == null) {
-      throw InvalidDataType("Вес '$rawWeight' не является вещественным числом");
-    }
-
-    final region = rawRegion;
-    final trainers = Trainer.parseList(rawTrainers);
-    final block = rawBlock;
-
-    return ParticipantSheetDto(
-      id,
-      rowId,
-      gender,
-      fullname,
-      dateOfBirth,
-      belt,
-      sportsTitle,
-      weight,
-      region,
-      trainers,
-      block,
-    );
-  }
+  ParticipantSheetDto.withValidation({
+    String? rawId,
+    String? rawRowId,
+    String? rawGender,
+    String? rawFullname,
+    String? rawDateOfBirth,
+    String? rawBelt,
+    String? rawSportsTitle,
+    String? rawWeight,
+    String? rawRegion,
+    String? rawTrainers,
+    String? rawBlock,
+  }) : id = Id.withValidation(rawId),
+       rowId = RowId.withValidation(rawRowId),
+       gender = Gender.withValidation(rawGender),
+       name = ParticipantName.withValidation(rawFullname),
+       dateOfBirth = DateOfBirth.withValidation(rawDateOfBirth),
+       belt = Belt.withValidation(rawBelt),
+       sportsTitle = SportsTitle.withValidation(rawSportsTitle),
+       weight = Weight.withValidation(rawWeight),
+       region = Region.withValidation(rawRegion),
+       trainers = Trainer.parseList(rawTrainers),
+       block = Block.withValidation(rawBlock);
 
   ParticipantSheetDto.fromModel(Participant participant)
-      : id = participant.id,
-        rowId = participant.rowId,
-        gender = participant.gender,
-        name = participant.name,
-        dateOfBirth = participant.dateOfBirth,
-        belt = participant.belt,
-        sportsTitle = participant.sportsTitle,
-        weight = participant.weight,
-        region = participant.region,
-        trainers = participant.trainers,
-        block = participant.block;
+    : id = participant.id,
+      rowId = participant.rowId,
+      gender = participant.gender,
+      name = participant.name,
+      dateOfBirth = participant.dateOfBirth,
+      belt = participant.belt,
+      sportsTitle = participant.sportsTitle,
+      weight = participant.weight,
+      region = participant.region,
+      trainers = participant.trainers,
+      block = participant.block;
 
-  factory ParticipantSheetDto.fromCreateDto(ParticipantCreateDto dto) {
-    final uuid = Uuid();
-    final id = uuid.v4();
+  ParticipantSheetDto.fromCreateDto(ParticipantCreateDto dto)
+    : id = Id.withValidation(null),
+      rowId = RowId.withValidation(null),
+      gender = dto.gender,
+      name = dto.name,
+      dateOfBirth = dto.dateOfBirth,
+      belt = dto.belt,
+      sportsTitle = dto.sportsTitle,
+      weight = dto.weight,
+      region = dto.region,
+      trainers = dto.trainers,
+      block = dto.block;
 
-    return ParticipantSheetDto(
-        id,
-        -1,
-        dto.gender,
-        dto.name,
-        dto.dateOfBirth,
-        dto.belt,
-        dto.sportsTitle,
-        dto.weight,
-        dto.region,
-        dto.trainers,
-        dto.block,
-    );
-  }
-
-  factory ParticipantSheetDto.fromUpdateDto(ParticipantUpdateDto dto) {
-    return ParticipantSheetDto(
-      dto.id,
-      -1,
-      dto.gender,
-      dto.fullname,
-      dto.dateOfBirth,
-      dto.belt,
-      dto.sportsTitle,
-      dto.weight,
-      dto.region,
-      dto.trainers,
-      dto.block,
-    );
-  }
+  ParticipantSheetDto.fromUpdateDto(ParticipantUpdateDto dto)
+    : id = dto.id,
+      rowId = RowId.withValidation(null),
+      gender = dto.gender,
+      name = dto.name,
+      dateOfBirth = dto.dateOfBirth,
+      belt = dto.belt,
+      sportsTitle = dto.sportsTitle,
+      weight = dto.weight,
+      region = dto.region,
+      trainers = dto.trainers,
+      block = dto.block;
 
   @override
   String toString() {

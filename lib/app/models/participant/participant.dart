@@ -1,26 +1,33 @@
 import 'package:tournament_app/app/exceptions/invalid_age.dart';
+import 'package:tournament_app/app/exceptions/invalid_weight.dart';
 import 'package:tournament_app/app/models/participant/utils/age_category.dart';
 import 'package:tournament_app/app/models/participant/utils/belt.dart';
+import 'package:tournament_app/app/models/participant/utils/block.dart';
 import 'package:tournament_app/app/models/participant/utils/date_of_birth.dart';
 import 'package:tournament_app/app/models/participant/utils/gender.dart';
+import 'package:tournament_app/app/models/participant/utils/id.dart';
 import 'package:tournament_app/app/models/participant/utils/participant_name.dart';
+import 'package:tournament_app/app/models/participant/utils/region.dart';
+import 'package:tournament_app/app/models/participant/utils/row_id.dart';
 import 'package:tournament_app/app/models/participant/utils/sports_title.dart';
+import 'package:tournament_app/app/models/participant/utils/weight.dart';
 import 'package:tournament_app/app/models/participant/utils/weight_category.dart';
+import 'package:tournament_app/app/models/participant/utils/weight_category_validator.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 // сущность участника соревнований
 class Participant {
-  String id;
-  int rowId;
+  Id id;
+  RowId rowId;
   Gender gender;
   ParticipantName name;
   DateOfBirth dateOfBirth;
   Belt belt;
   SportsTitle sportsTitle;
-  double weight;
-  String region;
+  Weight weight;
+  Region region;
   List<Trainer> trainers;
-  String block;
+  Block block;
 
   Participant(
     this.id,
@@ -38,28 +45,26 @@ class Participant {
 
   AgeCategory get ageCategory {
     final age = dateOfBirth.age;
+    final category = AgeCategory.fromAge(age);
 
-    if (age == 10 || age == 11) {
-      return AgeCategory.u12;
-    } else if (age == 12 || age == 13) {
-      return AgeCategory.u14;
-    } else if (age == 14 || age == 15) {
-      return AgeCategory.u16;
-    } else if (age == 16 || age == 17) {
-      return AgeCategory.u18;
-    } else if (age >= 18) {
-      return AgeCategory.u18;
+    if (category == null) {
+      throw InvalidAge(
+        "возраст участника '$age' не подходит ни для одной категории соревнований",
+      );
     }
 
-    throw InvalidAge("минимальный возраст участника 10 лет");
+    return category;
   }
 
-  WeightCategory get weightCategory {
-    final ageCat = ageCategory;
+  WeightCategory? get weightCategory {
+    final category = WeightCategoryValidator.findWeightCategory(
+      age: ageCategory,
+      gender: gender,
+      weight: weight.value,
+    );
 
-    if (gender.isMale) {
-
-    }
+    if (category != null) return category;
+    throw InvalidWeight("вес участника '${weight.value}' не подходит ни для одной весовой категории");
   }
 
   @override

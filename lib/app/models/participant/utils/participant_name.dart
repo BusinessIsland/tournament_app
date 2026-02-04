@@ -7,8 +7,12 @@ class ParticipantName {
 
   ParticipantName({required this.lastname, this.firstname, this.middlename});
 
-  factory ParticipantName.withValidation(String fullname) {
-    final parts = fullname
+  factory ParticipantName.withValidation(String? raw) {
+    if (raw == null) {
+      throw InvalidDataType("ФИО участника '$raw': ФИО участника обязательно для заполнения");
+    }
+
+    final parts = raw
         .trim()
         .split(RegExp(r'\s+'))
         .where((part) => part.isNotEmpty)
@@ -16,7 +20,7 @@ class ParticipantName {
 
     if (parts.isEmpty) {
       throw InvalidDataType(
-        "ФИО '$fullname': ФИО участника не должно быть пустым",
+        "ФИО '$raw': ФИО участника не должно быть пустым",
       );
     }
 
@@ -62,4 +66,16 @@ class ParticipantName {
   String toString() {
     return 'ParticipantName{lastname: $lastname, firstname: $firstname, middlename: $middlename}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ParticipantName &&
+          runtimeType == other.runtimeType &&
+          lastname == other.lastname &&
+          firstname == other.firstname &&
+          middlename == other.middlename;
+
+  @override
+  int get hashCode => Object.hash(lastname, firstname, middlename);
 }

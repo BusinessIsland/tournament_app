@@ -7,7 +7,7 @@ import 'package:tournament_app/app/gateways/sheets/participant_sheet_parser.dart
 import 'package:tournament_app/app/usecases/participant_use_case.dart';
 
 void main() {
-  // readAll();
+  readAll();
   // create();
   // update("9d063aa2-89ff-4fb0-8b14-5539e0b4b2c9");
   // delete([]);
@@ -16,12 +16,24 @@ void main() {
 void readAll() {
   ParticipantSheetParser reader = ApplicationFarEasternReader();
   final repo = ParticipantSheetRepository(
-    "/home/kenedy/Downloads/data-2.xlsx",
+    "/Users/kenedy/Downloads/data-2.xlsx",
     reader,
   );
   final uc = ParticipantUseCase(repo);
-  final filter = ParticipantGetAllFilter.withRegionAndTrainerName("Хабаровский край", "Драчинский А.С.");
-  final data = uc.readAll(filter);
+  // final filter = ParticipantGetAllFilter(
+  //   region: "Хабаровский край",
+  //   trainerName: "Драчинский А.С.",
+  // );
+  // final data = uc.readAll(filter);
+
+  // final data = uc.readAll(ParticipantGetAllFilter(null, null));
+
+    final data = uc.readAll(ParticipantGetAllFilter(
+      region: "Республика Саха (Якутия)",
+      trainerName: null
+    ));
+
+  print("read all data");
 
   for (final d in data) {
     print(d.toString());
@@ -30,15 +42,15 @@ void readAll() {
 
 void create() {
   final dto = ParticipantCreateDto.fromInput(
-    "м",
-    "Журавлев Данил Владимирович",
-    "23.03.2004",
-    "10 кю",
-    "КМС",
-    "50.5",
-    "Хабаровский край",
-    "Мисяченко Я.М., Шифу М.А.",
-    "А",
+    rawGender: "м",
+    rawName: "Журавлев Данил Владимирович",
+    rawDateOfBirth: "23.03.2004",
+    rawBelt: "10 кю",
+    rawSportsTitle: "КМС",
+    rawWeight: "50.5",
+    rawRegion: "Хабаровский край",
+    rawTrainers: "Мисяченко Я.М., Шифу М.А.",
+    rawBlock: "А",
   );
 
   ParticipantSheetParser reader = ApplicationFarEasternReader();
@@ -54,16 +66,16 @@ void create() {
 
 void update(String id) {
   final dto = ParticipantUpdateDto.fromInput(
-    id,
-    "м",
-    "Журавлев Данил Владимирович",
-    "23.03.2004",
-    "10 кю",
-    "КМС",
-    "50.5",
-    "Хабаровский край",
-    "Мисяченко Я.М., Шифу М.А.",
-    "А",
+    rawId: id,
+    rawGender: "м",
+    rawName: "Журавлев Данил Владимирович",
+    rawDateOfBirth: "23.03.2004",
+    rawBelt: "10 кю",
+    rawSportsTitle: "КМС",
+    rawWeight: "50.5",
+    rawRegion: "Хабаровский край",
+    rawTrainers: "Мисяченко Я.М., Шифу М.А.",
+    rawBlock: "А",
   );
 
   ParticipantSheetParser reader = ApplicationFarEasternReader();
@@ -72,7 +84,7 @@ void update(String id) {
     reader,
   );
   final uc = ParticipantUseCase(repo);
-  final data = uc.update(id, dto);
+  final data = uc.update(dto);
 
   print(data);
 }

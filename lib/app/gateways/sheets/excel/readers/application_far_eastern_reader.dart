@@ -3,14 +3,18 @@ import 'package:tournament_app/app/exceptions/entity_not_found.dart';
 import 'package:tournament_app/app/exceptions/sheet_not_found_exception.dart';
 import 'package:tournament_app/app/gateways/sheets/dto/participant_sheet_dto.dart';
 import 'package:tournament_app/app/gateways/sheets/excel/cell_creator/excel_cell_creator.dart';
+import 'package:tournament_app/app/gateways/sheets/excel/cell_creator/excel_cell_type.dart';
 import 'package:tournament_app/app/gateways/sheets/excel/excel_data_reader.dart';
+import 'package:tournament_app/app/gateways/sheets/excel/excel_row/excel_row.dart';
+import 'package:tournament_app/app/models/participant/utils/row_id.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 class ApplicationFarEasternReader extends ExcelDataReader {
   final String mainSheetName = "Первенство ДФО";
-  final String applicationSheetName = "Служебное";
+  final String appSheetName = "Служебное";
 
-  final List<String> headers = [
+  // заголовки для листа "Первенство ДФО"
+  final List<String> mainHeaders = [
     "№ п/п",
     "Пол",
     "ФИО",
@@ -22,55 +26,48 @@ class ApplicationFarEasternReader extends ExcelDataReader {
     "Тренер(ы)",
     "Блок",
     "Полных лет",
-    "Служебные идентификаторы",
+    "Текущая дата",
   ];
+
+  // заголовки для листа "Служебное"
+  final List<String> appHeaders = ["№ п/п", "Служебные идентификаторы"];
+
+  // номера столбцов для листа "Первенство ДФО"
+  final int mainColRowId = 0;
+  final int mainColGender = 1;
+  final int mainColFullname = 2;
+  final int mainColDateOfBirth = 3;
+  final int mainColBelt = 4;
+  final int mainColSportsTitle = 5;
+  final int mainColWeight = 6;
+  final int mainColRegion = 7;
+  final int mainColTrainers = 8;
+  final int mainColBlock = 9;
+  final int mainColAge = 10;
+  final int mainColCurrentDate = 11;
+
+  // номера столбцов для листа "Служебное"
+  final int appColRowId = 0;
+  final int appColId = 1;
 
   ExcelCellCreator cellCreator = ExcelCellCreator();
 
   @override
   List<ParticipantSheetDto> readAll(Excel excel) {
-    if (!excel.sheets.containsKey(mainSheetName)) {
-      throw SheetNotFoundException(mainSheetName);
-    }
+    _sheetExistsOrThrow(excel, mainSheetName);
+
+    final mainSheet = excel[mainSheetName];
+    final appSheet = excel[appSheetName];
 
     final List<ParticipantSheetDto> rows = List.empty(growable: true);
-    final mainSheet = excel[mainSheetName];
-    final applicationSheet = excel[applicationSheetName];
 
-    for (int i = 2; i <= mainSheet.rows.length; i++) {
-      final idCell = mainSheet.cell(CellIndex.indexByString("A$i"));
+    for (int i = 1; i < mainSheet.maxRows; i++) {
+      final mainRowData = mainSheet.rows[i];
 
-      if (idCell.value == null) {
-        return rows;
-      }
+      if (mainRowData[mainColFullname]?.value == null) break;
 
-      final rawId = extractValueFromCell(applicationSheet, "B$i");
-      final rawRowId = extractValueFromCell(mainSheet, "A$i");
-      final rawGender = extractValueFromCell(mainSheet, "B$i");
-      final rawFullname = extractValueFromCell(mainSheet, "C$i");
-      final rawDateOfBirth = extractValueFromCell(mainSheet, "D$i");
-      final rawBelt = extractValueFromCell(mainSheet, "E$i");
-      final rawSportsTitle = extractValueFromCell(mainSheet, "F$i");
-      final rawWeight = extractValueFromCell(mainSheet, "G$i");
-      final rawRegion = extractValueFromCell(mainSheet, "H$i");
-      final rawTrainers = extractValueFromCell(mainSheet, "I$i");
-      final rawBlock = extractValueFromCell(mainSheet, "J$i");
-
-      final row = ParticipantSheetDto.withValidation(
-        rawId,
-        rawRowId,
-        rawGender,
-        rawFullname,
-        rawDateOfBirth,
-        rawBelt,
-        rawSportsTitle,
-        rawWeight,
-        rawRegion,
-        rawTrainers,
-        rawBlock,
-      );
-
-      rows.add(row);
+      final dto = _mapRowToDto(mainSheet, appSheet, i);
+      rows.add(dto);
     }
 
     return rows;
@@ -78,139 +75,59 @@ class ApplicationFarEasternReader extends ExcelDataReader {
 
   @override
   ParticipantSheetDto getById(Excel excel, String id) {
+    _sheetExistsOrThrow(excel, mainSheetName);
+
     final mainSheet = excel[mainSheetName];
-    final applicationSheet = excel[applicationSheetName];
+    final appSheet = excel[appSheetName];
 
-    for (int i = 2; i <= applicationSheet.rows.length; i++) {
-      final idCell = mainSheet.cell(CellIndex.indexByString("A$i"));
-
-      if (idCell.value == null) {
-        throw EntityNotFound("запись с идентификатором $id не найдена");
-      }
-
-      final rawId = extractValueFromCell(applicationSheet, "B$i");
-      final rawRowId = extractValueFromCell(mainSheet, "A$i");
-
-      if (rawId != id) {
-        continue;
-      }
-
-      final rawGender = extractValueFromCell(mainSheet, "B$i");
-      final rawFullname = extractValueFromCell(mainSheet, "C$i");
-      final rawDateOfBirth = extractValueFromCell(mainSheet, "D$i");
-      final rawBelt = extractValueFromCell(mainSheet, "E$i");
-      final rawSportsTitle = extractValueFromCell(mainSheet, "F$i");
-      final rawWeight = extractValueFromCell(mainSheet, "G$i");
-      final rawRegion = extractValueFromCell(mainSheet, "H$i");
-      final rawTrainers = extractValueFromCell(mainSheet, "I$i");
-      final rawBlock = extractValueFromCell(mainSheet, "J$i");
-
-      return ParticipantSheetDto.withValidation(
-        rawId,
-        rawRowId,
-        rawGender,
-        rawFullname,
-        rawDateOfBirth,
-        rawBelt,
-        rawSportsTitle,
-        rawWeight,
-        rawRegion,
-        rawTrainers,
-        rawBlock,
-      );
+    if (!excel.sheets.containsKey(mainSheetName)) {
+      throw SheetNotFoundException(mainSheetName);
     }
 
-    throw EntityNotFound("запись с идентификатором $id не найдена");
+    for (int i = 1; i < appSheet.maxRows; i++) {
+      final currentId = appSheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: appColId, rowIndex: i))
+          .value;
+
+      if (currentId == null) {
+        throw EntityNotFound("участник с идентификатором '$id' не найден");
+      }
+
+      if (currentId.toString() == id) {
+        return _mapRowToDto(mainSheet, appSheet, i);
+      }
+    }
+
+    throw EntityNotFound("участник с идентификатором $id не найден");
   }
 
   @override
   ParticipantSheetDto create(Excel src, Excel dest, ParticipantSheetDto dto) {
-    copyTo(src, dest, null);
-    final newMainSheet = dest[mainSheetName];
-    final newApplicationSheet = dest[applicationSheetName];
-    final lastRowId = newMainSheet.maxRows + 1;
+    _sheetExistsOrThrow(src, mainSheetName);
 
-    cellCreator.createIntegerCell(
-      newApplicationSheet,
-      "A$lastRowId",
-      lastRowId - 1,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newApplicationSheet,
-      "B$lastRowId",
-      dto.id,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createIntegerCell(
-      newMainSheet,
-      "A$lastRowId",
-      lastRowId - 1,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "B$lastRowId",
-      dto.gender.shortLabel,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "C$lastRowId",
-      dto.name.getFullName(),
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createDateCell(
-      newMainSheet,
-      "D$lastRowId",
-      DateTime.parse(dto.dateOfBirth.toIsoString()),
-      cellCreator.rowDateCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "E$lastRowId",
-      dto.belt.stringified,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "F$lastRowId",
-      dto.sportsTitle.sheetAlias,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createDoubleCell(
-      newMainSheet,
-      "G$lastRowId",
-      dto.weight,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "H$lastRowId",
-      dto.region,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "I$lastRowId",
-      dto.trainers.stringify(),
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "J$lastRowId",
-      dto.block,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createFormulaCell(
-      newMainSheet,
-      "K$lastRowId",
-      "=INT(YEARFRAC(D$lastRowId,\$L\$2,1))",
-      cellCreator.rowCellStyle,
+    _copyTo(src, dest, null);
+
+    final mainSheet = dest[mainSheetName];
+    final appSheet = dest[appSheetName];
+    final lastRowId = _findSheetEnd(mainSheet);
+
+    final toSave = ParticipantSheetDto(
+      id: dto.id,
+      rowId: RowId(lastRowId),
+      gender: dto.gender,
+      name: dto.name,
+      dateOfBirth: dto.dateOfBirth,
+      belt: dto.belt,
+      sportsTitle: dto.sportsTitle,
+      weight: dto.weight,
+      region: dto.region,
+      trainers: dto.trainers,
+      block: dto.block,
     );
 
-    dto.rowId = lastRowId;
-    return dto;
+    _mapDtoToRow(mainSheet, appSheet, lastRowId, toSave);
+
+    return toSave;
   }
 
   @override
@@ -220,346 +137,188 @@ class ApplicationFarEasternReader extends ExcelDataReader {
     String id,
     ParticipantSheetDto dto,
   ) {
-    copyTo(src, dest, null);
-    final newMainSheet = dest[mainSheetName];
-    final newApplicationSheet = dest[applicationSheetName];
+    _sheetExistsOrThrow(src, mainSheetName);
+
+    _copyTo(src, dest, null);
+
+    final mainSheet = dest[mainSheetName];
+    final appSheet = dest[appSheetName];
 
     final found = getById(src, id);
 
-    int rowId = found.rowId + 1;
+    final toSave = ParticipantSheetDto(
+      id: found.id,
+      rowId: found.rowId,
+      gender: dto.gender,
+      name: dto.name,
+      dateOfBirth: dto.dateOfBirth,
+      belt: dto.belt,
+      sportsTitle: dto.sportsTitle,
+      weight: dto.weight,
+      region: dto.region,
+      trainers: dto.trainers,
+      block: dto.block,
+    );
+    _mapDtoToRow(mainSheet, appSheet, toSave.rowId.value, toSave);
 
-    cellCreator.createIntegerCell(
-      newApplicationSheet,
-      "A$rowId",
-      found.rowId,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newApplicationSheet,
-      "B$rowId",
-      found.id,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createIntegerCell(
-      newMainSheet,
-      "A$rowId",
-      found.rowId,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "B$rowId",
-      dto.gender.shortLabel,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "C$rowId",
-      dto.name.getFullName(),
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createDateCell(
-      newMainSheet,
-      "D$rowId",
-      DateTime.parse(dto.dateOfBirth.toIsoString()),
-      cellCreator.rowDateCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "E$rowId",
-      dto.belt.stringified,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "F$rowId",
-      dto.sportsTitle.sheetAlias,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createDoubleCell(
-      newMainSheet,
-      "G$rowId",
-      dto.weight,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "H$rowId",
-      dto.region,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "I$rowId",
-      dto.trainers.stringify(),
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "J$rowId",
-      dto.block,
-      cellCreator.rowCellStyle,
-    );
-    cellCreator.createFormulaCell(
-      newMainSheet,
-      "K$rowId",
-      "=INT(YEARFRAC(D$rowId,\$L\$2,1))",
-      cellCreator.rowCellStyle,
-    );
-
-    return ParticipantSheetDto(
-      found.id,
-      found.rowId,
-      dto.gender,
-      dto.name,
-      dto.dateOfBirth,
-      dto.belt,
-      dto.sportsTitle,
-      dto.weight,
-      dto.region,
-      dto.trainers,
-      dto.block,
-    );
+    return toSave;
   }
 
   @override
   void delete(Excel src, Excel dest, List<String> ids) {
-    copyTo(src, dest, ids);
+    _copyTo(src, dest, ids);
   }
 
-  void copyTo(Excel src, Excel dest, List<String>? skipRowIds) {
+  int _findSheetEnd(Sheet sheet) {
+    int i = 0;
+    for (; i < sheet.maxRows; i++) {
+      final mainRowData = sheet.rows[i];
+
+      if (mainRowData[mainColFullname]?.value == null) return i;
+    }
+
+    return i;
+  }
+
+  void _copyTo(Excel src, Excel dest, List<String>? skipRowIds) {
+    _sheetExistsOrThrow(src, mainSheetName);
+    _sheetExistsOrThrow(src, appSheetName);
+
     final oldMainSheet = src[mainSheetName];
-    final oldApplicationSheet = src[applicationSheetName];
+    final oldAppSheet = src[appSheetName];
 
     final newMainSheet = dest[mainSheetName];
-    final newApplicationSheet = dest[applicationSheetName];
-
+    final newAppSheet = dest[appSheetName];
     dest.delete("Sheet1");
 
-    cellCreator.createTextCell(
-      newMainSheet,
-      "A1",
-      headers[0],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "B1",
-      headers[1],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "C1",
-      headers[2],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "D1",
-      headers[3],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "E1",
-      headers[4],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "F1",
-      headers[5],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "G1",
-      headers[6],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "H1",
-      headers[7],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "I1",
-      headers[8],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "J1",
-      headers[9],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "K1",
-      headers[10],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newMainSheet,
-      "L1",
-      "Текущая дата",
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createFormulaCell(
-      newMainSheet,
-      "L2",
-      "=TODAY()",
-      cellCreator.rowDateCellStyle,
-    );
-    cellCreator.createTextCell(
-      newApplicationSheet,
-      "A1",
-      headers[0],
-      cellCreator.headerCellStyle,
-    );
-    cellCreator.createTextCell(
-      newApplicationSheet,
-      "B1",
-      headers[11],
-      cellCreator.headerCellStyle,
-    );
+    _mapHeadersToRow(newMainSheet, newAppSheet);
 
-    int rowIndex = 2;
+    int rowIndex = 1;
     int recordIndex = 1;
 
-    for (int i = 2; i <= oldMainSheet.rows.length; i++) {
-      final idCell = oldMainSheet.cell(CellIndex.indexByString("A$i"));
+    for (int i = 1; i < oldMainSheet.maxRows; i++) {
+      final oldId = oldAppSheet
+          .cell(CellIndex.indexByColumnRow(columnIndex: appColId, rowIndex: i))
+          .value;
 
-      if (idCell.value == null) {
-        return;
-      }
-
-      final oldIdValue = extractValueFromCell(oldApplicationSheet, "B$i");
-
-      if (skipRowIds != null) {
-        if (skipRowIds.contains(oldIdValue)) {
+      if (oldId != null && skipRowIds != null) {
+        if (skipRowIds.contains(oldId.toString())) {
           continue;
         }
       }
 
-      final oldGender = extractValueFromCell(oldMainSheet, "B$i");
-      final oldFullname = extractValueFromCell(oldMainSheet, "C$i");
-      final oldDateOfBirth = extractValueFromCell(oldMainSheet, "D$i");
-      final oldBelt = extractValueFromCell(oldMainSheet, "E$i");
-      final oldSportsTitle = extractValueFromCell(oldMainSheet, "F$i");
-      final oldWeight = extractValueFromCell(oldMainSheet, "G$i");
-      final oldRegion = extractValueFromCell(oldMainSheet, "H$i");
-      final oldTrainers = extractValueFromCell(oldMainSheet, "I$i");
-      final oldBlock = extractValueFromCell(oldMainSheet, "J$i");
-
-      final row = ParticipantSheetDto.withValidation(
-        oldIdValue,
-        rowIndex.toString(),
-        oldGender,
-        oldFullname,
-        oldDateOfBirth,
-        oldBelt,
-        oldSportsTitle,
-        oldWeight,
-        oldRegion,
-        oldTrainers,
-        oldBlock,
+      final dto = _mapRowToDto(oldMainSheet, oldAppSheet, i);
+      final toSave = ParticipantSheetDto(
+        id: dto.id,
+        rowId: RowId(recordIndex),
+        gender: dto.gender,
+        name: dto.name,
+        dateOfBirth: dto.dateOfBirth,
+        belt: dto.belt,
+        sportsTitle: dto.sportsTitle,
+        weight: dto.weight,
+        region: dto.region,
+        trainers: dto.trainers,
+        block: dto.block,
       );
-
-      cellCreator.createIntegerCell(
-        newApplicationSheet,
-        "A$rowIndex",
-        recordIndex,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createTextCell(
-        newApplicationSheet,
-        "B$rowIndex",
-        row.id,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createIntegerCell(
-        newMainSheet,
-        "A$rowIndex",
-        recordIndex,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createTextCell(
-        newMainSheet,
-        "B$rowIndex",
-        row.gender.shortLabel,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createTextCell(
-        newMainSheet,
-        "C$rowIndex",
-        row.name.getFullName(),
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createDateCell(
-        newMainSheet,
-        "D$rowIndex",
-        DateTime.parse(row.dateOfBirth.toIsoString()),
-        cellCreator.rowDateCellStyle,
-      );
-      cellCreator.createTextCell(
-        newMainSheet,
-        "E$rowIndex",
-        row.belt.stringified,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createTextCell(
-        newMainSheet,
-        "F$rowIndex",
-        row.sportsTitle.sheetAlias,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createDoubleCell(
-        newMainSheet,
-        "G$rowIndex",
-        row.weight,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createTextCell(
-        newMainSheet,
-        "H$rowIndex",
-        row.region,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createTextCell(
-        newMainSheet,
-        "I$rowIndex",
-        row.trainers.stringify(),
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createTextCell(
-        newMainSheet,
-        "J$rowIndex",
-        row.block,
-        cellCreator.rowCellStyle,
-      );
-      cellCreator.createFormulaCell(
-        newMainSheet,
-        "K$rowIndex",
-        "=INT(YEARFRAC(D$rowIndex,\$L\$2,1))",
-        cellCreator.rowCellStyle,
-      );
+      _mapDtoToRow(newMainSheet, newAppSheet, rowIndex, toSave);
 
       rowIndex++;
       recordIndex++;
     }
   }
 
-  String extractValueFromCell(Sheet sheet, String position) {
-    final cell = sheet.cell(CellIndex.indexByString(position));
+  void _sheetExistsOrThrow(Excel excel, String sheetName) {
+    if (!excel.sheets.containsKey(sheetName)) {
+      throw SheetNotFoundException(sheetName);
+    }
+  }
 
-    if (cell.value == null) {
-      return "";
+  ParticipantSheetDto _mapRowToDto(
+    Sheet mainSheet,
+    Sheet appSheet,
+    int rowIndex,
+  ) {
+    String? getValue(Sheet sheet, int colIndex, int rowIndex) {
+      return sheet
+          .cell(
+            CellIndex.indexByColumnRow(
+              columnIndex: colIndex,
+              rowIndex: rowIndex,
+            ),
+          )
+          .value
+          ?.toString();
     }
 
-    return cell.value.toString();
+    return ParticipantSheetDto.withValidation(
+      rawId: getValue(appSheet, appColId, rowIndex),
+      rawRowId: getValue(mainSheet, mainColRowId, rowIndex),
+      rawGender: getValue(mainSheet, mainColGender, rowIndex),
+      rawFullname: getValue(mainSheet, mainColFullname, rowIndex),
+      rawDateOfBirth: getValue(mainSheet, mainColDateOfBirth, rowIndex),
+      rawBelt: getValue(mainSheet, mainColBelt, rowIndex),
+      rawSportsTitle: getValue(mainSheet, mainColSportsTitle, rowIndex),
+      rawWeight: getValue(mainSheet, mainColWeight, rowIndex),
+      rawRegion: getValue(mainSheet, mainColRegion, rowIndex),
+      rawTrainers: getValue(mainSheet, mainColTrainers, rowIndex),
+      rawBlock: getValue(mainSheet, mainColBlock, rowIndex),
+    );
   }
+
+  void _mapHeadersToRow(Sheet mainSheet, Sheet appSheet) {
+    ExcelRow(mainSheet, 0)
+      ..add(mainColRowId, mainHeaders[0], ExcelCellType.headerText)
+      ..add(mainColGender, mainHeaders[1], ExcelCellType.headerText)
+      ..add(mainColFullname, mainHeaders[2], ExcelCellType.headerText)
+      ..add(mainColDateOfBirth, mainHeaders[3], ExcelCellType.headerText)
+      ..add(mainColBelt, mainHeaders[4], ExcelCellType.headerText)
+      ..add(mainColSportsTitle, mainHeaders[5], ExcelCellType.headerText)
+      ..add(mainColWeight, mainHeaders[6], ExcelCellType.headerText)
+      ..add(mainColRegion, mainHeaders[7], ExcelCellType.headerText)
+      ..add(mainColTrainers, mainHeaders[8], ExcelCellType.headerText)
+      ..add(mainColBlock, mainHeaders[9], ExcelCellType.headerText)
+      ..add(mainColAge, mainHeaders[10], ExcelCellType.headerText)
+      ..add(mainColCurrentDate, mainHeaders[11], ExcelCellType.headerText);
+
+    ExcelRow(appSheet, 0)
+      ..add(appColRowId, appHeaders[0], ExcelCellType.text)
+      ..add(appColId, appHeaders[1], ExcelCellType.text);
+
+    ExcelRow(
+      mainSheet,
+      1,
+    ).add(mainColCurrentDate, DateTime.now(), ExcelCellType.date);
+  }
+
+  void _mapDtoToRow(
+    Sheet mainSheet,
+    Sheet appSheet,
+    int rowIndex,
+    ParticipantSheetDto dto,
+  ) {
+    ExcelRow(mainSheet, rowIndex)
+      ..add(mainColRowId, dto.rowId.value, ExcelCellType.int)
+      ..add(mainColGender, dto.gender.shortLabel, ExcelCellType.text)
+      ..add(mainColFullname, dto.name.getFullName(), ExcelCellType.text)
+      ..add(mainColDateOfBirth, dto.dateOfBirth.value, ExcelCellType.date)
+      ..add(mainColBelt, dto.belt.stringified, ExcelCellType.text)
+      ..add(mainColSportsTitle, dto.sportsTitle.sheetAlias, ExcelCellType.text)
+      ..add(mainColWeight, dto.weight.value, ExcelCellType.double)
+      ..add(mainColRegion, dto.region.value, ExcelCellType.text)
+      ..add(mainColTrainers, dto.trainers.stringify(), ExcelCellType.text)
+      ..add(mainColBlock, dto.block.value, ExcelCellType.text)
+      ..add(
+        mainColAge,
+        _buildAgeFormula(dto.rowId.value),
+        ExcelCellType.formula,
+      );
+
+    ExcelRow(appSheet, rowIndex)
+      ..add(appColRowId, dto.rowId.value, ExcelCellType.int)
+      ..add(appColId, dto.id.value, ExcelCellType.text);
+  }
+
+  String _buildAgeFormula(int excelRowIndex) =>
+      "=INT(YEARFRAC(D$excelRowIndex,\$L\$2,1))";
 }

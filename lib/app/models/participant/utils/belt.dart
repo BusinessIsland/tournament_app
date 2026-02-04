@@ -10,7 +10,11 @@ class Belt {
   Belt(this.beltType, this.rank);
 
   // фабричный метод для преобразования ранга участника из таблицы Excel в программную сущность
-  factory Belt.withValidation(String raw) {
+  factory Belt.withValidation(String? raw) {
+    if (raw == null) {
+      return Belt(BeltType.undefined, 0);
+    }
+
     final trimmed = raw.trim().toLowerCase();
 
     if (trimmed.isEmpty || trimmed == "-") {
@@ -55,4 +59,13 @@ class Belt {
   String toString() {
     return 'Belt{beltType: $beltType, rank: $rank}';
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is Belt && runtimeType == other.runtimeType &&
+              beltType == other.beltType && rank == other.rank;
+
+  @override
+  int get hashCode => Object.hash(beltType, rank);
 }
