@@ -1,40 +1,30 @@
-import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
+import 'package:tournament_app/app/models/participant/utils/gender_type.dart';
 
 // пол участника
-enum Gender {
-  male("мужчина", "м", ["м", "М", "муж"]),
-  female("женщина", "ж", ["ж", "Ж", "жен"]);
+class Gender {
+  final GenderType type;
 
-  final String label;
-  final String shortLabel;
-  final List<String> aliases;
+  Gender(this.type);
 
-  const Gender(this.label, this.shortLabel, this.aliases);
-
-  // фабричный метод для конвертации строкового значения (из Excel) в перечисление
-  factory Gender.withValidation(String? raw) {
+  factory Gender.fromString(String? raw) {
     if (raw == null) {
-      throw InvalidDataType("Пол '$raw': пол участника обязателен для заполнения");
+      return Gender(GenderType.undefined);
     }
 
     final cleanRaw = raw.trim().toLowerCase();
 
-    return Gender.values.firstWhere(
-        (gender) => gender.aliases.contains(cleanRaw),
-        orElse: () => throw InvalidDataType("Пол '$raw': указанное значение не допустимо"),
-    );
+    for (final type in GenderType.values) {
+      final aliases = type.aliases ?? [];
+      if (aliases.contains(cleanRaw)) return Gender(type);
+    }
+
+    return Gender(GenderType.undefined);
   }
 
-  bool get isMale {
-    return shortLabel == "м";
-  }
-
-  bool get isFemale {
-    return shortLabel == "ж";
-  }
+  String get short => type.shortLabel;
 
   @override
   String toString() {
-    return label;
+    return type.label;
   }
 }
