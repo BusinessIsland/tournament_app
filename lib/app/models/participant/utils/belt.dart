@@ -1,70 +1,69 @@
-import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
-
 import 'belt_type.dart';
 
 //сущность ранга участника, включает в себя тип ранга (кю, дан) и целое число - ранг
 class Belt {
   final BeltType beltType;
-  final int rank;
+  final int? rank;
 
-  Belt(this.beltType, this.rank);
+  Belt({required this.beltType, this.rank});
 
   // фабричный метод для преобразования ранга участника из таблицы Excel в программную сущность
-  factory Belt.withValidation(String? raw) {
+  factory Belt.fromString(String? raw) {
     if (raw == null) {
-      return Belt(BeltType.undefined, 0);
+      return Belt(beltType: BeltType.undefined);
     }
 
-    final trimmed = raw.trim().toLowerCase();
+    final parts = raw
+        .trim()
+        .toLowerCase()
+        .split(RegExp(r'\s+'))
+        .where((part) => part.isNotEmpty)
+        .toList();
 
-    if (trimmed.isEmpty || trimmed == "-") {
-      return Belt(BeltType.undefined, 0);
+    if (parts.isEmpty) {
+      return Belt(beltType: BeltType.undefined);
     }
-
-    final parts = trimmed.split(" ").where((part) => part.isNotEmpty).toList();
 
     if (parts.length != 2) {
-      throw InvalidDataType("Кю, дан '$raw': неверный формат, примеры '10 кю, 2 дан'");
+      return Belt(beltType: BeltType.undefined);
     }
 
     final rank = int.tryParse(parts[0]);
     if (rank == null) {
-      throw InvalidDataType("Кю, дан '$raw': разряд кю (дан) должен быть числом");
+      return Belt(beltType: BeltType.undefined);
     }
+
     if (rank < 1 || rank > 10) {
-      throw InvalidDataType("Кю, дан '$raw': разряд кю (дан) должен быть числом в пределах от 1 до 10 включительно");
+      return Belt(beltType: BeltType.undefined);
     }
 
-    final beltType = switch (parts[1]) {
-      "кю" => BeltType.ku,
-      "дан" => BeltType.dan,
-      _ => BeltType.undefined,
+    return switch (parts[1]) {
+      "кю" => Belt(beltType: BeltType.ku, rank: rank),
+      "дан" => Belt(beltType: BeltType.dan, rank: rank),
+      _ => Belt(beltType: BeltType.undefined),
     };
-
-    return Belt(beltType, rank);
   }
 
   int get powerLevel {
-    return switch(beltType) {
-      BeltType.ku => -rank,
-      BeltType.dan => rank,
-      BeltType.undefined => -1000
+    return switch (beltType) {
+      BeltType.ku => -rank!,
+      BeltType.dan => rank!,
+      BeltType.undefined => -1000,
     };
   }
 
-  String get stringified =>
-    beltType == BeltType.undefined ? beltType.label : "$rank ${beltType.label}";
-
   @override
-  String toString() {
-    return 'Belt{beltType: $beltType, rank: $rank}';
-  }
+  String toString() => beltType == BeltType.undefined
+      ? beltType.label
+      : "$rank ${beltType.label}";
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is Belt && runtimeType == other.runtimeType &&
-              beltType == other.beltType && rank == other.rank;
+      other is Belt &&
+          runtimeType == other.runtimeType &&
+          beltType == other.beltType &&
+          rank == other.rank;
 
   @override
   int get hashCode => Object.hash(beltType, rank);

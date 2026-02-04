@@ -6,7 +6,4 @@ enum BeltType {
 
   final String label;
   const BeltType(this.label);
-
-  @override
-  String toString() => label;
 }
