@@ -27,7 +27,7 @@ class ParticipantSheetRepository extends ParticipantRepository {
 
     final filteredRows = rows.where((row) {
       final matchesRegion =
-        filter.region == null || filter.region == row.region.value;
+        filter.region == null || filter.region == row.region.label;
 
       final matchesTrainer =
           filter.trainerName == null ||

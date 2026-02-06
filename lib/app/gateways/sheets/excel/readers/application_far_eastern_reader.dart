@@ -6,7 +6,6 @@ import 'package:tournament_app/app/gateways/sheets/excel/cell_creator/excel_cell
 import 'package:tournament_app/app/gateways/sheets/excel/cell_creator/excel_cell_type.dart';
 import 'package:tournament_app/app/gateways/sheets/excel/excel_data_reader.dart';
 import 'package:tournament_app/app/gateways/sheets/excel/excel_row/excel_row.dart';
-import 'package:tournament_app/app/models/participant/utils/row_id.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 class ApplicationFarEasternReader extends ExcelDataReader {
@@ -159,7 +158,7 @@ class ApplicationFarEasternReader extends ExcelDataReader {
       trainers: dto.trainers,
       block: dto.block,
     );
-    _mapDtoToRow(mainSheet, appSheet, toSave.rowId.value, toSave);
+    _mapDtoToRow(mainSheet, appSheet, toSave.rowId.label, toSave);
 
     return toSave;
   }
@@ -298,24 +297,24 @@ class ApplicationFarEasternReader extends ExcelDataReader {
     ParticipantSheetDto dto,
   ) {
     ExcelRow(mainSheet, rowIndex)
-      ..add(mainColRowId, dto.rowId.value, ExcelCellType.int)
+      ..add(mainColRowId, dto.rowId.label, ExcelCellType.int)
       ..add(mainColGender, dto.gender.shortLabel, ExcelCellType.text)
       ..add(mainColFullname, dto.name.getFullName(), ExcelCellType.text)
-      ..add(mainColDateOfBirth, dto.dateOfBirth.value, ExcelCellType.date)
+      ..add(mainColDateOfBirth, dto.dateOfBirth.label, ExcelCellType.date)
       ..add(mainColBelt, dto.belt.stringified, ExcelCellType.text)
       ..add(mainColSportsTitle, dto.sportsTitle.sheetAlias, ExcelCellType.text)
       ..add(mainColWeight, dto.weight.value, ExcelCellType.double)
-      ..add(mainColRegion, dto.region.value, ExcelCellType.text)
+      ..add(mainColRegion, dto.region.label, ExcelCellType.text)
       ..add(mainColTrainers, dto.trainers.stringify(), ExcelCellType.text)
-      ..add(mainColBlock, dto.block.value, ExcelCellType.text)
+      ..add(mainColBlock, dto.block.label, ExcelCellType.text)
       ..add(
         mainColAge,
-        _buildAgeFormula(dto.rowId.value),
+        _buildAgeFormula(dto.rowId.label),
         ExcelCellType.formula,
       );
 
     ExcelRow(appSheet, rowIndex)
-      ..add(appColRowId, dto.rowId.value, ExcelCellType.int)
+      ..add(appColRowId, dto.rowId.label, ExcelCellType.int)
       ..add(appColId, dto.id.value, ExcelCellType.text);
   }
 

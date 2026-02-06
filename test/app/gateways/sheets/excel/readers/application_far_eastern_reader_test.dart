@@ -58,7 +58,7 @@ void main() {
       expect(mainSheet.rows[1][reader.mainColFullname]?.value.toString(), contains("Иванов"));
       // Проверяем, что в служебный лист записался UUID
       expect(appSheet.rows[1][reader.appColId]?.value.toString(), equals(dto.id.value));
-      expect(saved.rowId.value, isNotNull);
+      expect(saved.rowId.label, isNotNull);
     });
 
     test('readAll should return all participants except empty rows', () {
@@ -96,7 +96,7 @@ void main() {
       reader.create(excel, destExcel, dto);
       final result = reader.readAll(destExcel);
 
-      expect(result.first.dateOfBirth.value.year, 2012);
+      expect(result.first.dateOfBirth.label.year, 2012);
       expect(result.first.weight.value, 55.7);
     });
 

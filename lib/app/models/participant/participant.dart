@@ -1,16 +1,15 @@
 import 'package:tournament_app/app/exceptions/invalid_age.dart';
 import 'package:tournament_app/app/exceptions/invalid_weight.dart';
+import 'package:tournament_app/app/models/name/person_name.dart';
 import 'package:tournament_app/app/models/participant/utils/age_category.dart';
 import 'package:tournament_app/app/models/participant/utils/belt.dart';
-import 'package:tournament_app/app/models/participant/utils/block.dart';
+import 'package:tournament_app/app/models/parts/block/block.dart';
 import 'package:tournament_app/app/models/participant/utils/date_of_birth.dart';
 import 'package:tournament_app/app/models/participant/utils/gender.dart';
-import 'package:tournament_app/app/models/participant/utils/id.dart';
-import 'package:tournament_app/app/models/participant/utils/participant_name.dart';
+import 'package:tournament_app/app/models/parts/id/id.dart';
 import 'package:tournament_app/app/models/participant/utils/region.dart';
-import 'package:tournament_app/app/models/participant/utils/row_id.dart';
 import 'package:tournament_app/app/models/participant/utils/sports_title.dart';
-import 'package:tournament_app/app/models/participant/utils/weight.dart';
+import 'package:tournament_app/app/models/parts/weight/weight.dart';
 import 'package:tournament_app/app/models/participant/utils/weight_category.dart';
 import 'package:tournament_app/app/models/participant/utils/weight_category_validator.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
@@ -18,9 +17,8 @@ import 'package:tournament_app/app/models/trainer/trainer.dart';
 // сущность участника соревнований
 class Participant {
   Id id;
-  RowId rowId;
   Gender gender;
-  ParticipantName name;
+  PersonName name;
   DateOfBirth dateOfBirth;
   Belt belt;
   SportsTitle sportsTitle;
@@ -31,7 +29,6 @@ class Participant {
 
   Participant(
     this.id,
-    this.rowId,
     this.gender,
     this.name,
     this.dateOfBirth,
@@ -69,6 +66,6 @@ class Participant {
 
   @override
   String toString() {
-    return 'Participant{id: $id, rowId: $rowId, gender: $gender, name: $name, dateOfBirth: $dateOfBirth, belt: $belt, sportsTitle: $sportsTitle, weight: $weight, region: $region, trainers: $trainers, block: $block}';
+    return 'Participant{id: $id, gender: $gender, name: $name, dateOfBirth: $dateOfBirth, belt: $belt, sportsTitle: $sportsTitle, weight: $weight, region: $region, trainers: $trainers, block: $block}';
   }
 }

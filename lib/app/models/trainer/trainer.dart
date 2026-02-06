@@ -1,102 +1,47 @@
-import 'package:tournament_app/app/exceptions/invalid_data_type.dart';
+import 'package:tournament_app/app/models/name/person_name.dart';
+import 'package:tournament_app/app/models/name/person_name_parser.dart';
 
 // сущность тренера
 class Trainer {
-  final String lastname;
-  final String firstnameInitial;
-  final String middlenameInitial;
+  PersonName name;
 
-  Trainer({
-    required this.lastname,
-    required this.firstnameInitial,
-    required this.middlenameInitial,
-  });
+  Trainer({required this.name});
 
-  // фабричный конструктор для создания тренера из таблицы (Excel-файла)
-  // пример ФИО тренера: Пупкин В.А.
   factory Trainer.parseSingle(String? raw) {
-    if (raw == null) {
-      throw InvalidDataType(
-        "Тренер(ы) '$raw': ФИО тренера обязательно для заполнения",
-      );
-    }
+    final parser = FullNameParser()
+        .setNext(NameWithInitialsParser())
+        .setNext(ShortNameParser());
 
-    final parts = raw
-        .trim()
-        .split(RegExp(r'\s+'))
-        .where((s) => s.isNotEmpty)
-        .toList();
-
-    if (parts.length != 2) {
-      throw InvalidDataType(
-        "Тренер(ы) '$raw': неверный формат ФИО тренера, ожидается Фамилия И.О.",
-      );
-    }
-
-    final lastname = _capitalize(parts[0]);
-
-    final rawInitials = parts[1].replaceAll('.', ' ').trim();
-    final initialsParts = rawInitials
-        .split(RegExp(r'\s+'))
-        .where((s) => s.isNotEmpty)
-        .toList();
-
-    if (initialsParts.isEmpty) {
-      throw InvalidDataType(
-        "Тренер(ы) '$raw': неверный формат ФИО тренера, ожидается Фамилия И.О.",
-      );
-    }
-
-    return Trainer(
-      lastname: lastname,
-      firstnameInitial: initialsParts[0][0].toUpperCase(),
-      middlenameInitial: initialsParts.length > 1
-          ? initialsParts[1][0].toUpperCase()
-          : '',
-    );
+    final name = parser.parse(raw);
+    return Trainer(name: name);
   }
 
   static List<Trainer> parseList(String? raw) {
     if (raw == null) {
-      throw InvalidDataType(
-        "Тренер(ы) '$raw': ФИО тренера обязательно для заполнения",
-      );
+      return [Trainer(name: UndefinedName())];
     }
 
     final rawNames = raw
         .split(RegExp(r'[;,/|\n]'))
         .where((s) => s.trim().isNotEmpty);
 
-    if (rawNames.isEmpty) {
-      throw InvalidDataType("Тренер(ы) '$raw': список тренеров пуст");
-    }
-
     return rawNames.map((name) => Trainer.parseSingle(name)).toList();
   }
 
-  static String _capitalize(String s) =>
-      s.isEmpty ? "" : s[0].toUpperCase() + s.substring(1).toLowerCase();
-
   @override
-  String toString() {
-    final m = middlenameInitial.isNotEmpty ? "$middlenameInitial." : "";
-    return "$lastname $firstnameInitial.$m";
-  }
+  String toString() => name.formatted;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is Trainer &&
           runtimeType == other.runtimeType &&
-          lastname == other.lastname &&
-          firstnameInitial == other.firstnameInitial &&
-          middlenameInitial == other.middlenameInitial;
+          name == other.name;
 
   @override
-  int get hashCode =>
-      Object.hash(lastname, firstnameInitial, middlenameInitial);
+  int get hashCode => name.hashCode;
 }
 
 extension TrainersStringifier on List<Trainer> {
-  String stringify() => map((t) => t.toString()).join(", ");
+  String stringify() => map((trainer) => trainer.name.formatted).join(", ");
 }

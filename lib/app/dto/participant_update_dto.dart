@@ -1,18 +1,18 @@
 import 'package:tournament_app/app/models/participant/utils/belt.dart';
-import 'package:tournament_app/app/models/participant/utils/block.dart';
+import 'package:tournament_app/app/models/parts/block/block.dart';
 import 'package:tournament_app/app/models/participant/utils/date_of_birth.dart';
 import 'package:tournament_app/app/models/participant/utils/gender.dart';
-import 'package:tournament_app/app/models/participant/utils/id.dart';
-import 'package:tournament_app/app/models/participant/utils/participant_name.dart';
+import 'package:tournament_app/app/models/parts/id/id.dart';
+import 'package:tournament_app/app/models/participant/utils/name.dart';
 import 'package:tournament_app/app/models/participant/utils/region.dart';
 import 'package:tournament_app/app/models/participant/utils/sports_title.dart';
-import 'package:tournament_app/app/models/participant/utils/weight.dart';
+import 'package:tournament_app/app/models/parts/weight/weight.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 class ParticipantUpdateDto {
   Id id;
   Gender gender;
-  ParticipantName name;
+  Name name;
   DateOfBirth dateOfBirth;
   Belt belt;
   SportsTitle sportsTitle;
@@ -47,15 +47,15 @@ class ParticipantUpdateDto {
     String? rawBlock,
   }) {
     final id = Id.withValidation(rawId);
-    final gender = Gender.withValidation(rawGender);
-    final name = ParticipantName.withValidation(rawName);
-    final dateOfBirth = DateOfBirth.withValidation(rawDateOfBirth);
-    final belt = Belt.withValidation(rawBelt);
-    final sportsTitle = SportsTitle.withValidation(rawSportsTitle);
-    final weight = Weight.withValidation(rawWeight);
+    final gender = Gender.fromString(rawGender);
+    final name = Name.fromString(rawName);
+    final dateOfBirth = DateOfBirth.fromString(rawDateOfBirth);
+    final belt = Belt.fromString(rawBelt);
+    final sportsTitle = SportsTitle.fromString(rawSportsTitle);
+    final weight = Weight.fromString(rawWeight);
     final region = Region.withValidation(rawRegion);
     final trainers = Trainer.parseList(rawTrainers);
-    final block = Block.withValidation(rawBlock);
+    final block = Block.fromString(rawBlock);
 
     return ParticipantUpdateDto(
       id: id,
