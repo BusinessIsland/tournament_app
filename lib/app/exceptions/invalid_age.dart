@@ -4,6 +4,6 @@ class InvalidAge implements Exception{
 
   @override
   String toString() {
-    return "неверно указан возраст: $message";
+    return "неверно указана дата рождения: $message";
   }
 }

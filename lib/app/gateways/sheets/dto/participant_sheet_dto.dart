@@ -1,23 +1,23 @@
 import 'package:tournament_app/app/dto/participant_create_dto.dart';
 import 'package:tournament_app/app/dto/participant_update_dto.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
-import 'package:tournament_app/app/models/participant/utils/id.dart';
+import 'package:tournament_app/app/models/parts/id/id.dart';
 import 'package:tournament_app/app/models/participant/utils/belt.dart';
-import 'package:tournament_app/app/models/participant/utils/block.dart';
+import 'package:tournament_app/app/models/parts/block/block.dart';
 import 'package:tournament_app/app/models/participant/utils/date_of_birth.dart';
 import 'package:tournament_app/app/models/participant/utils/gender.dart';
-import 'package:tournament_app/app/models/participant/utils/participant_name.dart';
+import 'package:tournament_app/app/models/participant/utils/name.dart';
 import 'package:tournament_app/app/models/participant/utils/region.dart';
 import 'package:tournament_app/app/models/participant/utils/row_id.dart';
 import 'package:tournament_app/app/models/participant/utils/sports_title.dart';
-import 'package:tournament_app/app/models/participant/utils/weight.dart';
+import 'package:tournament_app/app/models/parts/weight/weight.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
 
 class ParticipantSheetDto {
   Id id;
   RowId rowId;
   Gender gender;
-  ParticipantName name;
+  Name name;
   DateOfBirth dateOfBirth;
   Belt belt;
   SportsTitle sportsTitle;
@@ -54,15 +54,15 @@ class ParticipantSheetDto {
     String? rawBlock,
   }) : id = Id.withValidation(rawId),
        rowId = RowId.withValidation(rawRowId),
-       gender = Gender.withValidation(rawGender),
-       name = ParticipantName.withValidation(rawFullname),
-       dateOfBirth = DateOfBirth.withValidation(rawDateOfBirth),
-       belt = Belt.withValidation(rawBelt),
-       sportsTitle = SportsTitle.withValidation(rawSportsTitle),
-       weight = Weight.withValidation(rawWeight),
+       gender = Gender.fromString(rawGender),
+       name = Name.fromString(rawFullname),
+       dateOfBirth = DateOfBirth.fromString(rawDateOfBirth),
+       belt = Belt.fromString(rawBelt),
+       sportsTitle = SportsTitle.fromString(rawSportsTitle),
+       weight = Weight.fromString(rawWeight),
        region = Region.withValidation(rawRegion),
        trainers = Trainer.parseList(rawTrainers),
-       block = Block.withValidation(rawBlock);
+       block = Block.fromString(rawBlock);
 
   ParticipantSheetDto.fromModel(Participant participant)
     : id = participant.id,
