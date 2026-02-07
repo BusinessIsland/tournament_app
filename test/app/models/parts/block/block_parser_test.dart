@@ -27,7 +27,7 @@ void main() {
       final given = "Б";
       final got = parseSimpleBlock(given);
 
-      expect(got.stringify, "Б");
+      expect(got.toString(), "Б");
     });
   });
 

@@ -2,10 +2,10 @@ import 'package:intl/intl.dart';
 
 sealed class DateOfBirth {
   DateTime? get value;
-
   int get age;
 
-  String get stringify;
+  @override
+  String toString();
 
   @override
   bool operator ==(Object other) =>
@@ -37,9 +37,7 @@ class DateTimeDateOfBirth extends DateOfBirth {
   }
 
   @override
-  String get stringify {
-    return DateFormat("dd/MM/yyyy").format(value);
-  }
+  String toString() =>DateFormat("dd/MM/yyyy").format(value);
 }
 
 class UndefinedDateOfBirth extends DateOfBirth {
@@ -50,5 +48,5 @@ class UndefinedDateOfBirth extends DateOfBirth {
   int get age => 0;
 
   @override
-  String get stringify => "не указано";
+  String toString() => "не указано";
 }

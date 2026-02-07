@@ -25,14 +25,14 @@ void main() {
       final given = "Хабаровский край";
       final got = parseStandardRegion(given);
 
-      expect(got.stringified, "Хабаровский край");
+      expect(got.toString(), "Хабаровский край");
     });
 
     test("parse_RegExpInputWithWhitespaces_StringifyReturnsRegionWithoutWhitespaces", () {
       final given = "   Хабаровский  край   ";
       final got = parseStandardRegion(given);
 
-      expect(got.stringified, "Хабаровский край");
+      expect(got.toString(), "Хабаровский край");
     });
   });
 
@@ -48,7 +48,7 @@ void main() {
       final given = ' ' * 20;
       final got = parseRegion(given);
 
-      expect(got.stringified, "не указано");
+      expect(got.toString(), "не указано");
     });
   });
 }

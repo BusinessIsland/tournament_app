@@ -42,7 +42,7 @@ void main() {
       final given = "dwad50.5";
       final got = parseWeight(given);
 
-      expect(got.stringify, "не указано");
+      expect(got.toString(), "не указано");
     });
 
     test("parse_WhitespaceInput_ReturnsWeightAsUndefinedWeight", () {

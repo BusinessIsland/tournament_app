@@ -1,7 +1,7 @@
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_qualification.dart';
 
 sealed class SportsTitle extends SportsQualification {
-  SportsTitle(String label, int weight) : super(label: label, weight: weight);
+  SportsTitle(String label, int sortWeight) : super(label: label, sortWeight: sortWeight);
 }
 
 class Grandmaster extends SportsTitle {

@@ -1,30 +1,9 @@
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_qualification.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/sports_qualification_parser.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/adults/adult_ranks.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/adults/adult_ranks_regexp.dart';
 
-abstract class AdultRanksParser {
-  AdultRanksParser? _next;
-
-  AdultRanksParser setNext(AdultRanksParser nextParser) {
-    _next = nextParser;
-    return nextParser;
-  }
-
-  SportsQualification parse(String? raw) {
-    if (raw == null || raw.trim().isEmpty) {
-      return _next?.parse(raw) ?? UndefinedSportsQualification();
-    }
-
-    final result = concreteParse(raw.trim());
-    if (result != null) return result;
-
-    return _next?.parse(raw) ?? UndefinedSportsQualification();
-  }
-
-  SportsQualification? concreteParse(String raw);
-}
-
-class FirstAdultRankParser extends AdultRanksParser {
+class FirstAdultRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseAdultRank(String raw) {
     final match = FirstAdultRankRegexp.adultRank.firstMatch(raw);
     return match == null ? null : FirstAdultRank();
@@ -39,7 +18,7 @@ class FirstAdultRankParser extends AdultRanksParser {
   }
 }
 
-class SecondAdultRankParser extends AdultRanksParser {
+class SecondAdultRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseAdultRank(String raw) {
     final match = SecondAdultRankRegexp.adultRank.firstMatch(raw);
     return match == null ? null : SecondAdultRank();
@@ -54,7 +33,7 @@ class SecondAdultRankParser extends AdultRanksParser {
   }
 }
 
-class ThirdAdultRankParser extends AdultRanksParser {
+class ThirdAdultRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseAdultRank(String raw) {
     final match = ThirdAdultRankRegexp.adultRank.firstMatch(raw);
     return match == null ? null : ThirdAdultRank();

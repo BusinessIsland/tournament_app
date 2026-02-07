@@ -70,7 +70,7 @@ void main() {
       final given = "23-03-2004";
       final got = parseDateTimeDateOfBirth(given);
 
-      expect(got.stringify, "23/03/2004");
+      expect(got.toString(), "23/03/2004");
     });
 
     test(
@@ -110,7 +110,7 @@ void main() {
       final given = "2004.23.03";
       final got = parseDateTime(given);
 
-      expect(got.stringify, "не указано");
+      expect(got.toString(), "не указано");
     });
   });
 }

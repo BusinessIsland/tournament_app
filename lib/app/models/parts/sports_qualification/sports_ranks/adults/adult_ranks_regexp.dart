@@ -14,7 +14,7 @@ class SecondAdultRankRegexp {
 
 class ThirdAdultRankRegexp {
   static final RegExp adultRank = RegExp(
-    r"^2\s+(?<label>спорт\.р\.|ср|сп\.р\.)$",
+    r"^3\s+(?<label>спорт\.р\.|ср|сп\.р\.)$",
     caseSensitive: false,
   );
 }

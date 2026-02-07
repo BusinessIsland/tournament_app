@@ -3,7 +3,9 @@ sealed class Belt {
 
   Belt({required this.label});
 
-  String get stringify;
+  @override
+  String toString();
+
   int get powerLevel;
 }
 
@@ -13,14 +15,10 @@ class KuBelt extends Belt {
   KuBelt({required this.rank}) : super(label: "кю");
 
   @override
-  String get stringify {
-    return "$rank $label";
-  }
+  String toString() => "$rank $label";
 
   @override
-  int get powerLevel {
-    return -rank;
-  }
+  int get powerLevel => -rank;
 }
 
 class DanBelt extends Belt {
@@ -29,26 +27,18 @@ class DanBelt extends Belt {
   DanBelt({required this.rank}) : super(label: "дан");
 
   @override
-  String get stringify {
-    return "$rank $label";
-  }
+  String toString() => "$rank $label";
 
   @override
-  int get powerLevel {
-    return rank;
-  }
+  int get powerLevel => rank;
 }
 
 class UndefinedBelt extends Belt {
   UndefinedBelt() : super(label: "не заполнено");
 
   @override
-  String get stringify {
-    return label;
-  }
+  String toString() => label;
 
   @override
-  int get powerLevel {
-    return -1000;
-  }
+  int get powerLevel => -1000;
 }

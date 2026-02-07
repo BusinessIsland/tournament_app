@@ -3,7 +3,8 @@ sealed class Weight {
 
   Weight({required this.value});
 
-  String get stringify;
+  @override
+  String toString();
 
   @override
   bool operator ==(Object other) =>
@@ -20,12 +21,12 @@ class SimpleWeight extends Weight {
   SimpleWeight(double value) : super(value: value);
 
   @override
-  String get stringify => value.toString();
+  String toString() => value.toString();
 }
 
 class UndefinedWeight extends Weight {
   UndefinedWeight() : super(value: 0);
 
   @override
-  String get stringify => "не указано";
+  String toString() => "не указано";
 }

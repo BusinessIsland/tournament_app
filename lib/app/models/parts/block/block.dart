@@ -3,10 +3,8 @@ sealed class Block {
 
   Block({required this.label});
 
-  String get stringify;
-
   @override
-  String toString() => label;
+  String toString();
 
   @override
   bool operator ==(Object other) =>
@@ -20,15 +18,15 @@ sealed class Block {
 }
 
 class SimpleBlock extends Block {
-  SimpleBlock(String value) : super(label: value);
+  SimpleBlock(String label) : super(label: label);
 
   @override
-  String get stringify => label;
+  String toString() => label;
 }
 
 class UndefinedBlock extends Block {
   UndefinedBlock() : super(label: "не указано");
 
   @override
-  String get stringify => label;
+  String toString() => label;
 }

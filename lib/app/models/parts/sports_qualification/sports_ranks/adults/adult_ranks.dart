@@ -2,21 +2,21 @@ import 'package:tournament_app/app/models/parts/sports_qualification/sports_rank
 
 class FirstAdultRank extends AdultRank {
   static final String adultLabel = "первый спортивный разряд";
-  static final int rank = 1;
+  static final int rank = 9;
 
   FirstAdultRank() : super(adultLabel, rank);
 }
 
 class SecondAdultRank extends AdultRank {
-  static final String youthLabel = "второй спортивный разряд";
-  static final int rank = 2;
+  static final String adultLabel = "второй спортивный разряд";
+  static final int rank = 8;
 
-  SecondAdultRank() : super(youthLabel, rank);
+  SecondAdultRank() : super(adultLabel, rank);
 }
 
 class ThirdAdultRank extends AdultRank {
-  static final String youthLabel = "третий спортивный разряд";
-  static final int rank = 3;
+  static final String adultLabel = "третий спортивный разряд";
+  static final int rank = 7;
 
-  ThirdAdultRank() : super(youthLabel, rank);
+  ThirdAdultRank() : super(adultLabel, rank);
 }

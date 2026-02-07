@@ -45,7 +45,7 @@ void main() {
       final given = "10 кю";
       final got = parseKuBelt(given);
 
-      expect(got.stringify, "10 кю");
+      expect(got.toString(), "10 кю");
     });
 
     test(
@@ -54,7 +54,7 @@ void main() {
         final given = "        10       кю         ";
         final got = parseKuBelt(given);
 
-        expect(got.stringify, "10 кю");
+        expect(got.toString(), "10 кю");
       },
     );
 
@@ -64,7 +64,7 @@ void main() {
         final given = "10 КЮ";
         final got = parseKuBelt(given);
 
-        expect(got.stringify, "10 кю");
+        expect(got.toString(), "10 кю");
       },
     );
 
@@ -74,7 +74,7 @@ void main() {
         final given = "        10       КЮ         ";
         final got = parseKuBelt(given);
 
-        expect(got.stringify, "10 кю");
+        expect(got.toString(), "10 кю");
       },
     );
   });
@@ -102,10 +102,10 @@ void main() {
     });
 
     test("parse_RegExpInput_StringifyReturnsEqualsInput", () {
-      final given = "10 дан";
+      final given = "2 дан";
       final got = parseDanBelt(given);
 
-      expect(got.stringify, "10 дан");
+      expect(got.toString(), "2 дан");
     });
 
     test(
@@ -114,7 +114,7 @@ void main() {
         final given = "        10       дан         ";
         final got = parseDanBelt(given);
 
-        expect(got.stringify, "10 дан");
+        expect(got.toString(), "10 дан");
       },
     );
 
@@ -124,7 +124,7 @@ void main() {
         final given = "10 ДАН";
         final got = parseDanBelt(given);
 
-        expect(got.stringify, "10 дан");
+        expect(got.toString(), "10 дан");
       },
     );
 
@@ -134,7 +134,7 @@ void main() {
         final given = "        10       ДАН         ";
         final got = parseDanBelt(given);
 
-        expect(got.stringify, "10 дан");
+        expect(got.toString(), "10 дан");
       },
     );
   });

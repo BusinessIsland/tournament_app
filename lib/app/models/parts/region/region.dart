@@ -3,7 +3,8 @@ sealed class Region {
 
   Region({required this.value});
 
-  String get stringified;
+  @override
+  String toString();
 
   @override
   bool operator ==(Object other) =>
@@ -20,12 +21,12 @@ class StandardRegion extends Region {
   StandardRegion(String value) : super(value: value);
 
   @override
-  String get stringified => value;
+  String toString() => value;
 }
 
 class UndefinedRegion extends Region {
   UndefinedRegion() : super(value: "не указано");
 
   @override
-  String get stringified => "не указано";
+  String toString() => "не указано";
 }

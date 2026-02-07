@@ -1,30 +1,9 @@
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_qualification.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/sports_qualification_parser.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_titles/sports_title.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_titles/sports_titles_regexp.dart';
 
-abstract class SportsTitleParser {
-  SportsTitleParser? _next;
-
-  SportsTitleParser setNext(SportsTitleParser nextParser) {
-    _next = nextParser;
-    return nextParser;
-  }
-
-  SportsQualification parse(String? raw) {
-    if (raw == null || raw.trim().isEmpty) {
-      return _next?.parse(raw) ?? UndefinedSportsQualification();
-    }
-
-    final result = concreteParse(raw.trim());
-    if (result != null) return result;
-
-    return _next?.parse(raw) ?? UndefinedSportsQualification();
-  }
-
-  SportsQualification? concreteParse(String raw);
-}
-
-class GrandmasterRankParser extends SportsTitleParser {
+class GrandmasterRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseGrandmasterRank(String raw) {
     final match = GrandmasterRankRegexp.grandmasterRank.firstMatch(raw);
     return match == null ? null : Grandmaster();
@@ -39,7 +18,7 @@ class GrandmasterRankParser extends SportsTitleParser {
   }
 }
 
-class MasterOfSportsRankParser extends SportsTitleParser {
+class MasterOfSportsRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseMasterOfSportsRank(String raw) {
     final match = MasterOfSportsRankRegexp.masterOfSportsRank.firstMatch(raw);
     return match == null ? null : MasterOfSports();
@@ -54,7 +33,7 @@ class MasterOfSportsRankParser extends SportsTitleParser {
   }
 }
 
-class MasterOfSportsInternationalRankParser extends SportsTitleParser {
+class MasterOfSportsInternationalRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseMasterOfSportsInternationalRank(String raw) {
     final match = MasterOfSportsInternationalRankRegexp
         .masterOfSportsInternationalRank

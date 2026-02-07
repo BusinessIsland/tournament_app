@@ -1,30 +1,9 @@
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_qualification.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/sports_qualification_parser.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/youth/youth_ranks.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/youth/youth_ranks_regexp.dart';
 
-abstract class YouthRanksParser {
-  YouthRanksParser? _next;
-
-  YouthRanksParser setNext(YouthRanksParser nextParser) {
-    _next = nextParser;
-    return nextParser;
-  }
-
-  SportsQualification parse(String? raw) {
-    if (raw == null || raw.trim().isEmpty) {
-      return _next?.parse(raw) ?? UndefinedSportsQualification();
-    }
-
-    final result = concreteParse(raw.trim());
-    if (result != null) return result;
-
-    return _next?.parse(raw) ?? UndefinedSportsQualification();
-  }
-
-  SportsQualification? concreteParse(String raw);
-}
-
-class FirstYouthRankParser extends YouthRanksParser {
+class FirstYouthRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseAdultRank(String raw) {
     final match = FirstYouthRankRegexp.youthRank.firstMatch(raw);
     return match == null ? null : FirstYouthRank();
@@ -39,7 +18,7 @@ class FirstYouthRankParser extends YouthRanksParser {
   }
 }
 
-class SecondYouthRankParser extends YouthRanksParser {
+class SecondYouthRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseAdultRank(String raw) {
     final match = SecondYouthRankRegexp.youthRank.firstMatch(raw);
     return match == null ? null : SecondYouthRank();
@@ -54,7 +33,7 @@ class SecondYouthRankParser extends YouthRanksParser {
   }
 }
 
-class ThirdYouthRankParser extends YouthRanksParser {
+class ThirdYouthRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseAdultRank(String raw) {
     final match = ThirdYouthRankRegexp.youthRank.firstMatch(raw);
     return match == null ? null : ThirdYouthRank();

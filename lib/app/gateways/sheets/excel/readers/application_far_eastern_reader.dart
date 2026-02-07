@@ -158,7 +158,7 @@ class ApplicationFarEasternReader extends ExcelDataReader {
       trainers: dto.trainers,
       block: dto.block,
     );
-    _mapDtoToRow(mainSheet, appSheet, toSave.rowId.label, toSave);
+    _mapDtoToRow(mainSheet, appSheet, toSave.rowId.description, toSave);
 
     return toSave;
   }
@@ -297,24 +297,24 @@ class ApplicationFarEasternReader extends ExcelDataReader {
     ParticipantSheetDto dto,
   ) {
     ExcelRow(mainSheet, rowIndex)
-      ..add(mainColRowId, dto.rowId.label, ExcelCellType.int)
+      ..add(mainColRowId, dto.rowId.description, ExcelCellType.int)
       ..add(mainColGender, dto.gender.shortLabel, ExcelCellType.text)
       ..add(mainColFullname, dto.name.getFullName(), ExcelCellType.text)
-      ..add(mainColDateOfBirth, dto.dateOfBirth.label, ExcelCellType.date)
+      ..add(mainColDateOfBirth, dto.dateOfBirth.description, ExcelCellType.date)
       ..add(mainColBelt, dto.belt.stringified, ExcelCellType.text)
       ..add(mainColSportsTitle, dto.sportsTitle.sheetAlias, ExcelCellType.text)
       ..add(mainColWeight, dto.weight.value, ExcelCellType.double)
-      ..add(mainColRegion, dto.region.label, ExcelCellType.text)
+      ..add(mainColRegion, dto.region.description, ExcelCellType.text)
       ..add(mainColTrainers, dto.trainers.stringify(), ExcelCellType.text)
       ..add(mainColBlock, dto.block.label, ExcelCellType.text)
       ..add(
         mainColAge,
-        _buildAgeFormula(dto.rowId.label),
+        _buildAgeFormula(dto.rowId.description),
         ExcelCellType.formula,
       );
 
     ExcelRow(appSheet, rowIndex)
-      ..add(appColRowId, dto.rowId.label, ExcelCellType.int)
+      ..add(appColRowId, dto.rowId.description, ExcelCellType.int)
       ..add(appColId, dto.id.value, ExcelCellType.text);
   }
 

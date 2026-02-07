@@ -38,6 +38,7 @@ class DateTimeDateOfBirthParser extends DateOfBirthParser {
       DateFormat("dd.MM.yyyy"),
       DateFormat("yyyy/MM/dd"),
       DateFormat("dd-MM-yyyy"),
+      DateFormat("dd/MM/yyyy"),
     ];
 
     DateTime? parsed;
