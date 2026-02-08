@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:tournament_app/app/dto/participant_create_dto.dart';
-import 'package:tournament_app/app/dto/participant_get_all_filter.dart';
-import 'package:tournament_app/app/dto/participant_update_dto.dart';
+import 'package:tournament_app/app/dto/participant/participant_create_dto.dart';
+import 'package:tournament_app/app/dto/participant/participant_get_all_filter.dart';
+import 'package:tournament_app/app/dto/participant/participant_update_dto.dart';
 import 'package:tournament_app/app/gateways/repositories/participant/i_participant_repository.dart';
 import 'package:tournament_app/app/gateways/repositories/persistence/i_file_persistable.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/xlsx_participant_parser.dart';
+import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/participant/xlsx_participant_parser.dart';
 import 'package:tournament_app/app/models/participant/parser/participant_parser.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 import 'package:tournament_app/app/models/participant/participant_list.dart';
@@ -22,7 +22,21 @@ class XlsxParticipantRepository
 
   @override
   ParticipantList getAll(ParticipantGetAllFilter filter) {
-    return _list;
+    final filtered = _list.where((p) {
+      final isRegionPassed =
+          filter.region == null || p.region.value == filter.region;
+      final isTrainerPassed =
+          filter.trainerName == null ||
+          p.trainers.toString().contains(filter.trainerName!);
+      return isRegionPassed && isTrainerPassed;
+    });
+
+    final finalList = ParticipantListBasicImpl();
+    for (final participant in filtered) {
+      finalList.add(participant);
+    }
+
+    return finalList;
   }
 
   @override
@@ -65,7 +79,8 @@ class XlsxParticipantRepository
     final found = _list.findById(id);
     if (found == null) {
       _list.add(participant);
-    } {
+    }
+    {
       _list.replace(participant, id);
     }
 

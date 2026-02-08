@@ -38,7 +38,7 @@ void main() {
       id: id,
       name: nameParser.parse(name),
       belt: beltParser.parse(belt),
-      qualification: sportsQualificationParser.parse(sportsQualification),
+      sportsQualification: sportsQualificationParser.parse(sportsQualification),
       region: regionParser.parse(region),
     );
   }
@@ -96,7 +96,7 @@ void main() {
           );
 
           competitionJudgeList.add(given);
-          final found = competitionJudgeList.findById(id);
+          final found = competitionJudgeList.findById(id.toString());
 
           expect(found, isNotNull);
         },
@@ -114,7 +114,7 @@ void main() {
           );
 
           competitionJudgeList.add(given);
-          final found = competitionJudgeList.findById(Id());
+          final found = competitionJudgeList.findById(Id().toString());
 
           expect(found, isNull);
         },
@@ -135,7 +135,7 @@ void main() {
           );
 
           competitionJudgeList.add(given);
-          competitionJudgeList.delete(id);
+          competitionJudgeList.delete(id.toString());
 
           expect(competitionJudgeList.size, 0);
         },
@@ -157,7 +157,7 @@ void main() {
           competitionJudgeList.add(given);
           competitionJudgeList.add(given);
           competitionJudgeList.add(given);
-          competitionJudgeList.delete(id);
+          competitionJudgeList.delete(id.toString());
 
           expect(competitionJudgeList.size, 0);
         },
@@ -166,7 +166,7 @@ void main() {
       test("delete should return no error if list doesn't contain any judge with provided id", () {
         final id = Id();
 
-        competitionJudgeList.delete(id);
+        competitionJudgeList.delete(id.toString());
 
         expect(competitionJudgeList.size, 0);
       });

@@ -4,6 +4,8 @@ import 'package:excel/excel.dart';
 import 'package:tournament_app/app/gateways/sheets/parsers/i_file_parser.dart';
 
 abstract class IXlsxParser extends IFileParser {
+  const IXlsxParser();
+
   @override
   dynamic parse(File source) {
     final excel = Excel.decodeBytes(source.readAsBytesSync());

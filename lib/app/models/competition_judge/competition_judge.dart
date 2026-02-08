@@ -8,14 +8,14 @@ class CompetitionJudge {
   final Id id;
   final PersonName name;
   final Belt belt;
-  final SportsQualification qualification;
+  final SportsQualification sportsQualification;
   final Region region;
 
   const CompetitionJudge({
     required this.id,
     required this.name,
     required this.belt,
-    required this.qualification,
+    required this.sportsQualification,
     required this.region,
   });
 }

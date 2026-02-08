@@ -13,7 +13,9 @@ abstract class SportsQualificationParser {
       return _next?.parse(raw) ?? UndefinedSportsQualification();
     }
 
-    final result = concreteParse(raw.trim());
+    final prepared = raw.trim().toLowerCase().replaceAll(RegExp(r"\s+"), " ");
+    
+    final result = concreteParse(prepared);
     if (result != null) return result;
 
     return _next?.parse(raw) ?? UndefinedSportsQualification();

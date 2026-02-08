@@ -1,6 +1,7 @@
 import 'package:excel/excel.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/xlsx_participant_parser.dart';
+import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/participant/participant_sheet_karate_config_fabric.dart';
+import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/participant/xlsx_participant_parser.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 import 'package:tournament_app/app/models/participant/participant_list.dart';
 import 'package:tournament_app/app/models/parts/belt/belt.dart';
@@ -22,9 +23,10 @@ void main() {
     late XlsxParticipantParser parser;
 
     setUp(() {
-      parser = XlsxParticipantParser(sheetName: 'Первенство ДФО');
+      final config = ParticipantSheetKarateConfigFabric.createPrimacyChampionshipConfig();
+      parser = XlsxParticipantParser(config: config);
       excel = Excel.createExcel();
-      sheet = excel["Первенство ДФО"];
+      sheet = excel["Первенство"];
 
       sheet.insertRowIterables([
         TextCellValue("№ п/п"),
@@ -65,7 +67,8 @@ void main() {
     late XlsxParticipantParser parser;
 
     setUp(() {
-      parser = XlsxParticipantParser(sheetName: 'Первенство ДФО');
+      final config = ParticipantSheetKarateConfigFabric.createPrimacyChampionshipConfig();
+      parser = XlsxParticipantParser(config: config);
 
       list = ParticipantListBasicImpl();
 
@@ -103,7 +106,7 @@ void main() {
 
     test("save data", () {
       final newExcel = parser.concreteSave(list);
-      final newSheet = newExcel["Первенство ДФО"];
+      final newSheet = newExcel["Первенство"];
 
       final savedId = newSheet.cell(
         CellIndex.indexByColumnRow(columnIndex: 0, rowIndex: 1),

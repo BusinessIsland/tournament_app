@@ -1,26 +1,33 @@
 import 'package:excel/excel.dart';
+import 'package:tournament_app/app/gateways/sheets/configs/participant/karate/fields/participant_field.dart';
 import 'package:tournament_app/app/gateways/sheets/parsers/cell_styler/i_xlsx_cell_styler.dart';
 import 'package:tournament_app/app/gateways/sheets/writers/i_xlsx_row_writer.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 
 class XlsxParticipantRowWriter implements IXlsxRowWriter {
-  final Map<String, int> columns;
+  final Map<ParticipantField, String> headers;
+  final Map<ParticipantField, int> columns;
   final IXlsxCellStyler styler;
 
-  XlsxParticipantRowWriter({required this.columns, required this.styler});
+  const XlsxParticipantRowWriter({
+    required this.headers,
+    required this.columns,
+    required this.styler,
+  });
 
   @override
   void writeHeaders(Sheet sheet) {
-    int columnIndex = 0;
+    for (final entry in headers.entries) {
+      final key = entry.key;
+      final value = entry.value;
 
-    for (final header in columns.keys.toList()) {
       final cellIndex = CellIndex.indexByColumnRow(
-        columnIndex: columnIndex,
+        columnIndex: columns[key]!,
         rowIndex: 0,
       );
       final cell = sheet.cell(cellIndex);
 
-      cell.value = TextCellValue(header);
+      cell.value = TextCellValue(value);
       cell.cellStyle = styler.createHeaderCellStyle();
     }
   }
@@ -29,7 +36,10 @@ class XlsxParticipantRowWriter implements IXlsxRowWriter {
   void writeData(Sheet sheet, value, int rowIndex) {
     Participant participant = value;
 
-    void createCell(dynamic value, int columnIndex) {
+    void createCell(dynamic value, ParticipantField field) {
+      final columnIndex = columns[field];
+      if (columnIndex == null) return;
+
       final cellIndex = CellIndex.indexByColumnRow(
         columnIndex: columnIndex,
         rowIndex: rowIndex,
@@ -40,16 +50,16 @@ class XlsxParticipantRowWriter implements IXlsxRowWriter {
       cell.cellStyle = styler.createRowCellStyle(bold: false);
     }
 
-    createCell(rowIndex, 0);
-    createCell(participant.gender.label, 1);
-    createCell(participant.name.formatted, 2);
-    createCell(participant.dateOfBirth, 3);
-    createCell(participant.belt.label, 4);
-    createCell(participant.sportsQualification.label, 5);
-    createCell(participant.weight, 6);
-    createCell(participant.region.value, 7);
-    createCell(participant.trainers, 8);
-    createCell(participant.block.label, 9);
-    createCell(participant.dateOfBirth.age, 10);
+    createCell(rowIndex, ParticipantField.number);
+    createCell(participant.gender.label, ParticipantField.gender);
+    createCell(participant.name.formatted, ParticipantField.name);
+    createCell(participant.dateOfBirth, ParticipantField.dateOfBirth);
+    createCell(participant.belt.toString(), ParticipantField.belt);
+    createCell(participant.sportsQualification.label, ParticipantField.sportsQualification);
+    createCell(participant.weight, ParticipantField.weight);
+    createCell(participant.region.value, ParticipantField.region);
+    createCell(participant.trainers, ParticipantField.trainers);
+    createCell(participant.block.label, ParticipantField.block);
+    createCell(participant.dateOfBirth.age, ParticipantField.ageFull);
   }
 }

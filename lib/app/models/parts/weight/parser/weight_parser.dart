@@ -13,7 +13,9 @@ abstract class WeightParser {
       return _next?.parse(raw) ?? UndefinedWeight();
     }
 
-    final result = concreteParse(raw.trim());
+    final prepared = raw.trim().toLowerCase().replaceAll(RegExp(r"\s+"), " ");
+
+    final result = concreteParse(prepared);
     if (result != null) return result;
 
     return _next?.parse(raw) ?? UndefinedWeight();

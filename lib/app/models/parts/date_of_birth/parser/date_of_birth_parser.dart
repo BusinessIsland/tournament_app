@@ -14,7 +14,9 @@ abstract class DateOfBirthParser {
       return _next?.parse(raw) ?? UndefinedDateOfBirth();
     }
 
-    final result = concreteParse(raw.trim());
+    final prepared = raw.trim().replaceAll(RegExp(r"\s+"), " ");
+
+    final result = concreteParse(prepared);
     if (result != null) return result;
 
     return _next?.parse(raw) ?? UndefinedDateOfBirth();

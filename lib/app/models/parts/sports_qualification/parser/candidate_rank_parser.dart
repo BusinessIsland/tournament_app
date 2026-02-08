@@ -6,6 +6,7 @@ import 'package:tournament_app/app/models/parts/sports_qualification/sports_rank
 class CandidateRankParser extends SportsQualificationParser {
   SportsQualification? _tryParseCandidateMasterRank(String raw) {
     final match = CandidateRankRegexp.candidateMasterRank.firstMatch(raw);
+    print(raw);
     return match == null ? null : CandidateMaster();
   }
 

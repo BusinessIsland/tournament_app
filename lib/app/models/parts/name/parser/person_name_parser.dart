@@ -14,7 +14,7 @@ abstract class PersonNameParser {
       return _next?.parse(raw) ?? UndefinedName();
     }
 
-    final prepared = raw.trim().replaceAll(RegExp(r"\s+"), " ").toLowerCase();
+    final prepared = raw.trim().toLowerCase().replaceAll(RegExp(r"\s+"), " ");
 
     final result = concreteParse(prepared);
     if (result != null) return result;

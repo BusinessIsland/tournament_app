@@ -14,7 +14,9 @@ abstract class GenderParser {
       return _next?.parse(raw) ?? UndefinedGender();
     }
 
-    final result = concreteParse(raw.trim());
+    final prepared = raw.trim().toLowerCase().replaceAll(RegExp(r"\s+"), " ");
+
+    final result = concreteParse(prepared);
     if (result != null) return result;
 
     return _next?.parse(raw) ?? UndefinedGender();

@@ -10,7 +10,7 @@ import 'package:tournament_app/app/models/parts/weight/parser/builders/weight_pa
 import 'package:tournament_app/app/models/trainer/parser/factory/trainer_parser_factory.dart';
 
 class ParticipantParserFactory {
-  ParticipantParser createDefaultParser() {
+  static ParticipantParser createDefaultParser() {
     return ParticipantParser(
       genderParser: GenderParserBuilder()
           .addMaleParser()
@@ -33,6 +33,7 @@ class ParticipantParserFactory {
           .addGrandmasterTitleParser()
           .addMasterOfSportsTitleParser()
           .addMasterOfSportsInternationalTitleParser()
+          .addCandidateRankParser()
           .build(),
       weightParser: WeightParserBuilder().addStandardParser().build(),
       regionParser: RegionParserBuilder().addStandardParser().build(),

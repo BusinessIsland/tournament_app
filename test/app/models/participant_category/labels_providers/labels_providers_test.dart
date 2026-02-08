@@ -1,15 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/participant/participant_category/labels_providers/kiokusinkay_label_provider/kiokusinkay_label_provider.dart';
-import 'package:tournament_app/app/models/participant/participant_category/labels_providers/kiokusinkay_label_provider/kiokusinkay_label_resolve_female_strategy.dart';
-import 'package:tournament_app/app/models/participant/participant_category/labels_providers/kiokusinkay_label_provider/kiokusinkay_label_resolve_male_strategy.dart';
+import 'package:tournament_app/app/models/participant/participant_category/labels_providers/kyokushin_label_provider/kyokushin_label_provider.dart';
+import 'package:tournament_app/app/models/participant/participant_category/labels_providers/kyokushin_label_provider/kyokushin_label_resolve_female_strategy.dart';
+import 'package:tournament_app/app/models/participant/participant_category/labels_providers/kyokushin_label_provider/kyokushin_label_resolve_male_strategy.dart';
 import 'package:tournament_app/app/models/participant/participant_category/labels_providers/participant_label_provider.dart';
 
 void main() {
   group("ParticipantLabelProviders", () {
     ParticipantLabelProvider createProvider() {
-      return KiokusinkayLabelProvider(
-        maleStrategy: KiokusinkayLabelResolveMaleStrategy(),
-        femaleStrategy: KiokusinkayLabelResolveFemaleStrategy()
+      return KyokushinLabelProvider(
+        maleStrategy: KyokushinLabelResolveMaleStrategy(),
+        femaleStrategy: KyokushinLabelResolveFemaleStrategy()
       );
     }
 
