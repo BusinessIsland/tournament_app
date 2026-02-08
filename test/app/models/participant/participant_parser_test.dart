@@ -1,17 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
-import 'package:tournament_app/app/models/participant/participant_parser.dart';
-import 'package:tournament_app/app/models/parts/belt/belt_parser.dart';
-import 'package:tournament_app/app/models/parts/block/block_parser.dart';
-import 'package:tournament_app/app/models/parts/date_of_birth/date_of_birth_parser.dart';
-import 'package:tournament_app/app/models/parts/gender/gender_parser.dart';
-import 'package:tournament_app/app/models/parts/name/person_name_parser.dart';
-import 'package:tournament_app/app/models/parts/region/region_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/adults/adult_ranks_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/candidate/candidate_rank_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/youth/youth_ranks_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/sports_titles/sports_title_parser.dart';
-import 'package:tournament_app/app/models/parts/weight/weight_parser.dart';
+import 'package:tournament_app/app/models/participant/parser/participant_parser.dart';
+import 'package:tournament_app/app/models/parts/belt/parser/belt_parser.dart';
+import 'package:tournament_app/app/models/parts/block/parser/block_parser.dart';
+import 'package:tournament_app/app/models/parts/date_of_birth/parser/date_of_birth_parser.dart';
+import 'package:tournament_app/app/models/parts/gender/parser/gender_parser.dart';
+import 'package:tournament_app/app/models/parts/name/parser/person_name_parser.dart';
+import 'package:tournament_app/app/models/parts/region/parser/region_parser.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/parser/adult_ranks_parser.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/parser/candidate_rank_parser.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/parser/youth_ranks_parser.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/parser/sports_title_parser.dart';
+import 'package:tournament_app/app/models/parts/weight/parser/weight_parser.dart';
 import 'package:tournament_app/app/models/trainer/parser/trainer_parser.dart';
 
 void main() {
@@ -41,15 +41,15 @@ void main() {
         .setNext(FirstYouthRankParser())
         .setNext(SecondYouthRankParser())
         .setNext(ThirdYouthRankParser())
-        .setNext(CandidateRankParserImpl())
-        .setNext(MasterOfSportsRankParser())
-        .setNext(GrandmasterRankParser())
-        .setNext(MasterOfSportsInternationalRankParser());
+        .setNext(CandidateRankParser())
+        .setNext(MasterOfSportsTitleParser())
+        .setNext(GrandmasterTitleParser())
+        .setNext(MasterOfSportsInternationalTitleParser());
 
-    final weightParser = SimpleWeightParser();
+    final weightParser = StandardWeightParser();
     final regionParser = StandardRegionParser();
     final trainerParser = TrainerParser(NameWithInitialsParser());
-    final blockParser = SimpleBlockParser();
+    final blockParser = StandardBlockParser();
 
     final parser = ParticipantParser(
       genderParser: genderParser,

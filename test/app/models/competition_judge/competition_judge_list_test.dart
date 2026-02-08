@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge_list.dart';
-import 'package:tournament_app/app/models/parts/belt/belt_parser.dart';
+import 'package:tournament_app/app/models/parts/belt/parser/belt_parser.dart';
 import 'package:tournament_app/app/models/parts/id/id.dart';
-import 'package:tournament_app/app/models/parts/name/person_name_parser.dart';
-import 'package:tournament_app/app/models/parts/region/region_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/judge_ranks/judge_ranks_parser.dart';
+import 'package:tournament_app/app/models/parts/name/parser/person_name_parser.dart';
+import 'package:tournament_app/app/models/parts/region/parser/region_parser.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/parser/judge_ranks_parser.dart';
 
 void main() {
   late CompetitionJudgeList competitionJudgeList;
@@ -25,12 +25,12 @@ void main() {
     final beltParser = KuBeltParser();
     beltParser.setNext(DanBeltParser());
 
-    final sportsQualificationParser = AllSportsJudgeRankParser();
+    final sportsQualificationParser = AllSportsCategoryJudgeParser();
     sportsQualificationParser
-        .setNext(FirstCategoryJudgeRankParser())
-        .setNext(SecondCategoryJudgeRankParser())
-        .setNext(ThirdCategoryJudgeRankParser())
-        .setNext(YouthCategoryJudgeRankParser());
+        .setNext(FirstCategoryJudgeParser())
+        .setNext(SecondCategoryJudgeParser())
+        .setNext(ThirdCategoryJudgeParser())
+        .setNext(YouthCategoryJudgeParser());
 
     final regionParser = StandardRegionParser();
 

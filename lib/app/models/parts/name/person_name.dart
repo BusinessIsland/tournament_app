@@ -1,3 +1,5 @@
+import 'package:tournament_app/app/utils/str_capitalizer.dart';
+
 sealed class PersonName {
   final String lastName;
 
@@ -19,7 +21,15 @@ class FullName extends PersonName {
   }) : super(lastName);
 
   @override
-  String get formatted => _sanitize("$lastName $firstName $middleName");
+  String get formatted {
+    final capitalizedFirstName = StrCapitalizer.capitalize(lastName);
+    final capitalizedLastName = StrCapitalizer.capitalize(firstName);
+    final capitalizedMiddleName = StrCapitalizer.capitalize(middleName);
+
+    return _sanitize(
+      "$capitalizedFirstName $capitalizedLastName $capitalizedMiddleName",
+    );
+  }
 }
 
 class NameWithInitials extends PersonName {
@@ -34,9 +44,26 @@ class NameWithInitials extends PersonName {
 
   @override
   String get formatted {
-    String f = firstNameInitial.isNotEmpty ? "$firstNameInitial." : "";
-    String m = middleNameInitial.isNotEmpty ? "$middleNameInitial." : "";
-    return _sanitize("$lastName $f$m");
+    String firstNameInitialWithDot = firstNameInitial.isNotEmpty
+        ? "$firstNameInitial."
+        : "";
+    String middleNameInitialWithDot = middleNameInitial.isNotEmpty
+        ? "$middleNameInitial."
+        : "";
+
+    final capitalizedLastName = StrCapitalizer.capitalize(lastName);
+
+    final capitalizedFormattedFirstNameInitial = StrCapitalizer.capitalize(
+      firstNameInitialWithDot,
+    );
+
+    final capitalizedFormattedMiddleNameInitial = StrCapitalizer.capitalize(
+      middleNameInitialWithDot,
+    );
+
+    return _sanitize(
+      "$capitalizedLastName ${capitalizedFormattedFirstNameInitial}${capitalizedFormattedMiddleNameInitial}",
+    );
   }
 }
 
@@ -44,7 +71,10 @@ class ShortName extends PersonName {
   ShortName({required String lastName}) : super(lastName);
 
   @override
-  String get formatted => _sanitize(lastName);
+  String get formatted {
+    final capitalizedLastName = StrCapitalizer.capitalize(lastName);
+    return _sanitize(capitalizedLastName);
+  }
 }
 
 class UndefinedName extends PersonName {

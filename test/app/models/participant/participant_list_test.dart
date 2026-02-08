@@ -51,23 +51,41 @@ void main() {
     );
   }
 
+  Participant createParticipantForReplace(Id id) {
+    final trainersList = TrainersListBasicImpl();
+    trainersList.add(
+      Trainer(
+        id: Id(),
+        name: NameWithInitials(
+          lastName: "Мисяченко",
+          firstNameInitial: "Я",
+          middleNameInitial: "М",
+        ),
+      ),
+    );
+
+    return Participant(
+      id: id,
+      gender: MaleGender(),
+      name: FullName(
+        lastName: "Пупкин",
+        firstName: "Иван",
+        middleName: "Иванович",
+      ),
+      dateOfBirth: DateTimeDateOfBirth(DateTime.now()),
+      belt: DanBelt(rank: 2),
+      sportsQualification: MasterOfSportsInternational(),
+      weight: SimpleWeight(55),
+      region: StandardRegion("Хабаровский край"),
+      trainers: trainersList,
+      block: SimpleBlock("А"),
+    );
+  }
+
   group("size", () {
     test("created instance of list should have size 0", () {
       expect(participantList.size, 0);
     });
-  });
-
-  group("add", () {
-    test(
-      "add should add Participant to list, size should be increased by 1",
-      () {
-        final given = createParticipant(Id());
-
-        participantList.add(given);
-
-        expect(participantList.size, 1);
-      },
-    );
   });
 
   group("findById", () {
@@ -78,7 +96,7 @@ void main() {
         final given = createParticipant(id);
 
         participantList.add(given);
-        final found = participantList.findById(id);
+        final found = participantList.findById(id.toString());
 
         expect(found, isNotNull);
       },
@@ -90,11 +108,41 @@ void main() {
         final given = createParticipant(Id());
 
         participantList.add(given);
-        final found = participantList.findById(Id());
+        final found = participantList.findById(Id().toString());
 
         expect(found, isNull);
       },
     );
+  });
+
+  group("add", () {
+    test(
+      "add should add Participant to list, size should be increased by 1",
+          () {
+        final given = createParticipant(Id());
+
+        participantList.add(given);
+
+        expect(participantList.size, 1);
+      },
+    );
+  });
+
+  group("replace", () {
+    test("replace should change row in list", () {
+      final id = Id();
+      final replacedId = Id();
+      final given = createParticipant(id);
+      final forReplace = createParticipantForReplace(replacedId);
+
+      participantList.add(given);
+      expect(participantList.findById(id.toString())!.name.formatted, "Журавлев Данил Владимирович");
+
+      participantList.replace(forReplace, id.toString());
+      expect(participantList.findById(replacedId.toString())!.name.formatted, "Пупкин Иван Иванович");
+
+      expect(participantList.size, 1);
+    });
   });
 
   group("delete", () {
@@ -105,7 +153,7 @@ void main() {
         final given = createParticipant(id);
 
         participantList.add(given);
-        participantList.delete(id);
+        participantList.delete(id.toString());
 
         expect(participantList.size, 0);
       },
@@ -117,7 +165,7 @@ void main() {
         final given = createParticipant(Id());
 
         participantList.add(given);
-        participantList.delete(Id());
+        participantList.delete(Id().toString());
 
         expect(participantList.size, 1);
       },
@@ -133,7 +181,7 @@ void main() {
         participantList.add(given);
         participantList.add(given);
         participantList.add(given);
-        participantList.delete(id);
+        participantList.delete(id.toString());
 
         expect(participantList.size, 0);
       },

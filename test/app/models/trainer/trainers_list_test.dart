@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/models/parts/id/id.dart';
 import 'package:tournament_app/app/models/parts/name/person_name.dart';
-import 'package:tournament_app/app/models/parts/name/person_name_parser.dart';
+import 'package:tournament_app/app/models/parts/name/parser/person_name_parser.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
 import 'package:tournament_app/app/models/trainer/trainers_list.dart';
 

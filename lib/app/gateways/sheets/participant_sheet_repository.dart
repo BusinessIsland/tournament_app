@@ -4,20 +4,20 @@ import 'package:excel/excel.dart';
 import 'package:tournament_app/app/dto/participant_create_dto.dart';
 import 'package:tournament_app/app/dto/participant_get_all_filter.dart';
 import 'package:tournament_app/app/dto/participant_update_dto.dart';
-import 'package:tournament_app/app/gateways/repositories/participant/participant_repository.dart';
+import 'package:tournament_app/app/gateways/repositories/participant/i_participant_repository.dart';
 import 'package:tournament_app/app/gateways/sheets/dto/participant_sheet_dto.dart';
 import 'package:tournament_app/app/gateways/sheets/participant_sheet_parser.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 
-class ParticipantSheetRepository extends ParticipantRepository {
+class ParticipantSheetRepository extends IParticipantRepository {
   String pathToFile;
   ParticipantSheetParser parser;
 
   ParticipantSheetRepository(this.pathToFile, this.parser);
 
-  Excel _getExcel() {
-    final bytes = File(pathToFile).readAsBytesSync();
-    return Excel.decodeBytes(bytes);
+  Future<Excel> _getExcel() async {
+    final bytes = File(pathToFile).readAsBytes();
+    return Excel.decodeBytes(await bytes);
   }
 
   @override

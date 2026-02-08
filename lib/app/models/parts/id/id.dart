@@ -6,9 +6,7 @@ class Id {
   Id() : value = const Uuid().v4();
 
   @override
-  String toString() {
-    return value;
-  }
+  String toString() => value;
 
   @override
   bool operator ==(Object other) =>

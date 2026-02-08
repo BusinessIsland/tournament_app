@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 
 sealed class DateOfBirth {
   DateTime? get value;
+
   int get age;
 
   @override
@@ -37,7 +38,7 @@ class DateTimeDateOfBirth extends DateOfBirth {
   }
 
   @override
-  String toString() =>DateFormat("dd/MM/yyyy").format(value);
+  String toString() => DateFormat("dd/MM/yyyy").format(value);
 }
 
 class UndefinedDateOfBirth extends DateOfBirth {
