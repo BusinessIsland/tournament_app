@@ -51,7 +51,7 @@ class XlsxParticipantRowWriter implements IXlsxRowWriter {
     }
 
     createCell(rowIndex, ParticipantField.number);
-    createCell(participant.gender.label, ParticipantField.gender);
+    createCell(participant.gender.shortLabel, ParticipantField.gender);
     createCell(participant.name.formatted, ParticipantField.name);
     createCell(participant.dateOfBirth, ParticipantField.dateOfBirth);
     createCell(participant.belt.toString(), ParticipantField.belt);

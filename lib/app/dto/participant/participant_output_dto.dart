@@ -29,7 +29,7 @@ class ParticipantOutputDto {
 
   ParticipantOutputDto.fromModel(Participant participant)
     : id = participant.id.toString(),
-      gender = participant.gender.label,
+      gender = participant.gender.shortLabel,
       name = participant.name.formatted,
       dateOfBirth = participant.dateOfBirth.toString(),
       belt = participant.belt.toString(),

@@ -1,4 +1,3 @@
-
 import 'package:tournament_app/app/models/participant/participant_category/labels_providers/participant_label_resolve_strategy.dart';
 
 abstract class ParticipantLabelProvider {

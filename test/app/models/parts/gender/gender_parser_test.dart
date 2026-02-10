@@ -38,7 +38,7 @@ void main() {
       final given = "м";
       final got = maleParser.parse(given);
 
-      expect(got.label, "м");
+      expect(got.shortLabel, "м");
     });
   });
 
@@ -61,7 +61,7 @@ void main() {
       final given = "ж";
       final got = femaleParser.parse(given);
 
-      expect(got.label, "ж");
+      expect(got.shortLabel, "ж");
     });
   });
 

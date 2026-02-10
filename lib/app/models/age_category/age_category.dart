@@ -52,3 +52,13 @@ class AbsoluteAgeCategory extends AgeCategory {
   @override
   bool matches(int age) => true;
 }
+
+class UndefinedAgeCategory extends AgeCategory {
+  const UndefinedAgeCategory();
+
+  @override
+  String get label => "не распознана";
+
+  @override
+  bool matches(int age) => false;
+}

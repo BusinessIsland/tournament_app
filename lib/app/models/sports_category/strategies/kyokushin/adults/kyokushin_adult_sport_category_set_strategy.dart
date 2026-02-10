@@ -4,19 +4,19 @@ import 'package:tournament_app/app/models/sports_category/sports_category_set.da
 import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/kyokushin_sport_category_set_strategy.dart';
 import 'package:tournament_app/app/models/weight_category/weight_category.dart';
 
-class KyokushinJuniorSportCategorySetStrategy
+class KyokushinAdultSportCategorySetStrategy
     implements KyokushinSportCategorySetStrategy {
   SportsCategorySet _createMaleSet() {
-    final groupLabel = "юниоры 16-17 лет";
-    final ageCategory = RangeAgeCategory(minAge: 16, maxAge: 17);
+    final groupLabel = "18 лет и старше";
+    final ageCategory = AboveAgeCategory(minAge: 18);
 
     final weightCategories = <WeightCategory>[
-      BelowWeightCategory(maxWeight: 55),
-      BelowWeightCategory(maxWeight: 60),
-      BelowWeightCategory(maxWeight: 65),
       BelowWeightCategory(maxWeight: 70),
-      BelowWeightCategory(maxWeight: 75),
-      AboveWeightCategory(minWeight: 75),
+      BelowWeightCategory(maxWeight: 80),
+      BelowWeightCategory(maxWeight: 90),
+      AboveWeightCategory(minWeight: 80),
+      AboveWeightCategory(minWeight: 90),
+      AbsoluteWeightCategory()
     ];
 
     return SportsCategorySet(
@@ -28,21 +28,21 @@ class KyokushinJuniorSportCategorySetStrategy
   }
 
   SportsCategorySet _createFemaleSet() {
-    final groupLabel = "юниорки 16-17 лет";
-    final ageCategory = RangeAgeCategory(minAge: 16, maxAge: 17);
+    final groupLabel = "18 лет и старше";
+    final ageCategory = AboveAgeCategory(minAge: 18);
 
     final weightCategories = <WeightCategory>[
-      BelowWeightCategory(maxWeight: 50),
-      BelowWeightCategory(maxWeight: 55),
       BelowWeightCategory(maxWeight: 60),
+      BelowWeightCategory(maxWeight: 65),
       AboveWeightCategory(minWeight: 60),
+      AboveWeightCategory(minWeight: 65),
     ];
 
     return SportsCategorySet(
       groupLabel: groupLabel,
       ageCategory: ageCategory,
       weightCategories: weightCategories,
-      gender: FemaleGender(),
+      gender: FemaleGender()
     );
   }
 

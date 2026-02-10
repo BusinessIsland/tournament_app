@@ -100,7 +100,7 @@ void main() {
         block,
       );
 
-      expect(got.gender.label, "м");
+      expect(got.gender.shortLabel, "м");
       expect(got.name.formatted, "Славинский Максим Леонидович");
       expect(got.dateOfBirth.toString(), "05/10/2011");
       expect(got.belt.toString(), "4 кю");

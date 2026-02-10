@@ -1,40 +1,53 @@
-
-
-
-import 'package:tournament_app/app/models/age_category/age_category.dart';
 import 'package:tournament_app/app/models/sports_category/sports_category_set.dart';
-import 'package:tournament_app/app/models/weight_category/weight_category.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/adults/kyokushin_adult_sport_category_set_strategy.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/standard_custom_kyokushin_sports_category_builder.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/juniors/kyokushin_junior_sport_category_set_strategy.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/teenagers/kyokushin_teenagers_sport_category_set_strategy.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/youngsters/kyokushin_youngsters_sport_category_set_strategy.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/youths/kyokushin_youths_sport_category_set_strategy.dart';
 
 class KyokushinSportsCategorySetFabric {
+  static SportsCategorySet createYoungstersSet({required bool isMale}) {
+    return KyokushinYoungstersSportCategorySetStrategy().createSet(
+      isMale: isMale,
+    );
+  }
+
+  static SportsCategorySet createTeenagersSet({required bool isMale}) {
+    return KyokushinTeenagersSportCategorySetStrategy().createSet(
+      isMale: isMale,
+    );
+  }
+
+  static SportsCategorySet createYouthsSet({required bool isMale}) {
+    return KyokushinYouthsSportCategorySetStrategy().createSet(isMale: isMale);
+  }
+
   static SportsCategorySet createJuniorSet({required bool isMale}) {
-    final ageCategory = RangeAgeCategory(minAge: 16, maxAge: 17);
+    return KyokushinJuniorSportCategorySetStrategy().createSet(isMale: isMale);
+  }
 
-    if (isMale) {
-      final groupLabel = "юниоры 16-17 лет";
+  static SportsCategorySet createAdultSet({required bool isMale}) {
+    return KyokushinAdultSportCategorySetStrategy().createSet(isMale: isMale);
+  }
 
-      final weightCategories = <WeightCategory>[
-        BelowWeightCategory(maxWeight: 55),
-        BelowWeightCategory(maxWeight: 60),
-        BelowWeightCategory(maxWeight: 65),
-        BelowWeightCategory(maxWeight: 70),
-        BelowWeightCategory(maxWeight: 75),
-        AboveWeightCategory(minWeight: 75),
-      ];
+  static SportsCategorySet createStandardCustomSet({
+    required List<(double? minWeight, double? maxWeight)> weights,
+    required String groupLabel,
+    int? minAge,
+    int? maxAge,
+    required bool isMale,
+  }) {
+    final builder = StandardCustomKyokushinSportsCategoryBuilder();
 
-      return SportsCategorySet(groupLabel: groupLabel, ageCategory: ageCategory, weightCategories: weightCategories);
-    } else {
-      final groupLabel = "юниорки 16-17 лет";
-
-      final weightCategories = <WeightCategory>[
-        BelowWeightCategory(maxWeight: 55),
-        BelowWeightCategory(maxWeight: 60),
-        BelowWeightCategory(maxWeight: 65),
-        BelowWeightCategory(maxWeight: 70),
-        BelowWeightCategory(maxWeight: 75),
-        AboveWeightCategory(minWeight: 75),
-      ];
-
-      return SportsCategorySet(groupLabel: groupLabel, ageCategory: ageCategory, weightCategories: weightCategories);
+    for (final weightParams in weights) {
+      builder.addWeightCategory(minWeight: weightParams.$1, maxWeight: weightParams.$2);
     }
+
+    builder.setGroupLabel(groupLabel: groupLabel);
+    builder.setAgeCategory(minAge: minAge, maxAge: maxAge);
+    builder.setGender(isMale: isMale);
+
+    return builder.build();
   }
 }

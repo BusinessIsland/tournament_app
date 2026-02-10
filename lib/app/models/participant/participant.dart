@@ -38,30 +38,4 @@ class Participant {
   String toString() {
     return 'Participant{id: $id, gender: $gender, name: $name, dateOfBirth: $dateOfBirth, belt: $belt, sportsQualification: $sportsQualification, weight: $weight, region: $region, trainers: $trainers, block: $block}';
   }
-
-  // AgeCategory get ageCategory {
-  //   final age = dateOfBirth.age;
-  //   final category = AgeCategory.fromAge(age);
-  //
-  //   if (category == null) {
-  //     throw InvalidAge(
-  //       "возраст участника '$age' не подходит ни для одной категории соревнований",
-  //     );
-  //   }
-  //
-  //   return category;
-  // }
-  //
-  // WeightCategory? get weightCategory {
-  //   final category = WeightCategoryValidator.findWeightCategory(
-  //     age: ageCategory,
-  //     gender: gender,
-  //     weight: weight.value,
-  //   );
-  //
-  //   if (category != null) return category;
-  //   throw InvalidWeight("вес участника '${weight.value}' не подходит ни для одной весовой категории");
-  // }
-
-
 }

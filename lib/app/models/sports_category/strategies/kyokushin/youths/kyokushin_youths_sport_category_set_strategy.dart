@@ -4,19 +4,20 @@ import 'package:tournament_app/app/models/sports_category/sports_category_set.da
 import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/kyokushin_sport_category_set_strategy.dart';
 import 'package:tournament_app/app/models/weight_category/weight_category.dart';
 
-class KyokushinJuniorSportCategorySetStrategy
+class KyokushinYouthsSportCategorySetStrategy
     implements KyokushinSportCategorySetStrategy {
   SportsCategorySet _createMaleSet() {
-    final groupLabel = "юниоры 16-17 лет";
-    final ageCategory = RangeAgeCategory(minAge: 16, maxAge: 17);
+    final groupLabel = "юноши 14-15 лет";
+    final ageCategory = RangeAgeCategory(minAge: 14, maxAge: 15);
 
     final weightCategories = <WeightCategory>[
+      BelowWeightCategory(maxWeight: 40),
+      BelowWeightCategory(maxWeight: 45),
+      BelowWeightCategory(maxWeight: 50),
       BelowWeightCategory(maxWeight: 55),
       BelowWeightCategory(maxWeight: 60),
       BelowWeightCategory(maxWeight: 65),
-      BelowWeightCategory(maxWeight: 70),
-      BelowWeightCategory(maxWeight: 75),
-      AboveWeightCategory(minWeight: 75),
+      AboveWeightCategory(minWeight: 65),
     ];
 
     return SportsCategorySet(
@@ -28,10 +29,11 @@ class KyokushinJuniorSportCategorySetStrategy
   }
 
   SportsCategorySet _createFemaleSet() {
-    final groupLabel = "юниорки 16-17 лет";
-    final ageCategory = RangeAgeCategory(minAge: 16, maxAge: 17);
+    final groupLabel = "девушки 14-15 лет";
+    final ageCategory = RangeAgeCategory(minAge: 14, maxAge: 15);
 
     final weightCategories = <WeightCategory>[
+      BelowWeightCategory(maxWeight: 45),
       BelowWeightCategory(maxWeight: 50),
       BelowWeightCategory(maxWeight: 55),
       BelowWeightCategory(maxWeight: 60),

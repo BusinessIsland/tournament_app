@@ -13,7 +13,7 @@ void main() {
       );
     }
 
-    group("KiokusinkayLabelsProvider", () {
+    group("KyokushinLabelsProvider", () {
       group("male participants", () {
         test("Male participants with age in range 10-11 are boys", () {
           final provider = createProvider();
