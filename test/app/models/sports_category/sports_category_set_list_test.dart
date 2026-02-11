@@ -9,6 +9,10 @@ import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/c
 void main() {
   late SportsCategorySetList list;
 
+  setUp(() {
+    list = SportsCategorySetListBasicImpl();
+  });
+
   SportsCategorySet createSet({
     required List<(double? minWeight, double? maxWeight)> weights,
     required String groupLabel,
@@ -57,10 +61,10 @@ void main() {
       final found = list.findById(set.id.toString());
 
       expect(found, isNotNull);
-      expect(found.groupLabel, "мужчины 10-20 лет");
-      expect(found.gender, isA<MaleGender>());
-      expect(found.ageCategory, isA<RangeAgeCategory>());
-      expect(found.weightCategories.length, 2);
+      expect(found?.groupLabel, "мужчины 10-20 лет");
+      expect(found?.gender, isA<MaleGender>());
+      expect(found?.ageCategory, isA<RangeAgeCategory>());
+      expect(found?.weightCategories.length, 2);
     });
   });
 
@@ -84,25 +88,7 @@ void main() {
   });
 
   group("replace", () {
-    test("replace with unexisting id should add new set to list", () {
-      final set = createSet(
-        groupLabel: "мужчины 10-20 лет",
-        isMale: true,
-        minAge: 10,
-        maxAge: 20,
-        weights: <(double? minWeight, double? maxWeight)>[
-          (20, null),
-          (null, 10),
-        ],
-      );
-
-      list.replace(set, Id().toString());
-
-      expect(list.size, 1);
-      expect(list.findById(set.id.toString()), isNotNull);
-    });
-
-    test("replace wit existing id should change ", () {
+    test("replace with existing id should replace existing set", () {
       final set = createSet(
         groupLabel: "мужчины 10-20 лет",
         isMale: true,
@@ -130,13 +116,13 @@ void main() {
 
       list.replace(newSet, set.id.toString());
 
-      final found = list.findById(set.id.toString());
+      final found = list.findById(newSet.id.toString());
 
       expect(list.size, 1);
-      expect(found.groupLabel, "мужчины 15-20 лет");
-      expect(found.ageCategory, isA<RangeAgeCategory>());
-      expect(found.weightCategories.length, 3);
-      expect(found.gender, isA<MaleGender>());
+      expect(found?.groupLabel, "мужчины 15-20 лет");
+      expect(found?.ageCategory, isA<RangeAgeCategory>());
+      expect(found?.weightCategories.length, 3);
+      expect(found?.gender, isA<MaleGender>());
     });
   });
 

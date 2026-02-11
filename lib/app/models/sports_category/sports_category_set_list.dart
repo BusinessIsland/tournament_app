@@ -9,3 +9,40 @@ abstract class SportsCategorySetList extends Iterable<SportsCategorySet> {
 
   int get size;
 }
+
+class SportsCategorySetListBasicImpl extends SportsCategorySetList {
+  final List<SportsCategorySet> _list = List.empty(growable: true);
+
+  @override
+  SportsCategorySet? findById(String id) {
+    try {
+      return _list.firstWhere((s) => s.id.toString() == id);
+    } catch(_) {
+      return null;
+    }
+  }
+
+  @override
+  void add(SportsCategorySet set) {
+    _list.add(set);
+  }
+
+  @override
+  void replace(SportsCategorySet set, String id) {
+    final index = _list.indexWhere((s) => s.id.toString() == id);
+    if (index != -1) {
+      _list[index] = set;
+    }
+  }
+
+  @override
+  void delete(String id) {
+    _list.removeWhere((s) => s.id.toString() == id);
+  }
+
+  @override
+  int get size => _list.length;
+
+  @override
+  Iterator<SportsCategorySet> get iterator => _list.iterator;
+}
