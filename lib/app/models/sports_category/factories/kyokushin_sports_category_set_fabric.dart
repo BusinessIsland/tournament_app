@@ -1,6 +1,6 @@
 import 'package:tournament_app/app/models/sports_category/sports_category_set.dart';
 import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/adults/kyokushin_adult_sport_category_set_strategy.dart';
-import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/standard_custom_kyokushin_sports_category_builder.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/standard_kyokushin_sports_category_builder.dart';
 import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/juniors/kyokushin_junior_sport_category_set_strategy.dart';
 import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/teenagers/kyokushin_teenagers_sport_category_set_strategy.dart';
 import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/youngsters/kyokushin_youngsters_sport_category_set_strategy.dart';
@@ -38,10 +38,13 @@ class KyokushinSportsCategorySetFabric {
     int? maxAge,
     required bool isMale,
   }) {
-    final builder = StandardCustomKyokushinSportsCategoryBuilder();
+    final builder = StandardKyokushinSportsCategoryBuilder();
 
     for (final weightParams in weights) {
-      builder.addWeightCategory(minWeight: weightParams.$1, maxWeight: weightParams.$2);
+      builder.addWeightCategory(
+        minWeight: weightParams.$1,
+        maxWeight: weightParams.$2,
+      );
     }
 
     builder.setGroupLabel(groupLabel: groupLabel);

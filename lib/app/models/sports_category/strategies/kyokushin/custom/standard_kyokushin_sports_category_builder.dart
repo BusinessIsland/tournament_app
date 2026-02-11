@@ -1,11 +1,12 @@
 import 'package:tournament_app/app/models/age_category/age_category.dart';
 import 'package:tournament_app/app/models/parts/gender/gender.dart';
+import 'package:tournament_app/app/models/parts/id/id.dart';
 import 'package:tournament_app/app/models/sports_category/sports_category_set.dart';
-import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/i_custom_kyokushin_sports_category_builder.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/i_kyokushin_sports_category_builder.dart';
 import 'package:tournament_app/app/models/weight_category/weight_category.dart';
 
-class StandardCustomKyokushinSportsCategoryBuilder
-    extends ICustomKyokushinSportsCategoryBuilder {
+class StandardKyokushinSportsCategoryBuilder
+    extends IKyokushinSportsCategoryBuilder {
   final List<WeightCategory> _weightCategories = List<WeightCategory>.empty(
     growable: true,
   );
@@ -15,7 +16,7 @@ class StandardCustomKyokushinSportsCategoryBuilder
   Gender? _gender;
 
   @override
-  ICustomKyokushinSportsCategoryBuilder addWeightCategory({
+  IKyokushinSportsCategoryBuilder addWeightCategory({
     double? minWeight,
     double? maxWeight,
   }) {
@@ -30,7 +31,7 @@ class StandardCustomKyokushinSportsCategoryBuilder
   }
 
   @override
-  ICustomKyokushinSportsCategoryBuilder setAgeCategory({
+  IKyokushinSportsCategoryBuilder setAgeCategory({
     int? minAge,
     int? maxAge,
   }) {
@@ -40,7 +41,7 @@ class StandardCustomKyokushinSportsCategoryBuilder
   }
 
   @override
-  ICustomKyokushinSportsCategoryBuilder setGroupLabel({
+  IKyokushinSportsCategoryBuilder setGroupLabel({
     required String groupLabel,
   }) {
     _groupLabel = groupLabel;
@@ -48,7 +49,7 @@ class StandardCustomKyokushinSportsCategoryBuilder
   }
 
   @override
-  ICustomKyokushinSportsCategoryBuilder setGender({required bool isMale}) {
+  IKyokushinSportsCategoryBuilder setGender({required bool isMale}) {
     _gender = _createGender(isMale: isMale);
     return this;
   }
@@ -56,6 +57,7 @@ class StandardCustomKyokushinSportsCategoryBuilder
   @override
   SportsCategorySet build() {
     return SportsCategorySet(
+      id: Id(),
       groupLabel: _groupLabel ?? "",
       ageCategory: _ageCategory ?? UndefinedAgeCategory(),
       weightCategories: _weightCategories,

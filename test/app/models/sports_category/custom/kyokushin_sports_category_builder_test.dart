@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/models/parts/gender/gender.dart';
-import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/i_custom_kyokushin_sports_category_builder.dart';
-import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/standard_custom_kyokushin_sports_category_builder.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/i_kyokushin_sports_category_builder.dart';
+import 'package:tournament_app/app/models/sports_category/strategies/kyokushin/custom/standard_kyokushin_sports_category_builder.dart';
 import 'package:tournament_app/app/models/weight_category/weight_category.dart';
 
 void main() {
@@ -38,10 +38,10 @@ void main() {
   }
 
   group("kyokushin builder", () {
-    late ICustomKyokushinSportsCategoryBuilder builder;
+    late IKyokushinSportsCategoryBuilder builder;
 
     setUp(() {
-      builder = StandardCustomKyokushinSportsCategoryBuilder();
+      builder = StandardKyokushinSportsCategoryBuilder();
     });
 
     test("builder with valid params returns SportsCategory", () {

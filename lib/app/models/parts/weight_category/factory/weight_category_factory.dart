@@ -1,4 +1,4 @@
-import 'package:tournament_app/app/models/weight_category/weight_category.dart';
+import 'package:tournament_app/app/models/parts/weight_category/weight_category.dart';
 
 class WeightCategoryFactory {
   static WeightCategory createAboveWeightCategory({required double minWeight}) {

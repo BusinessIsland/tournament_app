@@ -39,3 +39,13 @@ class AbsoluteWeightCategory extends WeightCategory {
   @override
   bool matches(double weight) => true;
 }
+
+class UndefinedWeightCategory extends WeightCategory {
+  const UndefinedWeightCategory();
+
+  @override
+  String get label => "не указано";
+
+  @override
+  bool matches(double weight) => false;
+}
