@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/age_category/age_category.dart';
-import 'package:tournament_app/app/models/age_category/factory/age_category_factory.dart';
+import 'package:tournament_app/app/models/parts/age_category/age_category.dart';
+import 'package:tournament_app/app/models/parts/age_category/factory/age_category_factory.dart';
 
 void main() {
 
