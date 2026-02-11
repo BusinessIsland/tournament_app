@@ -1,4 +1,4 @@
-import 'package:tournament_app/app/models/age_category/age_category.dart';
+import 'package:tournament_app/app/models/parts/age_category/age_category.dart';
 
 abstract class AgeCategoryFactory {
   static AgeCategory createAboveAgeCategory({required int minAge}) {
