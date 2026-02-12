@@ -1,10 +1,9 @@
-sealed class Weight {
+class Weight {
   final double value;
 
-  Weight({required this.value});
+  const Weight({required this.value});
 
-  @override
-  String toString();
+  String get label => value.toStringAsFixed(1);
 
   @override
   bool operator ==(Object other) =>
@@ -15,18 +14,9 @@ sealed class Weight {
 
   @override
   int get hashCode => value.hashCode;
-}
-
-class StandardWeight extends Weight {
-  StandardWeight(double value) : super(value: value);
 
   @override
-  String toString() => value.toString();
-}
-
-class UndefinedWeight extends Weight {
-  UndefinedWeight() : super(value: 0);
-
-  @override
-  String toString() => "не указано";
+  String toString() {
+    return 'Weight{value: $value}';
+  }
 }

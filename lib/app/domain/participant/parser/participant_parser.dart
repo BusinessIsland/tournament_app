@@ -1,21 +1,21 @@
-import 'package:tournament_app/app/models/participant/participant.dart';
-import 'package:tournament_app/app/models/parts/belt/parser/belt_pipeline.dart';
-import 'package:tournament_app/app/models/parts/block/parser/block_parser.dart';
-import 'package:tournament_app/app/models/parts/date_of_birth/parser/date_of_birth_parser.dart';
-import 'package:tournament_app/app/models/parts/gender/parser/gender_pipeline.dart';
-import 'package:tournament_app/app/models/parts/id/id.dart';
-import 'package:tournament_app/app/models/parts/name/parser/person_name_pipeline.dart';
-import 'package:tournament_app/app/models/parts/region/parser/region_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/parser/sports_qualification_pipeline.dart';
-import 'package:tournament_app/app/models/parts/weight/parser/weight_parser.dart';
-import 'package:tournament_app/app/models/trainer/parser/trainer_parser.dart';
+import 'package:tournament_app/app/domain/participant/participant.dart';
+import 'package:tournament_app/app/domain/parts/belt/parser/belt_pipeline.dart';
+import 'package:tournament_app/app/domain/parts/block/parser/block_parser.dart';
+import 'package:tournament_app/app/domain/parts/date_of_birth/parser/date_of_birth_parser.dart';
+import 'package:tournament_app/app/domain/parts/gender/parser/gender_pipeline.dart';
+import 'package:tournament_app/app/domain/parts/id/id.dart';
+import 'package:tournament_app/app/domain/parts/name/parser/person_name_pipeline.dart';
+import 'package:tournament_app/app/domain/parts/region/parser/region_parser.dart';
+import 'package:tournament_app/app/domain/parts/sports_qualification/parser/sports_qualification_parser.dart';
+import 'package:tournament_app/app/domain/parts/weight/parser/weight_parser.dart';
+import 'package:tournament_app/app/domain/trainer/parser/trainer_parser.dart';
 
 class ParticipantParser {
   GenderPipeline genderParser;
   PersonNamePipeline nameParser;
   DateOfBirthParser dateOfBirthParser;
   BeltPipeline beltParser;
-  SportsQualificationPipeline sportsQualificationParser;
+  SportsQualificationParser sportsQualificationParser;
   WeightParser weightParser;
   RegionParser regionParser;
   TrainerParser trainerParser;

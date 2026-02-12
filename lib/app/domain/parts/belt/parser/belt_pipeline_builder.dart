@@ -1,6 +1,6 @@
-import 'package:tournament_app/app/models/parts/belt/parser/belt_parser_registry.dart';
-import 'package:tournament_app/app/models/parts/belt/parser/belt_pattern_parser.dart';
-import 'package:tournament_app/app/models/parts/belt/parser/belt_pipeline.dart';
+import 'package:tournament_app/app/domain/parts/belt/parser/belt_parser_registry.dart';
+import 'package:tournament_app/app/domain/parts/belt/parser/belt_pattern_parser.dart';
+import 'package:tournament_app/app/domain/parts/belt/parser/belt_pipeline.dart';
 
 class BeltPipelineBuilder {
   final List<BeltPatternParser> _parsers = [];

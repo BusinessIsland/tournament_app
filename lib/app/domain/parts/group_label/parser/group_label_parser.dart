@@ -1,9 +1,9 @@
-import 'package:tournament_app/app/models/parts/group_label/group_label.dart';
+import 'package:tournament_app/app/domain/parts/group_label/group_label.dart';
 
 class GroupLabelParser {
-  GroupLabel parse(String? raw) {
+  GroupLabel? parse(String? raw) {
     if (raw == null || raw.trim().isEmpty) {
-      return UndefinedGroupLabel();
+      return null;
     }
 
     final prepared = _normalize(raw);

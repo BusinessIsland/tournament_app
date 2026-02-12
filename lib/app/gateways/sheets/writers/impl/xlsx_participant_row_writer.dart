@@ -60,7 +60,7 @@ class XlsxParticipantRowWriter implements XlsxRowWriter {
       ParticipantField.sportsQualification,
     );
     createCell(participant.weight, ParticipantField.weight);
-    createCell(participant.region.value, ParticipantField.region);
+    createCell(participant.region.label, ParticipantField.region);
     createCell(participant.trainers, ParticipantField.trainers);
     createCell(participant.block.label, ParticipantField.block);
     createCell(participant.dateOfBirth.age, ParticipantField.ageFull);

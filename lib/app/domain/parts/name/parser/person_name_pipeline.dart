@@ -1,14 +1,14 @@
-import 'package:tournament_app/app/models/parts/name/parser/person_name_pattern_parser.dart';
-import 'package:tournament_app/app/models/parts/name/person_name.dart';
+import 'package:tournament_app/app/domain/parts/name/parser/person_name_pattern_parser.dart';
+import 'package:tournament_app/app/domain/parts/name/person_name.dart';
 
 class PersonNamePipeline {
   final List<PersonNamePatternParser> _parsers;
 
   PersonNamePipeline(this._parsers);
 
-  PersonName parse(String? raw) {
+  PersonName? parse(String? raw) {
     if (raw == null || raw.trim().isEmpty) {
-      return UndefinedName();
+      return null;
     }
 
     final prepared = _normalize(raw);
@@ -19,7 +19,7 @@ class PersonNamePipeline {
       if (result != null) return result;
     }
 
-    return UndefinedName();
+    return null;
   }
 
   String _normalize(String raw) {

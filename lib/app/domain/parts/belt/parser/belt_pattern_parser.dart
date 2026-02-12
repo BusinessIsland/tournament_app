@@ -1,4 +1,4 @@
-import 'package:tournament_app/app/models/parts/belt/belt.dart';
+import 'package:tournament_app/app/domain/parts/belt/belt.dart';
 
 typedef BeltFactory = Belt Function(RegExpMatch);
 

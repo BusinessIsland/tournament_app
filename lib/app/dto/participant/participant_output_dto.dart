@@ -34,7 +34,7 @@ class ParticipantOutputDto {
       dateOfBirth = participant.dateOfBirth.toString(),
       belt = participant.belt.toString(),
       sportsQualification = participant.sportsQualification.toString(),
-      weight = participant.weight.value,
+      weight = participant.weight.label,
       region = participant.region.toString(),
       trainers = participant.trainers.toString(),
       block = participant.block.toString(),

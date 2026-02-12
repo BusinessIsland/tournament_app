@@ -1,33 +1,41 @@
-import 'package:tournament_app/app/utils/str_capitalizer.dart';
-
 sealed class PersonName {
   final String lastName;
 
-  PersonName(this.lastName);
+  const PersonName({required this.lastName});
 
   String get formatted;
 
   String _sanitize(String s) => s.trim().replaceAll(RegExp(r'\s+'), ' ');
+
+  String _capitalize(String s) {
+    return s.isEmpty ? "" : s[0].toUpperCase() + s.substring(1).toLowerCase();
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PersonName &&
+          runtimeType == other.runtimeType &&
+          formatted == other.formatted;
+
+  @override
+  int get hashCode => formatted.hashCode;
 }
 
 class FullName extends PersonName {
   final String firstName;
   final String middleName;
 
-  FullName({
-    required String lastName,
+  const FullName({
+    required super.lastName,
     required this.firstName,
     required this.middleName,
-  }) : super(lastName);
+  });
 
   @override
   String get formatted {
-    final capitalizedLastName = StrCapitalizer.capitalize(lastName);
-    final capitalizedFirstName = StrCapitalizer.capitalize(firstName);
-    final capitalizedMiddleName = StrCapitalizer.capitalize(middleName);
-
     return _sanitize(
-      "$capitalizedLastName $capitalizedFirstName $capitalizedMiddleName",
+      "${_capitalize(lastName)} ${_capitalize(firstName)} ${_capitalize(middleName)}",
     );
   }
 }
@@ -37,48 +45,35 @@ class NameWithInitials extends PersonName {
   final String middleNameInitial;
 
   NameWithInitials({
-    required String lastName,
+    required super.lastName,
     required this.firstNameInitial,
     required this.middleNameInitial,
-  }) : super(lastName);
+  });
 
   @override
   String get formatted {
-    String firstNameInitialWithDot = firstNameInitial.isNotEmpty
-        ? "$firstNameInitial."
-        : "";
-    String middleNameInitialWithDot = middleNameInitial.isNotEmpty
-        ? "$middleNameInitial."
-        : "";
-
-    final capitalizedLastName = StrCapitalizer.capitalize(lastName);
-
-    final capitalizedFormattedFirstNameInitial = StrCapitalizer.capitalize(
-      firstNameInitialWithDot,
-    );
-
-    final capitalizedFormattedMiddleNameInitial = StrCapitalizer.capitalize(
-      middleNameInitialWithDot,
-    );
+    String f = firstNameInitial.isNotEmpty ? "$firstNameInitial." : "";
+    String m = middleNameInitial.isNotEmpty ? "$middleNameInitial." : "";
 
     return _sanitize(
-      "$capitalizedLastName ${capitalizedFormattedFirstNameInitial}${capitalizedFormattedMiddleNameInitial}",
+      "${_capitalize(lastName)} ${_capitalize(f)}${_capitalize(m)}",
     );
   }
 }
 
 class ShortName extends PersonName {
-  ShortName({required String lastName}) : super(lastName);
+  ShortName({required super.lastName});
 
   @override
   String get formatted {
-    final capitalizedLastName = StrCapitalizer.capitalize(lastName);
-    return _sanitize(capitalizedLastName);
+    return _sanitize(_capitalize(lastName));
   }
 }
 
 class UndefinedName extends PersonName {
-  UndefinedName() : super("");
+  static const instance = UndefinedName._();
+
+  const UndefinedName._() : super(lastName: "");
 
   @override
   String get formatted => "не указано";

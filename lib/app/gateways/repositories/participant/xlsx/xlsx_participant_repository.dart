@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:tournament_app/app/domain/participant/container/impl/participant_list_basic_impl.dart';
+import 'package:tournament_app/app/domain/participant/container/participant_list.dart';
+import 'package:tournament_app/app/domain/participant/parser/participant_parser.dart';
 import 'package:tournament_app/app/dto/participant/participant_create_dto.dart';
 import 'package:tournament_app/app/dto/participant/participant_get_all_filter.dart';
 import 'package:tournament_app/app/dto/participant/participant_update_dto.dart';
@@ -11,7 +14,7 @@ import 'package:tournament_app/app/models/participant/participant_list.dart';
 
 class XlsxParticipantRepository
     implements ParticipantRepository, FilePersistable {
-  ParticipantList _list = ParticipantListBasicImpl();
+  ParticipantList _list = ParticipantListBasicImpl([]);
   final XlsxParticipantParser xlsxParser;
   final ParticipantParser participantParser;
 
@@ -24,7 +27,7 @@ class XlsxParticipantRepository
   ParticipantList getAll(ParticipantGetAllFilter filter) {
     final filtered = _list.where((p) {
       final isRegionPassed =
-          filter.region == null || p.region.value == filter.region;
+          filter.region == null || p.region.label == filter.region;
       final isTrainerPassed =
           filter.trainerName == null ||
           p.trainers.toString().contains(filter.trainerName!);

@@ -54,6 +54,6 @@ class XlsxCompetitionJudgeRowWriter implements XlsxRowWriter {
     createCell(judge.name.formatted, CompetitionJudgeField.name);
     createCell(judge.belt.toString(), CompetitionJudgeField.belt);
     createCell(judge.sportsQualification.label, CompetitionJudgeField.sportsQualification);
-    createCell(judge.region.value, CompetitionJudgeField.region);
+    createCell(judge.region.label, CompetitionJudgeField.region);
   }
 }

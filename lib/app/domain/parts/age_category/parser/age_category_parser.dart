@@ -1,9 +1,9 @@
-import 'package:tournament_app/app/models/parts/age_category/age_category.dart';
+import 'package:tournament_app/app/domain/parts/age_category/age_category.dart';
 
 class AgeCategoryParser {
-  AgeCategory parse(String? rawMinAge, String? rawMaxAge) {
+  AgeCategory? parse(String? rawMinAge, String? rawMaxAge) {
     if (rawMinAge == null && rawMaxAge == null) {
-      return AbsoluteAgeCategory();
+      return AbsoluteAgeCategory.instance;
     }
 
     final preparedMinAge = rawMinAge == null ? "" : _normalize(rawMinAge);
@@ -21,10 +21,15 @@ class AgeCategoryParser {
     }
 
     if (parsedMinAge != null && parsedMaxAge != null) {
-      return RangeAgeCategory(minAge: parsedMinAge, maxAge: parsedMaxAge);
+      if (parsedMinAge <= parsedMaxAge) {
+        return RangeAgeCategory(minAge: parsedMinAge, maxAge: parsedMaxAge);
+      }
+
+      throw ArgumentError(
+          "минимальный вес не может быть больше максимального веса");
     }
 
-    return UndefinedAgeCategory();
+    return null;
   }
 
   String _normalize(String raw) {

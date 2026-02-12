@@ -1,12 +1,14 @@
-import 'package:uuid/uuid.dart';
-
 class Id {
-  final String value;
+  final int value;
 
-  Id() : value = const Uuid().v4();
+  const Id._({required this.value});
+
+  factory Id.newId(int nextValue) => Id._(value: nextValue);
+
+  factory Id.fromInt(int value) => Id._(value: value);
 
   @override
-  String toString() => value;
+  String toString() => value.toString();
 
   @override
   bool operator ==(Object other) =>

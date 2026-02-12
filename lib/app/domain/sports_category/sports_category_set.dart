@@ -1,8 +1,8 @@
-import 'package:tournament_app/app/models/parts/age_category/age_category.dart';
-import 'package:tournament_app/app/models/parts/gender/gender.dart';
-import 'package:tournament_app/app/models/parts/group_label/group_label.dart';
-import 'package:tournament_app/app/models/parts/id/id.dart';
-import 'package:tournament_app/app/models/parts/weight_category/weight_category.dart';
+import 'package:tournament_app/app/domain/parts/age_category/age_category.dart';
+import 'package:tournament_app/app/domain/parts/gender/gender.dart';
+import 'package:tournament_app/app/domain/parts/group_label/group_label.dart';
+import 'package:tournament_app/app/domain/parts/id/id.dart';
+import 'package:tournament_app/app/domain/parts/weight_category/weight_category.dart';
 
 class SportsCategorySet {
   final Id id;
@@ -18,4 +18,19 @@ class SportsCategorySet {
     required this.weightCategories,
     required this.gender,
   });
+
+  @override
+  String toString() {
+    return 'SportsCategorySet{id: $id, groupLabel: $groupLabel, ageCategory: $ageCategory, weightCategories: $weightCategories, gender: $gender}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SportsCategorySet &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

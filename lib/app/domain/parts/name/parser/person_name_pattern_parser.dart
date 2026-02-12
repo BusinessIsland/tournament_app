@@ -1,4 +1,4 @@
-import 'package:tournament_app/app/models/parts/name/person_name.dart';
+import 'package:tournament_app/app/domain/parts/name/person_name.dart';
 
 typedef NameFactory = PersonName Function(RegExpMatch);
 

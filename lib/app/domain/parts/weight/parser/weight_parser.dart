@@ -1,19 +1,19 @@
-import 'package:tournament_app/app/models/parts/weight/weight.dart';
+import 'package:tournament_app/app/domain/parts/weight/weight.dart';
 
 class WeightParser {
-  Weight parse(String? raw) {
+  Weight? parse(String? raw) {
     if (raw == null || raw.trim().isEmpty) {
-      return UndefinedWeight();
+      return null;
     }
 
     final prepared = _normalize(raw);
 
     final parsed = _tryParse(prepared);
     if (parsed != null) {
-      return StandardWeight(parsed);
+      return Weight(value: parsed);
     }
 
-    return UndefinedWeight();
+    return null;
   }
 
   String _normalize(String raw) {

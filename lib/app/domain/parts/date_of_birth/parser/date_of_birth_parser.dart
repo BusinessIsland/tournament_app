@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:tournament_app/app/models/parts/date_of_birth/date_of_birth.dart';
+import 'package:tournament_app/app/domain/parts/date_of_birth/date_of_birth.dart';
 
 class DateOfBirthParser {
   final List<DateFormat> formats = [
@@ -10,9 +10,9 @@ class DateOfBirthParser {
     DateFormat("dd/MM/yyyy"),
   ];
 
-  DateOfBirth parse(String? raw) {
+  DateOfBirth? parse(String? raw) {
     if (raw == null || raw.trim().isEmpty) {
-      return UndefinedDateOfBirth();
+      return null;
     }
 
     final prepared = _normalize(raw);
@@ -20,20 +20,20 @@ class DateOfBirthParser {
     var value = _tryParse(prepared);
     if (value != null) return value;
 
-    return UndefinedDateOfBirth();
+    return null;
   }
 
-  DateTimeDateOfBirth? _tryParse(String raw) {
+  DateOfBirth? _tryParse(String raw) {
     final parsed = DateTime.tryParse(raw);
 
-    if (parsed != null) return DateTimeDateOfBirth(parsed);
+    if (parsed != null) return DateOfBirth(value: parsed);
     return _tryParseWithFormats(raw);
   }
 
-  DateTimeDateOfBirth? _tryParseWithFormats(String raw) {
+  DateOfBirth? _tryParseWithFormats(String raw) {
     for (final format in formats) {
       try {
-        return DateTimeDateOfBirth(format.parseStrict(raw));
+        return DateOfBirth(value: format.parseStrict(raw));
       } catch (_) {}
     }
 

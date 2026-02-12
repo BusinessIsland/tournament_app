@@ -1,13 +1,24 @@
-abstract class SportsQualification {
+class SportsQualification {
   final String label;
   final int sortWeight;
+  final List<String> masks;
 
-  SportsQualification({required this.label, required this.sortWeight});
+  SportsQualification(
+      {required this.label, required this.sortWeight, required this.masks});
 
   @override
-  String toString() => label;
-}
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SportsQualification &&
+          runtimeType == other.runtimeType &&
+          label == other.label &&
+          sortWeight == other.sortWeight;
 
-class UndefinedSportsQualification extends SportsQualification {
-  UndefinedSportsQualification() : super(label: "не указано", sortWeight: -1000);
+  @override
+  int get hashCode => Object.hash(label, sortWeight);
+
+  @override
+  String toString() {
+    return 'SportsQualification{label: $label, sortWeight: $sortWeight, masks: $masks}';
+  }
 }

@@ -1,7 +1,8 @@
-import 'package:tournament_app/app/models/parts/id/id.dart';
-import 'package:tournament_app/app/models/parts/name/parser/person_name_pipeline.dart';
-import 'package:tournament_app/app/models/trainer/trainer.dart';
-import 'package:tournament_app/app/models/trainer/trainers_list.dart';
+import 'package:tournament_app/app/domain/parts/id/id.dart';
+import 'package:tournament_app/app/domain/parts/name/parser/person_name_pipeline.dart';
+import 'package:tournament_app/app/domain/trainer/container/impl/trainers_list_basic_impl.dart';
+import 'package:tournament_app/app/domain/trainer/container/trainers_list.dart';
+import 'package:tournament_app/app/domain/trainer/trainer.dart';
 
 class TrainerParser {
   final PersonNamePipeline pipeline;
@@ -9,7 +10,7 @@ class TrainerParser {
   TrainerParser(this.pipeline);
 
   TrainersList parse(String? raw) {
-    final list = TrainersListBasicImpl();
+    final list = TrainersListBasicImpl([]);
 
     if (raw == null || raw.trim().isEmpty) {
       return list;
@@ -22,8 +23,14 @@ class TrainerParser {
         .where((s) => s.isNotEmpty)
         .toList();
 
+    int id = 0;
+
     for (var s in split) {
-      list.add(Trainer(id: Id(), name: pipeline.parse(s)));
+      final name = pipeline.parse(s);
+      if (name != null) {
+        list.add(Trainer(id: Id.newId(id), name: name));
+        id++;
+      }
     }
 
     return list;

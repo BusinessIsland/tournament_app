@@ -1,6 +1,6 @@
-import 'package:tournament_app/app/models/parts/gender/parser/gender_parser_registry.dart';
-import 'package:tournament_app/app/models/parts/gender/parser/gender_pattern_parser.dart';
-import 'package:tournament_app/app/models/parts/gender/parser/gender_pipeline.dart';
+import 'package:tournament_app/app/domain/parts/gender/parser/gender_parser_registry.dart';
+import 'package:tournament_app/app/domain/parts/gender/parser/gender_pattern_parser.dart';
+import 'package:tournament_app/app/domain/parts/gender/parser/gender_pipeline.dart';
 
 class GenderPipelineBuilder {
   final List<GenderPatternParser> _parsers = [];

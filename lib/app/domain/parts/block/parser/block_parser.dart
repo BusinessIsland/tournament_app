@@ -1,13 +1,13 @@
-import 'package:tournament_app/app/models/parts/block/block.dart';
+import 'package:tournament_app/app/domain/parts/block/block.dart';
 
 class BlockParser {
-  Block parse(String? raw) {
+  Block? parse(String? raw) {
     if (raw == null || raw.trim().isEmpty) {
-      return UndefinedBlock();
+      return null;
     }
 
     final prepared = _normalize(raw);
-    return StandardBlock(prepared);
+    return Block(label: prepared);
   }
 
   String _normalize(String raw) {

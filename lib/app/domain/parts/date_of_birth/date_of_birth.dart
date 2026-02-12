@@ -1,12 +1,20 @@
-import 'package:intl/intl.dart';
+class DateOfBirth {
+  final DateTime value;
 
-sealed class DateOfBirth {
-  DateTime? get value;
+  const DateOfBirth({required this.value});
 
-  int get age;
+  int ageAt(DateTime date) {
+    if (date.isBefore(value)) {
+      return 0;
+    }
 
-  @override
-  String toString();
+    int age = date.year - value.year;
+    if (date.month < value.month ||
+        (date.month == value.month && date.day < value.day)) {
+      age--;
+    }
+    return age;
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -17,37 +25,9 @@ sealed class DateOfBirth {
 
   @override
   int get hashCode => value.hashCode;
-}
-
-class DateTimeDateOfBirth extends DateOfBirth {
-  @override
-  final DateTime value;
-
-  DateTimeDateOfBirth(this.value);
 
   @override
-  int get age {
-    final now = DateTime.now();
-
-    int age = now.year - value.year;
-    if (now.month < value.month ||
-        (now.month == value.month && now.day < value.day)) {
-      age--;
-    }
-    return age > 0 ? age : 0;
+  String toString() {
+    return 'DateOfBirth{value: $value}';
   }
-
-  @override
-  String toString() => DateFormat("dd/MM/yyyy").format(value);
-}
-
-class UndefinedDateOfBirth extends DateOfBirth {
-  @override
-  DateTime? get value => null;
-
-  @override
-  int get age => 0;
-
-  @override
-  String toString() => "не указано";
 }

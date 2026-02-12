@@ -1,5 +1,5 @@
-import 'package:tournament_app/app/models/parts/id/id.dart';
-import 'package:tournament_app/app/models/parts/name/person_name.dart';
+import 'package:tournament_app/app/domain/parts/id/id.dart';
+import 'package:tournament_app/app/domain/parts/name/person_name.dart';
 
 class Trainer {
   final Id id;
@@ -8,5 +8,15 @@ class Trainer {
   const Trainer({required this.id, required this.name});
 
   @override
-  String toString() => name.formatted;
+  String toString() {
+    return 'Trainer{id: $id, name: $name}';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Trainer && runtimeType == other.runtimeType && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

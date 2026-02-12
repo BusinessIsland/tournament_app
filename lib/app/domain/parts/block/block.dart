@@ -1,10 +1,7 @@
-sealed class Block {
+class Block {
   final String label;
 
-  Block({required this.label});
-
-  @override
-  String toString();
+  const Block({required this.label});
 
   @override
   bool operator ==(Object other) =>
@@ -15,18 +12,9 @@ sealed class Block {
 
   @override
   int get hashCode => label.hashCode;
-}
-
-class StandardBlock extends Block {
-  StandardBlock(String label) : super(label: label);
 
   @override
-  String toString() => label;
-}
-
-class UndefinedBlock extends Block {
-  UndefinedBlock() : super(label: "не указано");
-
-  @override
-  String toString() => label;
+  String toString() {
+    return 'Block{label: $label}';
+  }
 }

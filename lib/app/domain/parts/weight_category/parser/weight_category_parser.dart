@@ -1,9 +1,9 @@
-import 'package:tournament_app/app/models/parts/weight_category/weight_category.dart';
+import 'package:tournament_app/app/domain/parts/weight_category/weight_category.dart';
 
 class WeightCategoryParser {
-  WeightCategory parse(String? rawMinWeight, String? rawMaxWeight) {
+  WeightCategory? parse(String? rawMinWeight, String? rawMaxWeight) {
     if (rawMinWeight == null && rawMaxWeight == null) {
-      return AbsoluteWeightCategory();
+      return AbsoluteWeightCategory.instance;
     }
 
     var preparedMinWeight = rawMinWeight == null
@@ -25,10 +25,10 @@ class WeightCategoryParser {
     }
 
     if (parsedMinWeight != null && parsedMaxWeight != null) {
-      return AbsoluteWeightCategory();
+      return AbsoluteWeightCategory.instance;
     }
 
-    return UndefinedWeightCategory();
+    return null;
   }
 
   String _normalize(String raw) {

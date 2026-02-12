@@ -1,8 +1,8 @@
-import 'package:tournament_app/app/models/parts/name/parser/person_name_pattern_parser.dart';
-import 'package:tournament_app/app/models/parts/name/parser/patterns/full_name_pattern.dart';
-import 'package:tournament_app/app/models/parts/name/parser/patterns/name_with_initials_pattern.dart';
-import 'package:tournament_app/app/models/parts/name/parser/patterns/short_name_pattern.dart';
-import 'package:tournament_app/app/models/parts/name/person_name.dart';
+import 'package:tournament_app/app/domain/parts/name/parser/patterns/full_name_pattern.dart';
+import 'package:tournament_app/app/domain/parts/name/parser/patterns/name_with_initials_pattern.dart';
+import 'package:tournament_app/app/domain/parts/name/parser/patterns/short_name_pattern.dart';
+import 'package:tournament_app/app/domain/parts/name/parser/person_name_pattern_parser.dart';
+import 'package:tournament_app/app/domain/parts/name/person_name.dart';
 
 class PersonNameParserRegistry {
   static PersonNamePatternParser fullName() => PersonNamePatternParser([

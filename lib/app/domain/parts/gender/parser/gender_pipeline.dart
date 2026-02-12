@@ -1,16 +1,16 @@
-import 'package:tournament_app/app/models/parts/gender/gender.dart';
-import 'package:tournament_app/app/models/parts/gender/parser/gender_pattern_parser.dart';
+import 'package:tournament_app/app/domain/parts/gender/gender.dart';
+import 'package:tournament_app/app/domain/parts/gender/parser/gender_pattern_parser.dart';
 
 class GenderPipeline {
   final List<GenderPatternParser> _parsers;
 
   GenderPipeline(this._parsers);
 
-  Gender parse(String? raw) {
+  Gender? parse(String? raw) {
     if (raw == null || raw
         .trim()
         .isEmpty) {
-      return UndefinedGender();
+      return null;
     }
 
     final prepared = _normalize(raw);
@@ -21,7 +21,7 @@ class GenderPipeline {
       if (result != null) return result;
     }
 
-    return UndefinedGender();
+    return null;
   }
 
   String _normalize(String raw) {

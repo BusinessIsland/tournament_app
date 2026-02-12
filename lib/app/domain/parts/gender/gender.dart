@@ -1,36 +1,30 @@
-sealed class Gender {
-  Gender();
+import 'package:tournament_app/app/domain/parts/gender/gender_type.dart';
 
-  String get shortLabel;
-  String get label;
-}
+class Gender {
+  final GenderType type;
 
-class MaleGender extends Gender {
-  MaleGender() : super();
+  const Gender({required this.type});
 
-  @override
-  String get shortLabel => "м";
+  String get label => type.label;
 
-  @override
-  String get label => "мужской пол";
-}
+  String get shortLabel => type.shortLabel;
 
-class FemaleGender extends Gender {
-  FemaleGender() : super();
+  bool get isMale => type == GenderType.male;
+  bool get isFemale => type == GenderType.female;
 
   @override
-  String get shortLabel => "ж";
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Gender && runtimeType == other.runtimeType && type == other.type;
 
   @override
-  String get label => "женский пол";
-}
-
-class UndefinedGender extends Gender {
-  UndefinedGender() : super();
+  int get hashCode => type.hashCode;
 
   @override
-  String get shortLabel => "не указано";
+  String toString() {
+    return 'Gender{type: $type}';
+  }
 
-  @override
-  String get label => "не указано";
+  static const male = Gender(type: GenderType.male);
+  static const female = Gender(type: GenderType.female);
 }

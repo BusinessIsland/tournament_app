@@ -1,13 +1,13 @@
-import 'package:tournament_app/app/models/parts/region/region.dart';
+import 'package:tournament_app/app/domain/parts/region/region.dart';
 
 class RegionParser {
-  Region parse(String? raw) {
+  Region? parse(String? raw) {
     if (raw == null || raw.trim().isEmpty) {
-      return UndefinedRegion();
+      return null;
     }
 
     final prepared = _normalize(raw);
-    return StandardRegion(prepared);
+    return Region(label: prepared);
   }
 
   String _normalize(String raw) {

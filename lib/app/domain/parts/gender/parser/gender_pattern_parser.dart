@@ -1,4 +1,4 @@
-import 'package:tournament_app/app/models/parts/gender/gender.dart';
+import 'package:tournament_app/app/domain/parts/gender/gender.dart';
 
 typedef GenderFactory = Gender Function();
 

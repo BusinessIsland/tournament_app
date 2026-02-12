@@ -32,13 +32,3 @@ class DanBelt extends Belt {
   @override
   int get powerLevel => rank;
 }
-
-class UndefinedBelt extends Belt {
-  UndefinedBelt() : super(label: "не заполнено");
-
-  @override
-  String toString() => label;
-
-  @override
-  int get powerLevel => -1000;
-}
