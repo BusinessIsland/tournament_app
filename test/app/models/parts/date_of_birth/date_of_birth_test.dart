@@ -1,20 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/models/parts/date_of_birth/date_of_birth.dart';
-import 'package:tournament_app/app/models/parts/date_of_birth/parser/builders/date_of_birth_parser_builder.dart';
 import 'package:tournament_app/app/models/parts/date_of_birth/parser/date_of_birth_parser.dart';
 
 void main() {
-  late DateOfBirthParser dateTimeParser;
-  late DateOfBirthParser commonParser;
+  late DateOfBirthParser parser;
 
   setUp(() {
-    dateTimeParser = DateOfBirthParserBuilder()
-        .addDateTimeParser()
-        .build();
-
-    commonParser = DateOfBirthParserBuilder()
-        .addDateTimeParser()
-        .build();
+    parser = DateOfBirthParser();
   });
 
   int calculateAge(DateTime from) {
@@ -34,7 +26,7 @@ void main() {
       "parse_RegExpInputAsYYYY-MM-DD_ReturnsDateOfBirthAsDateTimeDateOfBirth",
           () {
         final given = "2004-03-23";
-        final got = dateTimeParser.parse(given);
+        final got = parser.parse(given);
 
         expect(got, isA<DateTimeDateOfBirth>());
       },
@@ -44,7 +36,7 @@ void main() {
       "parse_RegExpInputAsDD.MM.YYYY_ReturnsDateOfBirthAsDateTimeDateOfBirth",
           () {
         final given = "23.03.2004";
-        final got = dateTimeParser.parse(given);
+        final got = parser.parse(given);
 
         expect(got, isA<DateTimeDateOfBirth>());
       },
@@ -54,7 +46,7 @@ void main() {
       "parse_RegExpInputAsYYYY/MM/DD_ReturnsDateOfBirthAsDateTimeDateOfBirth",
           () {
         final given = "2004/03/23";
-        final got = dateTimeParser.parse(given);
+        final got = parser.parse(given);
 
         expect(got, isA<DateTimeDateOfBirth>());
       },
@@ -64,7 +56,7 @@ void main() {
       "parse_RegExpInputAsMM.DD.YYYY_ReturnsDateOfBirthAsDateTimeDateOfBirth",
           () {
         final given = "23-03-2004";
-        final got = dateTimeParser.parse(given);
+        final got = parser.parse(given);
 
         expect(got, isA<DateTimeDateOfBirth>());
       },
@@ -72,7 +64,7 @@ void main() {
 
     test("parse_RegExpInput_StringifyReturnsDateAsDD/MM/YYYY", () {
       final given = "23-03-2004";
-      final got = dateTimeParser.parse(given);
+      final got = parser.parse(given);
 
       expect(got.toString(), "23/03/2004");
     });
@@ -81,7 +73,7 @@ void main() {
       "parse_RegExpInput_AgeReturnsCorrectAgeWhenDateOfBirthLessThanNow",
           () {
         final given = "23-03-2004";
-        final got = dateTimeParser.parse(given);
+        final got = parser.parse(given);
 
         expect(got.age, calculateAge(DateTime(2004, 03, 23)));
       },
@@ -89,7 +81,7 @@ void main() {
 
     test("parse_RegExpInput_AgeReturnsZeroWhenDateOfBirthGreaterThanNow", () {
       final given = "23-03-2054";
-      final got = dateTimeParser.parse(given);
+      final got = parser.parse(given);
 
       expect(got.age, 0);
     });
@@ -98,21 +90,21 @@ void main() {
   group("UndefinedDateOfBirth_Success", () {
     test("parse_NotRegExpInput_ReturnsDateOfBirthAsUndefinedDateOfBirth", () {
       final given = "2004.23.03";
-      final got = commonParser.parse(given);
+      final got = parser.parse(given);
 
       expect(got, isA<UndefinedDateOfBirth>());
     });
 
     test("parse_NotRegExpInput_AgeReturnsZero", () {
       final given = "2004.23.03";
-      final got = commonParser.parse(given);
+      final got = parser.parse(given);
 
       expect(got.age, 0);
     });
 
     test("parse_NotRegExpInput_StringifyReturnsText", () {
       final given = "2004.23.03";
-      final got = commonParser.parse(given);
+      final got = parser.parse(given);
 
       expect(got.toString(), "не указано");
     });

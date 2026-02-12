@@ -1,7 +1,7 @@
 import 'package:excel/excel.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/participant/participant_sheet_karate_config_fabric.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/participant/xlsx_participant_parser.dart';
+import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/participant/participant_sheet_kyokushin_config_fabric.dart';
+import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/impl/xlsx_participant_parser.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 import 'package:tournament_app/app/models/participant/participant_list.dart';
 import 'package:tournament_app/app/models/parts/belt/belt.dart';
@@ -23,7 +23,7 @@ void main() {
     late XlsxParticipantParser parser;
 
     setUp(() {
-      final config = ParticipantSheetKarateConfigFabric.createPrimacyChampionshipConfig();
+      final config = ParticipantSheetKyokushinConfigFabric.createPrimacyChampionshipConfig();
       parser = XlsxParticipantParser(config: config);
       excel = Excel.createExcel();
       sheet = excel["Первенство"];
@@ -67,7 +67,7 @@ void main() {
     late XlsxParticipantParser parser;
 
     setUp(() {
-      final config = ParticipantSheetKarateConfigFabric.createPrimacyChampionshipConfig();
+      final config = ParticipantSheetKyokushinConfigFabric.createPrimacyChampionshipConfig();
       parser = XlsxParticipantParser(config: config);
 
       list = ParticipantListBasicImpl();
@@ -96,10 +96,10 @@ void main() {
           dateOfBirth: DateTimeDateOfBirth(DateTime(2004, 03, 23)),
           belt: KuBelt(rank: 10),
           sportsQualification: FirstAdultRank(),
-          weight: SimpleWeight(52.52),
+          weight: StandardWeight(52.52),
           region: StandardRegion("Хабаровский край"),
           trainers: trainersList,
-          block: SimpleBlock("А"),
+          block: StandardBlock("А"),
         ),
       );
     });

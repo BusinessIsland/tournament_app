@@ -1,5 +1,5 @@
-import 'package:tournament_app/app/models/age_category/age_category.dart';
-import 'package:tournament_app/app/models/weight_category/weight_category.dart';
+import 'package:tournament_app/app/models/parts/age_category/age_category.dart';
+import 'package:tournament_app/app/models/parts/weight_category/weight_category.dart';
 
 class ParticipantCategory {
   final AgeCategory ageCategory;

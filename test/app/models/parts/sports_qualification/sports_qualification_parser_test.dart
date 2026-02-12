@@ -1,112 +1,40 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/judge_ranks/judge_ranks.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/parser/builders/sports_qualification_parser_builder.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/parser/sports_qualification_parser.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/parser/sports_qualification_pipeline.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/parser/sports_qualification_pipeline_builder.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/adults/adult_ranks.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_ranks/youth/youth_ranks.dart';
 import 'package:tournament_app/app/models/parts/sports_qualification/sports_titles/sports_title.dart';
 
 void main() {
-  late SportsQualificationParser firstAdultRankParser;
-  late SportsQualificationParser secondAdultRankParser;
-  late SportsQualificationParser thirdAdultRankParser;
-
-  late SportsQualificationParser firstYouthRankParser;
-  late SportsQualificationParser secondYouthRankParser;
-  late SportsQualificationParser thirdYouthRankParser;
-
-  late SportsQualificationParser grandmasterTitleParser;
-  late SportsQualificationParser masterOfSportsTitleParser;
-  late SportsQualificationParser masterOfSportsInternationalParser;
-
-  late SportsQualificationParser allSportsCategoryJudgeParser;
-  late SportsQualificationParser firstCategoryJudgeParser;
-  late SportsQualificationParser secondCategoryJudgeParser;
-  late SportsQualificationParser thirdCategoryJudgeParser;
-  late SportsQualificationParser youthCategoryJudgeParser;
-
-  late SportsQualificationParser commonParser;
+  late SportsQualificationPipeline pipeline;
 
   setUp(() {
-    firstAdultRankParser = SportsQualificationParserBuilder()
-        .addFirstAdultRankParser()
-        .build();
+    final builder = SportsQualificationPipelineBuilder()
+        .addFirstAdult()
+        .addSecondAdult()
+        .addThirdAdult()
+        .addFirstYouth()
+        .addSecondYouth()
+        .addThirdYouth()
+        .addCandidate()
+        .addMaster()
+        .addInternationalMaster()
+        .addGrandmaster()
+        .addAllSportsJudge()
+        .addFirstJudge()
+        .addSecondJudge()
+        .addThirdJudge()
+        .addYouthJudge();
 
-    secondAdultRankParser = SportsQualificationParserBuilder()
-        .addSecondAdultRankParser()
-        .build();
-
-    thirdAdultRankParser = SportsQualificationParserBuilder()
-        .addThirdAdultRankParser()
-        .build();
-
-    firstYouthRankParser = SportsQualificationParserBuilder()
-        .addFirstYouthRankParser()
-        .build();
-
-    secondYouthRankParser = SportsQualificationParserBuilder()
-        .addSecondYouthRankParser()
-        .build();
-
-    thirdYouthRankParser = SportsQualificationParserBuilder()
-        .addThirdYouthRankParser()
-        .build();
-
-    grandmasterTitleParser = SportsQualificationParserBuilder()
-        .addGrandmasterTitleParser()
-        .build();
-
-    masterOfSportsTitleParser = SportsQualificationParserBuilder()
-        .addMasterOfSportsTitleParser()
-        .build();
-
-    masterOfSportsInternationalParser = SportsQualificationParserBuilder()
-        .addMasterOfSportsInternationalTitleParser()
-        .build();
-
-    allSportsCategoryJudgeParser = SportsQualificationParserBuilder()
-        .addAllSportsCategoryJudgeParser()
-        .build();
-
-    firstCategoryJudgeParser = SportsQualificationParserBuilder()
-        .addFirstCategoryJudgeParser()
-        .build();
-
-    secondCategoryJudgeParser = SportsQualificationParserBuilder()
-        .addSecondCategoryJudgeParser()
-        .build();
-
-    thirdCategoryJudgeParser = SportsQualificationParserBuilder()
-        .addThirdCategoryJudgeParser()
-        .build();
-
-    youthCategoryJudgeParser = SportsQualificationParserBuilder()
-        .addYouthCategoryJudgeParser()
-        .build();
-
-    commonParser = SportsQualificationParserBuilder()
-        .addFirstAdultRankParser()
-        .addSecondAdultRankParser()
-        .addThirdAdultRankParser()
-        .addFirstYouthRankParser()
-        .addSecondYouthRankParser()
-        .addThirdYouthRankParser()
-        .addGrandmasterTitleParser()
-        .addMasterOfSportsTitleParser()
-        .addMasterOfSportsInternationalTitleParser()
-        .addAllSportsCategoryJudgeParser()
-        .addFirstCategoryJudgeParser()
-        .addSecondCategoryJudgeParser()
-        .addThirdCategoryJudgeParser()
-        .addYouthCategoryJudgeParser()
-        .build();
+    pipeline = builder.build();
   });
 
   group("AdultRanks_Success", () {
     group("FirstAdultRank_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsFirstAdultRank", () {
         final given = "1 спорт.р.";
-        final got = firstAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<FirstAdultRank>());
       });
@@ -115,7 +43,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsFirstAdultRank",
         () {
           final given = "   1   спорт.р.    ";
-          final got = firstAdultRankParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<FirstAdultRank>());
         },
@@ -123,14 +51,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsFirstAdultRankDescription", () {
         final given = "1 спорт.р.";
-        final got = firstAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "первый спортивный разряд");
       });
 
       test("sortWeight_RegExpInput_Returns6", () {
         final given = "1 спорт.р.";
-        final got = firstAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 9);
       });
@@ -139,7 +67,7 @@ void main() {
     group("SecondAdultRank_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsSecondAdultRank", () {
         final given = "2 спорт.р.";
-        final got = secondAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<SecondAdultRank>());
       });
@@ -148,7 +76,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsSecondAdultRank",
         () {
           final given = "   2     спорт.р.        ";
-          final got = secondAdultRankParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<SecondAdultRank>());
         },
@@ -156,14 +84,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsSecondAdultRankDescription", () {
         final given = "2 спорт.р.";
-        final got = secondAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "второй спортивный разряд");
       });
 
       test("sortWeight_RegExpInput_Returns5", () {
         final given = "2 спорт.р.";
-        final got = secondAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 8);
       });
@@ -172,7 +100,7 @@ void main() {
     group("ThirdAdultRank_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsThirdAdultRank", () {
         final given = "3 спорт.р.";
-        final got = thirdAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<ThirdAdultRank>());
       });
@@ -181,7 +109,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsThirdAdultRank",
         () {
           final given = "   3     спорт.р.        ";
-          final got = thirdAdultRankParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<ThirdAdultRank>());
         },
@@ -189,14 +117,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsThirdAdultRankDescription", () {
         final given = "3 спорт.р.";
-        final got = thirdAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "третий спортивный разряд");
       });
 
       test("sortWeight_RegExpInput_Returns4", () {
         final given = "3 спорт.р.";
-        final got = thirdAdultRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 7);
       });
@@ -207,7 +135,7 @@ void main() {
     group("FirstYouthRank_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsFirstYouthRank", () {
         final given = "1 юн.р.";
-        final got = firstYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<FirstYouthRank>());
       });
@@ -216,7 +144,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsFirstYouthRank",
         () {
           final given = "   1   юн.р.    ";
-          final got = firstYouthRankParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<FirstYouthRank>());
         },
@@ -224,14 +152,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsFirstYouthRankDescription", () {
         final given = "1 юн.р.";
-        final got = firstYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "первый юношеский спортивный разряд");
       });
 
       test("sortWeight_RegExpInput_Returns3", () {
         final given = "1 юн.р.";
-        final got = firstYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 6);
       });
@@ -240,7 +168,7 @@ void main() {
     group("SecondYouthRank_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsSecondYouthRank", () {
         final given = "2 юн.р.";
-        final got = secondYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<SecondYouthRank>());
       });
@@ -249,7 +177,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsSecondYouthRank",
         () {
           final given = "   2     юн.р.        ";
-          final got = secondYouthRankParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<SecondYouthRank>());
         },
@@ -257,14 +185,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsSecondYouthRankDescription", () {
         final given = "2 юн.р.";
-        final got = secondYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "второй юношеский спортивный разряд");
       });
 
       test("sortWeight_RegExpInput_Returns2", () {
         final given = "2 юн.р.";
-        final got = secondYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 5);
       });
@@ -273,7 +201,7 @@ void main() {
     group("ThirdYouthRank_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsThirdYouthRank", () {
         final given = "3 юн.р.";
-        final got = thirdYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<ThirdYouthRank>());
       });
@@ -282,7 +210,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsThirdYouthRank",
         () {
           final given = "   3     юн.р.        ";
-          final got = thirdYouthRankParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<ThirdYouthRank>());
         },
@@ -290,14 +218,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsThirdYouthRankDescription", () {
         final given = "3 юн.р.";
-        final got = thirdYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "третий юношеский спортивный разряд");
       });
 
       test("sortWeight_RegExpInput_Returns1", () {
         final given = "3 юн.р.";
-        final got = thirdYouthRankParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 4);
       });
@@ -308,7 +236,7 @@ void main() {
     group("Grandmaster_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsGrandmaster", () {
         final given = "гр";
-        final got = grandmasterTitleParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<Grandmaster>());
       });
@@ -317,7 +245,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsGrandmaster",
         () {
           final given = " гр    ";
-          final got = grandmasterTitleParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<Grandmaster>());
         },
@@ -325,14 +253,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsGrandmasterLabel", () {
         final given = "гр";
-        final got = grandmasterTitleParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "гроссмейстер России");
       });
 
       test("sortWeight_RegExpInput_Returns13", () {
         final given = "гр";
-        final got = grandmasterTitleParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 13);
       });
@@ -343,7 +271,7 @@ void main() {
         "parse_RegExpInput_ReturnsSportsQualificationAsMasterOfSportsInternational",
         () {
           final given = "мсмк";
-          final got = masterOfSportsInternationalParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<MasterOfSportsInternational>());
         },
@@ -353,7 +281,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsMasterOfSportsInternational",
         () {
           final given = " мсмк    ";
-          final got = masterOfSportsInternationalParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<MasterOfSportsInternational>());
         },
@@ -361,14 +289,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsMasterOfSportsInternationalLabel", () {
         final given = "мсмк";
-        final got = masterOfSportsInternationalParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "мастер спорта России международного класса");
       });
 
       test("sortWeight_RegExpInput_Returns12", () {
         final given = "мсмк";
-        final got = masterOfSportsInternationalParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 12);
       });
@@ -377,7 +305,7 @@ void main() {
     group("MasterOfSports_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsMasterOfSports", () {
         final given = "мс";
-        final got = masterOfSportsTitleParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<MasterOfSports>());
       });
@@ -386,7 +314,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsMasterOfSports",
         () {
           final given = " мс    ";
-          final got = masterOfSportsTitleParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<MasterOfSports>());
         },
@@ -394,14 +322,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsMasterOfSportsLabel", () {
         final given = "мс";
-        final got = masterOfSportsTitleParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "мастер спорта России");
       });
 
       test("sortWeight_RegExpInput_Returns11", () {
         final given = "мс";
-        final got = masterOfSportsTitleParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 11);
       });
@@ -412,7 +340,7 @@ void main() {
     group("AllSportsJudge_Success", () {
       test("parse_RegExpInput_ReturnsSportsQualificationAsAllSportsJudge", () {
         final given = "вк";
-        final got = allSportsCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got, isA<AllSportsJudge>());
       });
@@ -421,7 +349,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsAllSportsJudge",
         () {
           final given = " вк    ";
-          final got = allSportsCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<AllSportsJudge>());
         },
@@ -429,14 +357,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsAllSportsJudgeLabel", () {
         final given = "вк";
-        final got = allSportsCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "спортивный судья всероссийской категории");
       });
 
       test("sortWeight_RegExpInput_Returns5", () {
         final given = "вк";
-        final got = allSportsCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 5);
       });
@@ -447,7 +375,7 @@ void main() {
         "parse_RegExpInput_ReturnsSportsQualificationAsFirstCategoryJudge",
         () {
           final given = "1к";
-          final got = firstCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<FirstCategoryJudge>());
         },
@@ -457,7 +385,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsFirstCategoryJudge",
         () {
           final given = " 1  к    ";
-          final got = firstCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<FirstCategoryJudge>());
         },
@@ -465,14 +393,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsFirstCategoryJudgeLabel", () {
         final given = "1к";
-        final got = firstCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "спортивный судья первой категории");
       });
 
       test("sortWeight_RegExpInput_Returns4", () {
         final given = "1к";
-        final got = firstCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 4);
       });
@@ -483,7 +411,7 @@ void main() {
         "parse_RegExpInput_ReturnsSportsQualificationAsSecondCategoryJudge",
         () {
           final given = "2к";
-          final got = secondCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<SecondCategoryJudge>());
         },
@@ -493,7 +421,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsSecondCategoryJudge",
         () {
           final given = " 2 к    ";
-          final got = secondCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<SecondCategoryJudge>());
         },
@@ -501,14 +429,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsSecondCategoryJudgeLabel", () {
         final given = "2к";
-        final got = secondCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "спортивный судья второй категории");
       });
 
       test("sortWeight_RegExpInput_Returns3", () {
         final given = "2к";
-        final got = secondCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 3);
       });
@@ -519,7 +447,7 @@ void main() {
         "parse_RegExpInput_ReturnsSportsQualificationAsThirdCategoryJudge",
         () {
           final given = "3к";
-          final got = thirdCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<ThirdCategoryJudge>());
         },
@@ -529,7 +457,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsThirdCategoryJudge",
         () {
           final given = " 3 к    ";
-          final got = thirdCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<ThirdCategoryJudge>());
         },
@@ -537,14 +465,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsThirdCategoryJudgeLabel", () {
         final given = "3к";
-        final got = thirdCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "спортивный судья третьей категории");
       });
 
       test("sortWeight_RegExpInput_Returns2", () {
         final given = "3к";
-        final got = thirdCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 2);
       });
@@ -555,7 +483,7 @@ void main() {
         "parse_RegExpInput_ReturnsSportsQualificationAsYouthCategoryJudge",
         () {
           final given = "юс";
-          final got = youthCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<YouthCategoryJudge>());
         },
@@ -565,7 +493,7 @@ void main() {
         "parse_RegExpInputWithWhitespaces_ReturnsSportsQualificationAsYouthCategoryJudge",
         () {
           final given = " ю с    ";
-          final got = youthCategoryJudgeParser.parse(given);
+          final got = pipeline.parse(given);
 
           expect(got, isA<YouthCategoryJudge>());
         },
@@ -573,14 +501,14 @@ void main() {
 
       test("toString_RegExpInput_ReturnsYouthCategoryJudgeLabel", () {
         final given = "юс";
-        final got = youthCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.toString(), "юный спортивный судья");
       });
 
       test("sortWeight_RegExpInput_Returns1", () {
         final given = "юс";
-        final got = youthCategoryJudgeParser.parse(given);
+        final got = pipeline.parse(given);
 
         expect(got.sortWeight, 1);
       });

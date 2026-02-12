@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/age_category/age_category.dart';
+import 'package:tournament_app/app/models/parts/age_category/age_category.dart';
 
 void main() {
   group("AgeCategory.label", () {

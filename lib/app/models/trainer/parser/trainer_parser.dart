@@ -1,12 +1,12 @@
 import 'package:tournament_app/app/models/parts/id/id.dart';
-import 'package:tournament_app/app/models/parts/name/parser/person_name_parser.dart';
+import 'package:tournament_app/app/models/parts/name/parser/person_name_pipeline.dart';
 import 'package:tournament_app/app/models/trainer/trainer.dart';
 import 'package:tournament_app/app/models/trainer/trainers_list.dart';
 
 class TrainerParser {
-  final PersonNameParser personNameParser;
+  final PersonNamePipeline pipeline;
 
-  TrainerParser(this.personNameParser);
+  TrainerParser(this.pipeline);
 
   TrainersList parse(String? raw) {
     final list = TrainersListBasicImpl();
@@ -23,7 +23,7 @@ class TrainerParser {
         .toList();
 
     for (var s in split) {
-      list.add(Trainer(id: Id(), name: personNameParser.parse(s)));
+      list.add(Trainer(id: Id(), name: pipeline.parse(s)));
     }
 
     return list;

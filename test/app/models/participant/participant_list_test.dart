@@ -44,10 +44,10 @@ void main() {
       dateOfBirth: DateTimeDateOfBirth(DateTime.now()),
       belt: DanBelt(rank: 2),
       sportsQualification: MasterOfSportsInternational(),
-      weight: SimpleWeight(55),
+      weight: StandardWeight(55),
       region: StandardRegion("Хабаровский край"),
       trainers: trainersList,
-      block: SimpleBlock("А"),
+      block: StandardBlock("А"),
     );
   }
 
@@ -75,10 +75,10 @@ void main() {
       dateOfBirth: DateTimeDateOfBirth(DateTime.now()),
       belt: DanBelt(rank: 2),
       sportsQualification: MasterOfSportsInternational(),
-      weight: SimpleWeight(55),
+      weight: StandardWeight(55),
       region: StandardRegion("Хабаровский край"),
       trainers: trainersList,
-      block: SimpleBlock("А"),
+      block: StandardBlock("А"),
     );
   }
 

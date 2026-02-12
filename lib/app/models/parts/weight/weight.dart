@@ -17,8 +17,8 @@ sealed class Weight {
   int get hashCode => value.hashCode;
 }
 
-class SimpleWeight extends Weight {
-  SimpleWeight(double value) : super(value: value);
+class StandardWeight extends Weight {
+  StandardWeight(double value) : super(value: value);
 
   @override
   String toString() => value.toString();

@@ -1,46 +1,26 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge_list.dart';
-import 'package:tournament_app/app/models/parts/belt/parser/belt_parser.dart';
+import 'package:tournament_app/app/models/competition_judge/parser/competition_judge_parser.dart';
+import 'package:tournament_app/app/models/competition_judge/parser/factory/competition_judge_parser_factory.dart';
 import 'package:tournament_app/app/models/parts/id/id.dart';
-import 'package:tournament_app/app/models/parts/name/parser/person_name_parser.dart';
-import 'package:tournament_app/app/models/parts/region/parser/region_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/parser/judge_ranks_parser.dart';
 
 void main() {
+  late CompetitionJudgeParser parser;
   late CompetitionJudgeList competitionJudgeList;
 
   setUp(() {
     competitionJudgeList = CompetitionJudgeListBasicImpl();
+    parser = CompetitionJudgeParserFactory.createDefaultParser();
   });
 
   CompetitionJudge createJudge(
-    Id id,
     String name,
     String belt,
     String sportsQualification,
     String region,
   ) {
-    final nameParser = FullNameParser();
-    final beltParser = KuBeltParser();
-    beltParser.setNext(DanBeltParser());
-
-    final sportsQualificationParser = AllSportsCategoryJudgeParser();
-    sportsQualificationParser
-        .setNext(FirstCategoryJudgeParser())
-        .setNext(SecondCategoryJudgeParser())
-        .setNext(ThirdCategoryJudgeParser())
-        .setNext(YouthCategoryJudgeParser());
-
-    final regionParser = StandardRegionParser();
-
-    return CompetitionJudge(
-      id: id,
-      name: nameParser.parse(name),
-      belt: beltParser.parse(belt),
-      sportsQualification: sportsQualificationParser.parse(sportsQualification),
-      region: regionParser.parse(region),
-    );
+    return parser.parse(name, belt, sportsQualification, region);
   }
 
   group("CompetitionJudgeList_Success", () {
@@ -53,7 +33,6 @@ void main() {
     group("add", () {
       test("add judge returns void and size of container equals 1", () {
         final given = createJudge(
-          Id(),
           "Винокуров Станислав Витальевич",
           "7 дан",
           "1К",
@@ -67,7 +46,6 @@ void main() {
 
       test("add 3 judges returns void and size of container equals 3", () {
         final given = createJudge(
-          Id(),
           "Винокуров Станислав Витальевич",
           "7 дан",
           "1К",
@@ -86,9 +64,7 @@ void main() {
       test(
         "findById should return judge if list contains judge with provided id",
         () {
-          final id = Id();
           final given = createJudge(
-            id,
             "Винокуров Станислав Витальевич",
             "7 дан",
             "1К",
@@ -96,7 +72,7 @@ void main() {
           );
 
           competitionJudgeList.add(given);
-          final found = competitionJudgeList.findById(id.toString());
+          final found = competitionJudgeList.findById(given.id.toString());
 
           expect(found, isNotNull);
         },
@@ -106,7 +82,6 @@ void main() {
         "findById should return null if list doesn't contain judge with provided id",
         () {
           final given = createJudge(
-            Id(),
             "Винокуров Станислав Витальевич",
             "7 дан",
             "1К",
@@ -125,9 +100,7 @@ void main() {
       test(
         "delete should return null if judge with provided id was deleted, size should decrease by 1",
         () {
-          final id = Id();
           final given = createJudge(
-            id,
             "Винокуров Станислав Витальевич",
             "7 дан",
             "1К",
@@ -135,7 +108,7 @@ void main() {
           );
 
           competitionJudgeList.add(given);
-          competitionJudgeList.delete(id.toString());
+          competitionJudgeList.delete(given.id.toString());
 
           expect(competitionJudgeList.size, 0);
         },
@@ -144,9 +117,7 @@ void main() {
       test(
         "delete should return null and delete all judges with provided id",
         () {
-          final id = Id();
           final given = createJudge(
-            id,
             "Винокуров Станислав Витальевич",
             "7 дан",
             "1К",
@@ -157,7 +128,7 @@ void main() {
           competitionJudgeList.add(given);
           competitionJudgeList.add(given);
           competitionJudgeList.add(given);
-          competitionJudgeList.delete(id.toString());
+          competitionJudgeList.delete(given.id.toString());
 
           expect(competitionJudgeList.size, 0);
         },

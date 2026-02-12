@@ -3,8 +3,8 @@ import 'package:tournament_app/app/gateways/sheets/configs/judge/kyokushin/colum
 import 'package:tournament_app/app/gateways/sheets/configs/judge/kyokushin/headers/competition_judge_karate_sheet_headers.dart';
 import 'package:tournament_app/app/gateways/sheets/parsers/cell_styler/participant/xlsx_participant_cell_styler.dart';
 import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_cell_value_extractor/xlsx_text_cell_value_extractor.dart';
-import 'package:tournament_app/app/gateways/sheets/readers/competition_judge/xlsx_competition_judge_row_reader.dart';
-import 'package:tournament_app/app/gateways/sheets/writers/competition_judge/xlsx_competition_judge_row_writer.dart';
+import 'package:tournament_app/app/gateways/sheets/readers/impl/xlsx_competition_judge_row_reader.dart';
+import 'package:tournament_app/app/gateways/sheets/writers/impl/xlsx_competition_judge_row_writer.dart';
 import 'package:tournament_app/app/models/competition_judge/parser/factory/competition_judge_parser_factory.dart';
 
 class CompetitionJudgeSheetKarateConfigFabric {

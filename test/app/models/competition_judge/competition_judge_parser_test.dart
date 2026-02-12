@@ -1,31 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge.dart';
-import 'package:tournament_app/app/models/competition_judge/parser/competition_judge_parser.dart';
-import 'package:tournament_app/app/models/parts/belt/parser/belt_parser.dart';
-import 'package:tournament_app/app/models/parts/name/parser/person_name_parser.dart';
-import 'package:tournament_app/app/models/parts/region/parser/region_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/parser/judge_ranks_parser.dart';
+import 'package:tournament_app/app/models/competition_judge/parser/factory/competition_judge_parser_factory.dart';
 
 void main() {
   CompetitionJudge parseJudge(String name, String belt, String qualification,
       String region) {
-    final personNameParser = FullNameParser();
-    final beltParser = KuBeltParser();
-    beltParser.setNext(DanBeltParser());
-
-    final ranksParser = AllSportsCategoryJudgeParser();
-    ranksParser
-        .setNext(FirstCategoryJudgeParser())
-        .setNext(SecondCategoryJudgeParser())
-        .setNext(ThirdCategoryJudgeParser())
-        .setNext(YouthCategoryJudgeParser());
-
-    final regionParser = StandardRegionParser();
-
-    final parser = CompetitionJudgeParser(personNameParser: personNameParser,
-        beltParser: beltParser,
-        sportsQualificationParser: ranksParser,
-        regionParser: regionParser);
+    final parser = CompetitionJudgeParserFactory.createDefaultParser();
 
     return parser.parse(name, belt, qualification, region);
   }

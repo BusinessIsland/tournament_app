@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/weight_category/weight_category.dart';
+import 'package:tournament_app/app/models/parts/weight_category/weight_category.dart';
 
 void main() {
 

@@ -1,55 +1,48 @@
 import 'package:tournament_app/app/models/parts/weight_category/weight_category.dart';
 
-abstract class WeightCategoryParser {
-  WeightCategoryParser? _next;
-
-  WeightCategoryParser setNext(WeightCategoryParser nextParser) {
-    _next = nextParser;
-    return nextParser;
-  }
-
+class WeightCategoryParser {
   WeightCategory parse(String? rawMinWeight, String? rawMaxWeight) {
     if (rawMinWeight == null && rawMaxWeight == null) {
-      return _next?.parse(rawMinWeight, rawMaxWeight) ??
-          UndefinedWeightCategory();
+      return AbsoluteWeightCategory();
     }
 
-    var preparedRawMinWeight = "";
-    var preparedRawMaxWeight = "";
+    var preparedMinWeight = rawMinWeight == null
+        ? ""
+        : _normalize(rawMinWeight);
+    var preparedMaxWeight = rawMaxWeight == null
+        ? ""
+        : _normalize(rawMaxWeight);
 
-    if (rawMinWeight != null) {
-      preparedRawMinWeight =
-          rawMinWeight.trim().toLowerCase().replaceAll(RegExp(r"\s+"), " ");
+    var parsedMinWeight = _tryParse(preparedMinWeight);
+    var parsedMaxWeight = _tryParse(preparedMaxWeight);
+
+    if (parsedMinWeight == null && parsedMaxWeight != null) {
+      return BelowWeightCategory(maxWeight: parsedMaxWeight);
     }
 
-    if (rawMaxWeight != null) {
-      preparedRawMaxWeight = rawMaxWeight
-          .trim().toLowerCase().replaceAll(RegExp(r"\s+"), " ");
+    if (parsedMinWeight != null && parsedMaxWeight == null) {
+      return AboveWeightCategory(minWeight: parsedMinWeight);
     }
 
-    final result = concreteParse(preparedRawMinWeight, preparedRawMaxWeight);
-    if (result != null) return result;
+    if (parsedMinWeight != null && parsedMaxWeight != null) {
+      return AbsoluteWeightCategory();
+    }
 
-    return _next?.parse(preparedRawMinWeight, preparedRawMaxWeight) ??
-        UndefinedWeightCategory();
+    return UndefinedWeightCategory();
   }
 
-  WeightCategory? concreteParse(String minWeight, String maxWeight);
+  String _normalize(String raw) {
+    return raw
+        .trim()
+        .replaceAll(RegExp(r"\s+"), " ")
+        .replaceAll(RegExp(r","), ".")
+        .toLowerCase();
+  }
+
+  double? _tryParse(String raw) {
+    final parsed = double.tryParse(raw);
+    if (parsed == null) return null;
+    if (parsed <= 0) return null;
+    return parsed;
+  }
 }
-
-class AboveWeightCategoryParser extends WeightCategoryParser {
-
-}
-
-class BelowWeightCategoryParser extends WeightCategoryParser {
-
-}
-
-class RangeWeightCategoryParser extends WeightCategoryParser {
-
-}
-
-class AbsoluteWeightCategoryParser extends WeightCategoryParser {
-
-}
-

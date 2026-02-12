@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/parts/name/parser/person_name_parser.dart';
+import 'package:tournament_app/app/models/parts/name/parser/person_name_pipeline_builder.dart';
 import 'package:tournament_app/app/models/trainer/parser/trainer_parser.dart';
 import 'package:tournament_app/app/models/trainer/trainers_list.dart';
 
@@ -7,7 +7,13 @@ void main() {
   late TrainerParser parser;
 
   setUp(() {
-    parser = TrainerParser(NameWithInitialsParser());
+    final pipeline = PersonNamePipelineBuilder()
+        .addFullName()
+        .addInitials()
+        .addShortName()
+        .build();
+
+    parser = TrainerParser(pipeline);
   });
 
   group("TrainerParser_Success", () {

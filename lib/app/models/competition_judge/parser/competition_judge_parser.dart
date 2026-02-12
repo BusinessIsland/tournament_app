@@ -1,14 +1,14 @@
 import 'package:tournament_app/app/models/competition_judge/competition_judge.dart';
-import 'package:tournament_app/app/models/parts/belt/parser/belt_parser.dart';
+import 'package:tournament_app/app/models/parts/belt/parser/belt_pipeline.dart';
 import 'package:tournament_app/app/models/parts/id/id.dart';
-import 'package:tournament_app/app/models/parts/name/parser/person_name_parser.dart';
+import 'package:tournament_app/app/models/parts/name/parser/person_name_pipeline.dart';
 import 'package:tournament_app/app/models/parts/region/parser/region_parser.dart';
-import 'package:tournament_app/app/models/parts/sports_qualification/parser/sports_qualification_parser.dart';
+import 'package:tournament_app/app/models/parts/sports_qualification/parser/sports_qualification_pipeline.dart';
 
 class CompetitionJudgeParser {
-  final PersonNameParser personNameParser;
-  final BeltParser beltParser;
-  final SportsQualificationParser sportsQualificationParser;
+  final PersonNamePipeline personNameParser;
+  final BeltPipeline beltParser;
+  final SportsQualificationPipeline sportsQualificationParser;
   final RegionParser regionParser;
 
   CompetitionJudgeParser({

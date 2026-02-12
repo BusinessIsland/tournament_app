@@ -17,8 +17,8 @@ sealed class Block {
   int get hashCode => label.hashCode;
 }
 
-class SimpleBlock extends Block {
-  SimpleBlock(String label) : super(label: label);
+class StandardBlock extends Block {
+  StandardBlock(String label) : super(label: label);
 
   @override
   String toString() => label;

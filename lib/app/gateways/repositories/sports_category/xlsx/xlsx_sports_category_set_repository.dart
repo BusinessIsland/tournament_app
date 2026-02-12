@@ -1,5 +1,6 @@
 import 'package:tournament_app/app/gateways/repositories/persistence/i_file_persistable.dart';
 import 'package:tournament_app/app/gateways/repositories/sports_category/sports_category_set_repository.dart';
+import 'package:tournament_app/app/models/sports_category/parser/sports_category_set_parser.dart';
 import 'package:tournament_app/app/models/sports_category/sports_category_set.dart';
 import 'package:tournament_app/app/models/sports_category/sports_category_set_list.dart';
 
@@ -27,10 +28,6 @@ class XlsxSportsCategorySetRepository
   @override
   SportsCategorySet create(dto) {
     throw UnimplementedError();
-
-    final set = setParser.parse(
-
-    );
   }
 
   @override

@@ -1,44 +1,33 @@
 import 'package:tournament_app/app/models/parts/weight/weight.dart';
 
-abstract class WeightParser {
-  WeightParser? _next;
-
-  WeightParser setNext(WeightParser nextParser) {
-    _next = nextParser;
-    return nextParser;
-  }
-
+class WeightParser {
   Weight parse(String? raw) {
     if (raw == null || raw.trim().isEmpty) {
-      return _next?.parse(raw) ?? UndefinedWeight();
+      return UndefinedWeight();
     }
 
-    final prepared = raw.trim().toLowerCase().replaceAll(RegExp(r"\s+"), " ");
+    final prepared = _normalize(raw);
 
-    final result = concreteParse(prepared);
-    if (result != null) return result;
+    final parsed = _tryParse(prepared);
+    if (parsed != null) {
+      return StandardWeight(parsed);
+    }
 
-    return _next?.parse(raw) ?? UndefinedWeight();
+    return UndefinedWeight();
   }
 
-  Weight? concreteParse(String raw);
-}
+  String _normalize(String raw) {
+    return raw
+        .trim()
+        .replaceAll(RegExp(r"\s+"), " ")
+        .replaceAll(RegExp(","), ".")
+        .toLowerCase();
+  }
 
-class StandardWeightParser extends WeightParser {
-  Weight? _tryParseAsDouble(String raw) {
+  double? _tryParse(String raw) {
     final parsed = double.tryParse(raw);
-
     if (parsed == null) return null;
-    if (parsed < 0) return null;
-
-    return SimpleWeight(parsed);
-  }
-
-  @override
-  Weight? concreteParse(String raw) {
-    var value = _tryParseAsDouble(raw);
-    if (value != null) return value;
-
-    return null;
+    if (parsed <= 0) return null;
+    return parsed;
   }
 }

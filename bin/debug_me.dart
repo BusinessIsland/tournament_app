@@ -5,9 +5,9 @@ import 'package:tournament_app/app/gateways/repositories/participant/i_participa
 import 'package:tournament_app/app/gateways/repositories/participant/xlsx/xlsx_participant_repository.dart';
 import 'package:tournament_app/app/gateways/repositories/persistence/i_file_persistable.dart';
 import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/competition_judge/competition_judge_sheet_karate_config_fabric.dart';
-import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/participant/participant_sheet_karate_config_fabric.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/competition_judge/xlsx_competition_judge_parser.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/participant/xlsx_participant_parser.dart';
+import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/participant/participant_sheet_kyokushin_config_fabric.dart';
+import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/impl/xlsx_competition_judge_parser.dart';
+import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/impl/xlsx_participant_parser.dart';
 import 'package:tournament_app/app/models/competition_judge/parser/factory/competition_judge_parser_factory.dart';
 import 'package:tournament_app/app/models/participant/parser/factory/participant_parser_factory.dart';
 import 'package:tournament_app/app/usecases/competition_judge/competition_judge_use_case.dart';
@@ -51,7 +51,7 @@ void readAllJudges() {
 void readAll() {
   final participantSheetParser = XlsxParticipantParser(
     config:
-        ParticipantSheetKarateConfigFabric.createStandardChampionshipConfig(),
+        ParticipantSheetKyokushinConfigFabric.createStandardChampionshipConfig(),
   );
 
   IParticipantRepository participantRepository = XlsxParticipantRepository(

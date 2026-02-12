@@ -1,22 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/parts/group_label/group_label.dart';
-import 'package:tournament_app/app/models/parts/group_label/parser/builders/group_label_parser_builder_impl.dart';
+import 'package:tournament_app/app/models/parts/group_label/parser/group_label_parser.dart';
 
 void main() {
-  GroupLabel parseGroupLabel(String input) {
-    final builder = GroupLabelParserBuilderImpl();
+  late GroupLabelParser parser;
 
-    builder.addStandardParser();
-
-    final parser = builder.build();
-    return parser.parse(input);
-  }
+  setUp(() {
+    parser = GroupLabelParser();
+  });
 
   group("GroupLabelParser_Success", () {
     final label = "юноши 14-15 лет";
 
     test("parser should create GroupLabel from string", () {
-      final parsed = parseGroupLabel(label);
+      final parsed = parser.parse(label);
 
       expect(parsed.label, label);
     });

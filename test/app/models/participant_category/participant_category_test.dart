@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/models/age_category/age_category.dart';
 import 'package:tournament_app/app/models/participant/participant_category/participant_category.dart';
-import 'package:tournament_app/app/models/weight_category/weight_category.dart';
+import 'package:tournament_app/app/models/parts/age_category/age_category.dart';
+import 'package:tournament_app/app/models/parts/weight_category/weight_category.dart';
 
 void main() {
   group("ParticipantCategory.matches", () {
