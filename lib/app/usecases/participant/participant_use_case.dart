@@ -2,10 +2,10 @@ import 'package:tournament_app/app/dto/participant/participant_create_dto.dart';
 import 'package:tournament_app/app/dto/participant/participant_get_all_filter.dart';
 import 'package:tournament_app/app/dto/participant/participant_output_dto.dart';
 import 'package:tournament_app/app/dto/participant/participant_update_dto.dart';
-import 'package:tournament_app/app/gateways/repositories/participant/i_participant_repository.dart';
+import 'package:tournament_app/app/gateways/repositories/participant/participant_repository.dart';
 
 class ParticipantUseCase {
-  IParticipantRepository repository;
+  ParticipantRepository repository;
 
   ParticipantUseCase({required this.repository});
 

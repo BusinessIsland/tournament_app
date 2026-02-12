@@ -8,7 +8,7 @@ import 'package:tournament_app/app/models/participant/participant.dart';
 
 class XlsxParticipantRowReader implements XlsxRowReader {
   final XlsxCellValueExtractor extractor;
-  final SheetCellMapping<ParticipantField, int> columns;
+  final Map<ParticipantField, int> columns;
   final ParticipantParser parser;
 
   const XlsxParticipantRowReader({required this.extractor, required this.columns, required this.parser});

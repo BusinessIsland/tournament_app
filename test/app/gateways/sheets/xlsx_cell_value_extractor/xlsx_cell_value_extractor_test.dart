@@ -1,11 +1,11 @@
 import 'package:excel/excel.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_cell_value_extractor/xlsx_cell_value_extractor.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_cell_value_extractor/xlsx_text_cell_value_extractor.dart';
+import 'package:tournament_app/app/gateways/sheets/cell_value_extractor/impl/xlsx_text_cell_value_extractor.dart';
+import 'package:tournament_app/app/gateways/sheets/cell_value_extractor/xlsx_cell_value_extractor.dart';
 
 void main() {
   late Sheet sheet;
-  late IXlsxCellValueExtractor textExtractor;
+  late XlsxCellValueExtractor textExtractor;
 
   group("text cell value extractor", () {
     setUp(() {

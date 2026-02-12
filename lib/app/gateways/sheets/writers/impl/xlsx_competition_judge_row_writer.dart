@@ -1,13 +1,12 @@
 import 'package:excel/excel.dart';
 import 'package:tournament_app/app/gateways/sheets/cell_styler/xlsx_cell_styler.dart';
 import 'package:tournament_app/app/gateways/sheets/configs/judge/kyokushin/fields/competition_judge_field.dart';
-import 'package:tournament_app/app/gateways/sheets/sheet_cell_mapping/sheet_cell_mapping.dart';
 import 'package:tournament_app/app/gateways/sheets/writers/xlsx_row_writer.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge.dart';
 
 class XlsxCompetitionJudgeRowWriter implements XlsxRowWriter {
-  final SheetCellMapping<CompetitionJudgeField, String> headers;
-  final SheetCellMapping<CompetitionJudgeField, int> columns;
+  final Map<CompetitionJudgeField, String> headers;
+  final Map<CompetitionJudgeField, int> columns;
   final XlsxCellStyler styler;
 
   const XlsxCompetitionJudgeRowWriter({
@@ -23,7 +22,7 @@ class XlsxCompetitionJudgeRowWriter implements XlsxRowWriter {
       final value = entry.value;
 
       final cellIndex = CellIndex.indexByColumnRow(
-        columnIndex: columns.get(key)!,
+        columnIndex: columns[key]!,
         rowIndex: 0,
       );
       final cell = sheet.cell(cellIndex);
@@ -38,7 +37,7 @@ class XlsxCompetitionJudgeRowWriter implements XlsxRowWriter {
     CompetitionJudge judge = value;
 
     void createCell(dynamic value, CompetitionJudgeField field) {
-      final columnIndex = columns.get(field);
+      final columnIndex = columns[field];
       if (columnIndex == null) return;
 
       final cellIndex = CellIndex.indexByColumnRow(

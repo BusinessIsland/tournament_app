@@ -9,11 +9,12 @@ import 'package:tournament_app/app/models/competition_judge/competition_judge.da
 import 'package:tournament_app/app/models/competition_judge/parser/competition_judge_parser.dart';
 
 class XlsxCompetitionJudgeRowReader implements XlsxRowReader {
-  final XlsxCellValueExtractor extractor = XlsxTextCellValueExtractor();
-  final SheetCellMapping<CompetitionJudgeField, int> columns;
-  // final CompetitionJudgeParser parser = CompetitionJudgeParser(personNameParser: personNameParser, beltParser: beltParser, sportsQualificationParser: sportsQualificationParser, regionParser: regionParser);
+  final XlsxCellValueExtractor extractor;
+  final Map<CompetitionJudgeField, int> columns;
+  final CompetitionJudgeParser parser;
 
   const XlsxCompetitionJudgeRowReader({
+    required this.extractor,
     required this.columns,
     required this.parser,
   });

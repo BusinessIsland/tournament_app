@@ -1,9 +1,9 @@
 import 'package:tournament_app/app/dto/participant/participant_get_all_filter.dart';
-import 'package:tournament_app/app/gateways/repositories/competition_judge/i_competition_judge_repository.dart';
+import 'package:tournament_app/app/gateways/repositories/competition_judge/competition_judge_repository.dart';
 import 'package:tournament_app/app/gateways/repositories/competition_judge/xlsx/xlsx_competition_judge_repository.dart';
-import 'package:tournament_app/app/gateways/repositories/participant/i_participant_repository.dart';
+import 'package:tournament_app/app/gateways/repositories/participant/participant_repository.dart';
 import 'package:tournament_app/app/gateways/repositories/participant/xlsx/xlsx_participant_repository.dart';
-import 'package:tournament_app/app/gateways/repositories/persistence/i_file_persistable.dart';
+import 'package:tournament_app/app/gateways/repositories/persistence/file_persistable.dart';
 import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/competition_judge/competition_judge_sheet_karate_config_fabric.dart';
 import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/participant/participant_sheet_kyokushin_config_fabric.dart';
 import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/impl/xlsx_competition_judge_parser.dart';
@@ -27,14 +27,14 @@ void readAllJudges() {
     config: CompetitionJudgeSheetKarateConfigFabric.createStandardConfig(),
   );
 
-  ICompetitionJudgeRepository judgeRepository = XlsxCompetitionJudgeRepository(
+  CompetitionJudgeRepository judgeRepository = XlsxCompetitionJudgeRepository(
     xlsxParser: participantSheetParser,
     parser: CompetitionJudgeParserFactory.createDefaultParser(),
   );
 
   final uc = CompetitionJudgeUseCase(repository: judgeRepository);
 
-  IFilePersistable filePersistable = judgeRepository as IFilePersistable;
+  FilePersistable filePersistable = judgeRepository as FilePersistable;
   filePersistable.loadFromFile("/home/kenedy/Downloads/current.xlsx");
 
   final list = uc.getAll();
@@ -54,14 +54,14 @@ void readAll() {
         ParticipantSheetKyokushinConfigFabric.createStandardChampionshipConfig(),
   );
 
-  IParticipantRepository participantRepository = XlsxParticipantRepository(
+  ParticipantRepository participantRepository = XlsxParticipantRepository(
     xlsxParser: participantSheetParser,
     participantParser: ParticipantParserFactory.createDefaultParser(),
   );
 
   final uc = ParticipantUseCase(repository: participantRepository);
 
-  IFilePersistable filePersistable = participantRepository as IFilePersistable;
+  FilePersistable filePersistable = participantRepository as FilePersistable;
   filePersistable.loadFromFile("/home/kenedy/Downloads/current.xlsx");
 
   final list = uc.getAll(ParticipantGetAllFilter());

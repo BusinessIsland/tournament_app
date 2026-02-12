@@ -4,7 +4,7 @@ import 'package:tournament_app/app/dto/participant/participant_update_dto.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 import 'package:tournament_app/app/models/participant/participant_list.dart';
 
-abstract class IParticipantRepository {
+abstract class ParticipantRepository {
   ParticipantList getAll(ParticipantGetAllFilter filter);
   Participant? getById(String id);
   Participant create(ParticipantCreateDto dto);

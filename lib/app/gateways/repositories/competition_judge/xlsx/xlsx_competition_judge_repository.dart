@@ -1,16 +1,15 @@
 import 'dart:io';
-
 import 'package:tournament_app/app/dto/competition_judge/competition_judge_create_dto.dart';
 import 'package:tournament_app/app/dto/competition_judge/competition_judge_update_dto.dart';
-import 'package:tournament_app/app/gateways/repositories/competition_judge/i_competition_judge_repository.dart';
-import 'package:tournament_app/app/gateways/repositories/persistence/i_file_persistable.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/impl/xlsx_competition_judge_parser.dart';
+import 'package:tournament_app/app/gateways/repositories/competition_judge/competition_judge_repository.dart';
+import 'package:tournament_app/app/gateways/repositories/persistence/file_persistable.dart';
+import 'package:tournament_app/app/gateways/sheets/parsers/impl/xlsx_competition_judge_parser.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge_list.dart';
 import 'package:tournament_app/app/models/competition_judge/parser/competition_judge_parser.dart';
 
 class XlsxCompetitionJudgeRepository
-    implements ICompetitionJudgeRepository, IFilePersistable {
+    implements CompetitionJudgeRepository, FilePersistable {
   CompetitionJudgeList _list = CompetitionJudgeListBasicImpl();
   final CompetitionJudgeParser parser;
   final XlsxCompetitionJudgeParser xlsxParser;

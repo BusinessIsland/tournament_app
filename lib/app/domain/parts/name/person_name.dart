@@ -22,12 +22,12 @@ class FullName extends PersonName {
 
   @override
   String get formatted {
-    final capitalizedFirstName = StrCapitalizer.capitalize(lastName);
-    final capitalizedLastName = StrCapitalizer.capitalize(firstName);
+    final capitalizedLastName = StrCapitalizer.capitalize(lastName);
+    final capitalizedFirstName = StrCapitalizer.capitalize(firstName);
     final capitalizedMiddleName = StrCapitalizer.capitalize(middleName);
 
     return _sanitize(
-      "$capitalizedFirstName $capitalizedLastName $capitalizedMiddleName",
+      "$capitalizedLastName $capitalizedFirstName $capitalizedMiddleName",
     );
   }
 }

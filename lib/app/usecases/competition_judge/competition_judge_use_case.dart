@@ -1,10 +1,10 @@
 import 'package:tournament_app/app/dto/competition_judge/competition_judge_create_dto.dart';
 import 'package:tournament_app/app/dto/competition_judge/competition_judge_output_dto.dart';
 import 'package:tournament_app/app/dto/competition_judge/competition_judge_update_dto.dart';
-import 'package:tournament_app/app/gateways/repositories/competition_judge/i_competition_judge_repository.dart';
+import 'package:tournament_app/app/gateways/repositories/competition_judge/competition_judge_repository.dart';
 
 class CompetitionJudgeUseCase {
-  ICompetitionJudgeRepository repository;
+  CompetitionJudgeRepository repository;
 
   CompetitionJudgeUseCase({required this.repository});
 

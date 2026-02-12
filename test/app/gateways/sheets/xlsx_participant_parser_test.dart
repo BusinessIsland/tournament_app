@@ -1,7 +1,7 @@
 import 'package:excel/excel.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tournament_app/app/gateways/sheets/configs/fabrics/kyokushin/participant/participant_sheet_kyokushin_config_fabric.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/impl/xlsx_participant_parser.dart';
+import 'package:tournament_app/app/gateways/sheets/parsers/impl/xlsx_participant_parser.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 import 'package:tournament_app/app/models/participant/participant_list.dart';
 import 'package:tournament_app/app/models/parts/belt/belt.dart';

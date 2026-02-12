@@ -1,13 +1,12 @@
 import 'package:excel/excel.dart';
 import 'package:tournament_app/app/gateways/sheets/cell_styler/xlsx_cell_styler.dart';
 import 'package:tournament_app/app/gateways/sheets/configs/participant/kyokushin/fields/participant_field.dart';
-import 'package:tournament_app/app/gateways/sheets/sheet_cell_mapping/sheet_cell_mapping.dart';
 import 'package:tournament_app/app/gateways/sheets/writers/xlsx_row_writer.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 
 class XlsxParticipantRowWriter implements XlsxRowWriter {
-  final SheetCellMapping<ParticipantField, String> headers;
-  final SheetCellMapping<ParticipantField, int> columns;
+  final Map<ParticipantField, String> headers;
+  final Map<ParticipantField, int> columns;
   final XlsxCellStyler styler;
 
   const XlsxParticipantRowWriter({
@@ -23,7 +22,7 @@ class XlsxParticipantRowWriter implements XlsxRowWriter {
       final value = entry.value;
 
       final cellIndex = CellIndex.indexByColumnRow(
-        columnIndex: columns.get(key)!,
+        columnIndex: columns[key]!,
         rowIndex: 0,
       );
       final cell = sheet.cell(cellIndex);
@@ -38,7 +37,7 @@ class XlsxParticipantRowWriter implements XlsxRowWriter {
     Participant participant = value;
 
     void createCell(dynamic value, ParticipantField field) {
-      final columnIndex = columns.get(field);
+      final columnIndex = columns[field];
       if (columnIndex == null) return;
 
       final cellIndex = CellIndex.indexByColumnRow(

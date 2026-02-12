@@ -2,15 +2,15 @@ import 'dart:io';
 import 'package:tournament_app/app/dto/participant/participant_create_dto.dart';
 import 'package:tournament_app/app/dto/participant/participant_get_all_filter.dart';
 import 'package:tournament_app/app/dto/participant/participant_update_dto.dart';
-import 'package:tournament_app/app/gateways/repositories/participant/i_participant_repository.dart';
-import 'package:tournament_app/app/gateways/repositories/persistence/i_file_persistable.dart';
-import 'package:tournament_app/app/gateways/sheets/parsers/xlsx_parsers/impl/xlsx_participant_parser.dart';
+import 'package:tournament_app/app/gateways/repositories/participant/participant_repository.dart';
+import 'package:tournament_app/app/gateways/repositories/persistence/file_persistable.dart';
+import 'package:tournament_app/app/gateways/sheets/parsers/impl/xlsx_participant_parser.dart';
 import 'package:tournament_app/app/models/participant/parser/participant_parser.dart';
 import 'package:tournament_app/app/models/participant/participant.dart';
 import 'package:tournament_app/app/models/participant/participant_list.dart';
 
 class XlsxParticipantRepository
-    implements IParticipantRepository, IFilePersistable {
+    implements ParticipantRepository, FilePersistable {
   ParticipantList _list = ParticipantListBasicImpl();
   final XlsxParticipantParser xlsxParser;
   final ParticipantParser participantParser;

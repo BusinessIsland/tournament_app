@@ -3,7 +3,7 @@ import 'package:tournament_app/app/dto/competition_judge/competition_judge_updat
 import 'package:tournament_app/app/models/competition_judge/competition_judge.dart';
 import 'package:tournament_app/app/models/competition_judge/competition_judge_list.dart';
 
-abstract class ICompetitionJudgeRepository {
+abstract class CompetitionJudgeRepository {
   CompetitionJudgeList getAll();
   CompetitionJudge? getById(String id);
   CompetitionJudge create(CompetitionJudgeCreateDto dto);

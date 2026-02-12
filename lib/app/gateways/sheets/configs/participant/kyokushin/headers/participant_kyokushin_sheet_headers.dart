@@ -1,6 +1,6 @@
 import 'package:tournament_app/app/gateways/sheets/configs/participant/kyokushin/fields/participant_field.dart';
 
-class ParticipantKarateSheetHeaders {
+class ParticipantKyokushinSheetHeaders {
   static const Map<ParticipantField, String> standardChampionship = {
     ParticipantField.number: "№ п/п",
     ParticipantField.gender: "Пол",
