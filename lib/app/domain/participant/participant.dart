@@ -11,8 +11,8 @@ import 'package:tournament_app/app/domain/trainer/container/trainers_list.dart';
 
 class Participant {
   final Id id;
-  final Gender gender;
   final PersonName name;
+  final Gender gender;
   final DateOfBirth dateOfBirth;
   final Belt belt;
   final SportsQualification sportsQualification;

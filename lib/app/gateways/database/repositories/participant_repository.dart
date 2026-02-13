@@ -1,0 +1,13 @@
+import 'package:tournament_app/app/domain/participant/container/participant_list.dart';
+import 'package:tournament_app/app/domain/participant/participant.dart';
+import 'package:tournament_app/app/dto/participant/participant_create_dto.dart';
+import 'package:tournament_app/app/dto/participant/participant_get_all_filter.dart';
+import 'package:tournament_app/app/dto/participant/participant_update_dto.dart';
+
+abstract class ParticipantRepository {
+  ParticipantList getAll(ParticipantGetAllFilter filter);
+  Participant? getById(String id);
+  Participant create(ParticipantCreateDto dto);
+  Participant update(ParticipantUpdateDto dto, String id);
+  void delete(String id);
+}
